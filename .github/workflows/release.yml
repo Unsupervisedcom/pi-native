@@ -15,6 +15,7 @@ concurrency:
 jobs:
   release:
     name: Sign, notarize, and draft release
+    environment: release
     runs-on: macos-15
     timeout-minutes: 45
 
@@ -51,14 +52,13 @@ jobs:
         env:
           CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_P12_BASE64 }}
           CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD }}
-          KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
         shell: bash
         run: |
           set -euo pipefail
           : "${CERTIFICATE_P12_BASE64:?Missing APPLE_DEVELOPER_ID_CERTIFICATE_P12_BASE64 secret}"
           : "${CERTIFICATE_PASSWORD:?Missing APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD secret}"
-          : "${KEYCHAIN_PASSWORD:?Missing APPLE_KEYCHAIN_PASSWORD secret}"
 
+          KEYCHAIN_PASSWORD="$(openssl rand -base64 32)"
           keychain="$RUNNER_TEMP/pinative-signing.keychain-db"
           certificate="$RUNNER_TEMP/developer-id.p12"
           echo "$CERTIFICATE_P12_BASE64" | base64 --decode > "$certificate"

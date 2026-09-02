@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-02
+
+
+### Changed
+
+- Scoped official release credentials to a dedicated GitHub environment and replaced the stored temporary-keychain password with a fresh per-run value.
+
 ## 2026-09-01
 
 
