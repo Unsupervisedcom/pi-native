@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.3--519a0044ed5e",
+  "requirementId": "REQ-012.2.3",
+  "hash": "519a0044ed5e",
+  "verdict": "pass",
+  "summary": "Test genuinely verifies old project summary is cleared (nil) immediately when switching projects, would fail if prior summary remained visible during new project load",
+  "timestamp": "2026-08-31T21:50:33.726Z"
+}

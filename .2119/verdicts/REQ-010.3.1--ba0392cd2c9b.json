@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.1--ba0392cd2c9b",
+  "requirementId": "REQ-010.3.1",
+  "hash": "ba0392cd2c9b",
+  "verdict": "fail",
+  "summary": "Missing counterexamples for attachment names and contents: test uses empty arrays instead of actual ComposerAttachment with displayName and RPCImageContent data",
+  "timestamp": "2026-08-18T03:47:59.470Z"
+}

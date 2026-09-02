@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.3.1--a431261c9453",
+  "requirementId": "REQ-013.3.1",
+  "hash": "a431261c9453",
+  "verdict": "pass",
+  "summary": "Both archive and unarchive paths (project chat + Quick Chat) assert identity via ID-keyed lookup, positive+negative container-membership checks (project.sessions vs standaloneSessions vs archivedChats/pinnedSessions), and equality of filePath, cachedTranscript, and isPinned against captured pre-mutation values, using the real AppModel with no mocking; would fail on regressions that drop fields, reassign IDs, or misplace sessions across containers.",
+  "timestamp": "2026-08-31T22:06:51.085Z"
+}

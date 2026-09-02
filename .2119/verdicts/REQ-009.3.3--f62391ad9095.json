@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.3--f62391ad9095",
+  "requirementId": "REQ-009.3.3",
+  "hash": "f62391ad9095",
+  "verdict": "pass",
+  "summary": "Mounted PiConversationView switch test sends Up after focusing chat B and proves recall starts at B's newest user payload, not stale chat A, B's older user turn, or intervening non-user transcript items.",
+  "timestamp": "2026-08-11T01:07:28.415Z"
+}

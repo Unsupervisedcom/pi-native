@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.5--febc570ca59e",
+  "requirementId": "REQ-009.1.5",
+  "hash": "febc570ca59e",
+  "verdict": "pass",
+  "summary": "Three tests verify Down from newest restores to empty state: unit (navigateNewer), keyboard events (keyCode 125), and mounted integration. All check draft=='' AND attachments.isEmpty. Would fail if Down didn't clear, cleared from wrong position, or only partially cleared.",
+  "timestamp": "2026-08-11T21:14:28.411Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.1.2--81fb56547d9c",
+  "requirementId": "REQ-008.1.2",
+  "hash": "81fb56547d9c",
+  "verdict": "pass",
+  "summary": "Lifecycle tests verify zero calls through agent_end, one call after first agent_settled, and no second attempt across later turns, failure, restoration, or runtime recreation.",
+  "timestamp": "2026-08-11T03:04:31.746Z"
+}

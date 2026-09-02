@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--1c63e3b1342d",
+  "requirementId": "REQ-012.2.2",
+  "hash": "1c63e3b1342d",
+  "verdict": "pass",
+  "summary": "Four dedicated UITests drive real app+model state machine (no-project/loading via FIFO gate/clean-tree/git-failure) each asserting a distinct unique title text and absence of the 'Files' stat card that only renders in the populated-summary branch (DiffTotalsView), which is the sole place 'Files' is emitted in DiffPaneView.swift; git subprocess is stubbed via env hooks but the state-selection/view logic under test is exercised unmocked.",
+  "timestamp": "2026-08-31T23:20:03.451Z"
+}

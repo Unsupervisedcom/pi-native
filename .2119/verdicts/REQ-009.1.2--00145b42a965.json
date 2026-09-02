@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.2--00145b42a965",
+  "requirementId": "REQ-009.1.2",
+  "hash": "00145b42a965",
+  "verdict": "pass",
+  "summary": "Mounted composer test sends two production Up key events and distinguishes newest from oldest transcript user payloads, catching a repeated-Up implementation that remains on the newest entry.",
+  "timestamp": "2026-08-11T00:25:36.157Z"
+}

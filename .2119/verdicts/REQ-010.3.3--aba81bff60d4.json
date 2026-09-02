@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.3--aba81bff60d4",
+  "requirementId": "REQ-010.3.3",
+  "hash": "aba81bff60d4",
+  "verdict": "pass",
+  "summary": "testMissingOrInvalidProjectKeyDisablesAnalyticsWithoutPreventingAppActions genuinely exercises absent (nil) and invalid (non-phc_-prefixed) keys through real AnalyticsService/AppModel code, asserts zero captured events plus continued app-state mutation (rightPaneMode), and includes a valid-key positive control ruling out a trivially-empty tautology.",
+  "timestamp": "2026-08-18T03:46:31.866Z"
+}

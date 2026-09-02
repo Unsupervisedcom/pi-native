@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.4.1--e21dd78f0644",
+  "requirementId": "REQ-007.4.1",
+  "hash": "e21dd78f0644",
+  "verdict": "pass",
+  "summary": "Composer menu UI shows alpha/gamma available favorites and rejects stale unavailable favorite while using production availableFavorites.",
+  "timestamp": "2026-08-10T17:56:53.004Z"
+}

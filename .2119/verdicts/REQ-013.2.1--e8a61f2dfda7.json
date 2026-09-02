@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.2.1--e8a61f2dfda7",
+  "requirementId": "REQ-013.2.1",
+  "hash": "e8a61f2dfda7",
+  "verdict": "fail",
+  "summary": "Tests cover only 2 of 4 combinations of (project|standalone) × (pinned|unpinned); missing unpinned-project-chat and pinned-standalone-chat cases; incomplete archivedChats removal verification for standalone case",
+  "timestamp": "2026-08-31T22:08:46.789Z"
+}

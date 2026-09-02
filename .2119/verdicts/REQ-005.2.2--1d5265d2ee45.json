@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-005.2.2--1d5265d2ee45",
+  "requirementId": "REQ-005.2.2",
+  "hash": "1d5265d2ee45",
+  "verdict": "pass",
+  "summary": "Fresh-model RPC UI request is asserted to surface both status text and a notice, so silent drop would fail.",
+  "timestamp": "2026-08-04T21:27:41.007Z"
+}

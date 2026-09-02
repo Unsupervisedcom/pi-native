@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.4.1--137d328e2e6e",
+  "requirementId": "REQ-002.4.1",
+  "hash": "137d328e2e6e",
+  "verdict": "pass",
+  "summary": "Tests verify both add and reuse paths, new project-scoped session creation (with ID inequality checks), session membership in correct project, and complete planning context preservation in handoff prompt and displayed messages",
+  "timestamp": "2026-08-11T19:18:47.294Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.4.1--d36128c3247d",
+  "requirementId": "REQ-010.4.1",
+  "hash": "d36128c3247d",
+  "verdict": "fail",
+  "summary": "Both tests only cover the always-fails path (start-failure, and session-load failure that exhausts its one automatic retry); no test drives the retry-succeeds/self-heals case, so an implementation that fires pi_load_failed on the first (recoverable) attempt before a successful retry would pass unnoticed, leaving the 'terminally'/'regardless of retry' boundary unverified.",
+  "timestamp": "2026-08-18T03:50:51.850Z"
+}

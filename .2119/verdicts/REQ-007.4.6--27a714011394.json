@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.4.6--27a714011394",
+  "requirementId": "REQ-007.4.6",
+  "hash": "27a714011394",
+  "verdict": "pass",
+  "summary": "The test exercises three real conversations and asserts the untouched conversations keep their prior currentModel after selectModel is called in one conversation.",
+  "timestamp": "2026-08-05T19:50:49.101Z"
+}

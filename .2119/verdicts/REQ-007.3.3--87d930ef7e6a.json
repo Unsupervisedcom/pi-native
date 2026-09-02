@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.3.3--87d930ef7e6a",
+  "requirementId": "REQ-007.3.3",
+  "hash": "87d930ef7e6a",
+  "verdict": "pass",
+  "summary": "Startup test proves the configured default favorite is seeded before any Models settings UI is opened, so a settings-open dependency would fail it.",
+  "timestamp": "2026-08-05T19:52:30.205Z"
+}

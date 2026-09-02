@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.1--74ff33743060",
+  "requirementId": "REQ-012.2.1",
+  "hash": "74ff33743060",
+  "verdict": "fail",
+  "summary": "Aggregate deletion count is never exercised with a nonzero staged deletion (staged.txt only adds a line); an implementation that sums deletions from unstaged+untracked diffs but omits staged deletions would still pass, so the MUST clause 'deletion counts that include staged... work' is unverified.",
+  "timestamp": "2026-08-31T21:49:46.257Z"
+}

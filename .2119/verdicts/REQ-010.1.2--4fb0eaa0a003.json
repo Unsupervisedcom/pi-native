@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.2--4fb0eaa0a003",
+  "requirementId": "REQ-010.1.2",
+  "hash": "4fb0eaa0a003",
+  "verdict": "pass",
+  "summary": "Test verifies chat_started event is reported when analytics are enabled and not when disabled, with correct event name and timing",
+  "timestamp": "2026-08-18T03:34:46.602Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.6--f78bf7307add",
+  "requirementId": "REQ-009.1.6",
+  "hash": "f78bf7307add",
+  "verdict": "pass",
+  "summary": "Tests recall UserMessagePayload.text through PiConversationModel.promptHistory and ComposerPromptHistoryNavigator into both the draft binding and mounted composer, with exact equality rejecting newline loss or any character mutation.",
+  "timestamp": "2026-08-11T00:26:37.977Z"
+}

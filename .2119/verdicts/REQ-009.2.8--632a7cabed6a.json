@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.8--632a7cabed6a",
+  "requirementId": "REQ-009.2.8",
+  "hash": "632a7cabed6a",
+  "verdict": "pass",
+  "summary": "Selection/caret movement verified to preserve browsing state; text-edit contrast confirms negative obligation",
+  "timestamp": "2026-08-11T21:35:32.936Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.2--d813996fdef3",
+  "requirementId": "REQ-012.1.2",
+  "hash": "d813996fdef3",
+  "verdict": "pass",
+  "summary": "testShowPendingChangesOpensProjectReviewWithoutChangingSelectedConversation verifies selectedSessionID and selectedProjectID remain unchanged after showPendingChanges call",
+  "timestamp": "2026-08-31T21:43:55.762Z"
+}

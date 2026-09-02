@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.5--a9ccae77fc0b",
+  "requirementId": "REQ-010.1.5",
+  "hash": "a9ccae77fc0b",
+  "verdict": "pass",
+  "summary": "Genuine coverage: exercises real AppModel/AnalyticsService gating and pane-payload logic via two distinct entry points (openRightPane, selectRightPaneMode) with exact name/pane/enabled-state assertions that reject wrong-name, stale-pane, and fires-while-disabled mutations; configured-key boundary is covered for the same code path under REQ-010.3.3.",
+  "timestamp": "2026-08-19T21:38:14.592Z"
+}

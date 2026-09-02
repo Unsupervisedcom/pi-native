@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--5731c0da441c",
+  "requirementId": "REQ-012.1.1",
+  "hash": "5731c0da441c",
+  "verdict": "fail",
+  "summary": "No test verifies the summary is *for that project*: the unit test only checks reviewProjectID/rightPaneMode routing (no summary assertions) and the UI test uses a single project, so a stale/wrong-project Git summary shown after switching projects via the shared DiffModel instance would not be caught.",
+  "timestamp": "2026-08-31T22:47:45.331Z"
+}

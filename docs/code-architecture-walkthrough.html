@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PiNative Code Architecture Walkthrough</title>
+<style>
+:root{--bg:#0d1117;--panel:#161b22;--fg:#e6edf3;--muted:#8b949e;--accent:#58a6ff;--border:#30363d;--code:#1f2630;}
+@media (prefers-color-scheme: light){:root{--bg:#fff;--panel:#f6f8fa;--fg:#1f2328;--muted:#636c76;--accent:#0969da;--border:#d0d7de;--code:#f0f3f6;}}
+*{box-sizing:border-box}
+body{margin:0;font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--fg);}
+.layout{display:flex;align-items:flex-start;}
+nav{position:sticky;top:0;height:100vh;overflow:auto;min-width:272px;max-width:272px;padding:28px 18px;border-right:1px solid var(--border);background:var(--panel);font-size:14px;}
+.nav-title{margin:0 11px;color:var(--fg);font-size:26px;font-weight:760;line-height:1.05;letter-spacing:-.035em;}
+.nav-subtitle{margin:6px 11px 20px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.105em;text-transform:uppercase;}
+.nav-rule{height:1px;background:var(--border);margin:0 10px 20px;}
+.nav-group{margin:18px 11px 7px;color:var(--muted);font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;}
+nav a{position:relative;display:block;color:var(--muted);text-decoration:none;padding:8px 11px 8px 13px;border-radius:9px;margin-bottom:3px;font-weight:560;line-height:1.3;transition:background .12s ease,color .12s ease;}
+nav a:hover{color:var(--fg);background:rgba(127,127,127,.12);}
+nav a.active{color:var(--accent);background:rgba(88,166,255,.12);box-shadow:inset 3px 0 0 var(--accent);}
+main{flex:1;max-width:980px;margin:0 auto;padding:32px 44px 120px;}
+.report-title{font-size:38px;line-height:1.15;letter-spacing:-.03em;margin:0 0 6px;border:0;padding:0;}
+.gen{color:var(--muted);font-size:13px;margin-bottom:32px;}
+.doc-tag{display:none;}
+h1{font-size:30px;margin:.4em 0 .3em;border-bottom:1px solid var(--border);padding-bottom:.2em;}
+h2{font-size:23px;margin:1.4em 0 .3em;border-bottom:1px solid var(--border);padding-bottom:.2em;}
+h3{font-size:18px;margin:1.2em 0 .3em;}
+a{color:var(--accent);}
+code{background:var(--code);padding:.15em .4em;border-radius:5px;font:13.5px ui-monospace,SFMono-Regular,Menlo,monospace;}
+pre{background:var(--code);border:1px solid var(--border);border-radius:8px;padding:14px 16px;overflow:auto;}
+pre code{background:none;padding:0;}
+blockquote{border-left:3px solid var(--accent);margin:1em 0;padding:.2em 1em;color:var(--muted);background:rgba(127,127,127,.06);border-radius:0 8px 8px 0;}
+table{border-collapse:collapse;width:100%;margin:1em 0;font-size:14.5px;display:block;overflow:auto;}
+th,td{border:1px solid var(--border);padding:7px 11px;text-align:left;vertical-align:top;}
+th{background:var(--code);}
+hr{border:none;border-top:1px solid var(--border);margin:1.4em 0;}
+hr.sep{margin:3.5em 0;border-top:2px dashed var(--border);}
+.cb{font-weight:700;color:var(--muted);} .cb.done{color:#3fb950;} .cb.wip{color:#d29922;} .cb.q{color:var(--accent);}
+ul{padding-left:1.4em;} li{margin:.2em 0;}
+section{scroll-margin-top:20px;}
+</style></head>
+<body><div class="layout">
+<nav>
+<div class="nav-title">PiNative</div>
+<div class="nav-subtitle">Code Architecture</div>
+<div class="nav-rule"></div>
+<a class="active" href="#00-orientation-md">Overview</a>
+<a href="#01-features-md">Features</a>
+<a href="#02-app-navigation-md">App Navigation</a>
+<div class="nav-group">Core Architecture</div>
+<a href="#03-data-and-persistence-md">Data &amp; Persistence</a>
+<a href="#04-chat-architecture-md">Chat Architecture</a>
+<a href="#05-turn-lifecycle-md">Chat Message Lifecycle</a>
+<a href="#06-transcript-and-composer-md">Transcript &amp; Composer</a>
+<div class="nav-group">Product Workflows</div>
+<a href="#07-feature-workflows-md">Feature Workflows</a>
+<a href="#08-supporting-surfaces-md">Supporting Surfaces</a>
+<div class="nav-group">Engineering</div>
+<a href="#09-quality-and-delivery-md">Quality &amp; Delivery</a>
+<a href="#10-change-map-md">Change Map</a>
+</nav>
+<main>
+<h1 class="report-title">PiNative: Code Architecture Walkthrough</h1>
+<div class="gen">Generated 2026-08-05 18:25 UTC</div>
+<section id="00-orientation-md"><div class="doc-tag">00-orientation.md</div>
+<h1 id="overview">Overview</h1>
+<h2 id="the-one-sentence-architecture">The one-sentence architecture</h2>
+<p>PiNative is a native SwiftUI/AppKit shell that owns projects, navigation, presentation, and cached UI state while a separate <code>pi --mode rpc</code> subprocess owns agent execution, providers, tools, and canonical Pi session files.</p>
+<pre><code>SwiftUI shell → AppModel → one PiConversationModel per chat
+                              ↓
+                         PiRPCClient actor
+                              ↓ JSONL over stdin/stdout
+                         pi --mode rpc</code></pre>
+<h2 id="start-with-these-five-files">Start with these five files</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/PiNativeApp.swift&amp;line=1">PiNativeApp.swift</a> — process entry point, window scene, app commands, and shutdown.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/MainWindowView.swift&amp;line=1">MainWindowView.swift</a> — three-region shell and modal routing.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a> — app-level source of truth and runtime registry.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationModel.swift&amp;line=1">PiConversationModel.swift</a> — one chat's lifecycle, transcript, composer, and Pi event interpretation.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/PiRPCClient.swift&amp;line=1">PiRPCClient.swift</a> — subprocess and JSON-RPC transport boundary.</li>
+</ul>
+<h2 id="ownership-rule">Ownership rule</h2>
+<ul>
+<li><code>AppModel</code> answers <strong>which project/chat/surface is active?</strong></li>
+<li><code>PiConversationModel</code> answers <strong>what is happening in this chat?</strong></li>
+<li><code>PiRPCClient</code> answers <strong>how do commands and events cross the process boundary?</strong></li>
+<li>Views render observable state and keep only ephemeral presentation state locally.</li>
+</ul></section>
+<hr class="sep">
+<section id="01-features-md"><div class="doc-tag">01-features.md</div>
+<h1 id="features">Features</h1>
+<h2 id="core-product-surface">Core product surface</h2>
+<ul>
+<li><strong>Projects and chats:</strong> bookmarked folders contain project chats; projectless Quick Chats support planning before code work. See <a href="http://127.0.0.1:43117/open?path=PiNative/ProjectSidebarView.swift&amp;line=1">ProjectSidebarView.swift</a>.</li>
+<li><strong>Parallel conversations:</strong> each opened chat retains an independent model/process runtime, draft, transcript, loading state, and Stop behavior. See <a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a>.</li>
+<li><strong>Native chat UI:</strong> streaming assistant text, user bubbles, activity summaries, code blocks, model/effort selection, attachments, and scoped Stop. See <a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationView.swift&amp;line=1">PiConversationView.swift</a>.</li>
+<li><strong>Durable session UX:</strong> Pi session discovery is merged with PiNative's cached transcript and sidebar metadata so chats survive relaunches.</li>
+<li><strong>Promote to Project:</strong> turns a Quick Chat into a guarded project folder, creates context/provenance, archives the source, and starts a project-scoped handoff chat. See <a href="http://127.0.0.1:43117/open?path=PiNative/PromoteToProject.swift&amp;line=1">PromoteToProject.swift</a>.</li>
+<li><strong>Supporting panes:</strong> Git-change summary, embedded browser, plugin/skill catalog, and archived-chat restoration. See <a href="http://127.0.0.1:43117/open?path=PiNative/RightPaneView.swift&amp;line=1">RightPaneView.swift</a>.</li>
+</ul>
+<h2 id="deliberate-current-boundaries">Deliberate current boundaries</h2>
+<ul>
+<li>Pi is an external prerequisite; PiNative does not embed the runtime or provider credentials.</li>
+<li>Quick Chats run Pi with <code>--no-tools</code> and add a planning-only instruction.</li>
+<li>Interactive extension prompts are surfaced and cancelled, not completed natively yet.</li>
+<li>Pending Changes is a status summary, not hunk-level review/apply.</li>
+<li>Browser is a single user-driven <code>WKWebView</code>; agent-opened artifacts are planned work.</li>
+<li>A terminal pane is not in the current product scope.</li>
+<li>Official signed/notarized distribution is still in progress; only the internal unsigned DMG path exists today.</li>
+</ul></section>
+<hr class="sep">
+<section id="02-app-navigation-md"><div class="doc-tag">02-app-navigation.md</div>
+<h1 id="app-navigation">App Navigation</h1>
+<h2 id="window-and-shell">Window and shell</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/PiNativeApp.swift&amp;line=1">PiNativeApp.swift</a> creates one <code>WindowGroup</code>, injects a single <code>AppModel</code>, declares menu shortcuts, refreshes Git stats on activation, and stops every runtime on termination.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/MainWindowView.swift&amp;line=1">MainWindowView.swift</a> uses a manual <code>HStack</code>, not <code>NavigationSplitView</code>: left sidebar, center region, and right pane.</li>
+<li>Side panes animate width to zero instead of being removed, preserving state during collapse.</li>
+<li>The center chat remains mounted while side panes open, close, or switch modes, preserving transcript scroll and view-local expansion state.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/Components/WindowChromeConfigurator.swift&amp;line=1">WindowChromeConfigurator.swift</a> bridges into AppKit for hidden titlebar styling and custom leading/trailing titlebar controls.</li>
+</ul>
+<h2 id="navigation-state-in-appmodel">Navigation state in <code>AppModel</code></h2>
+<ul>
+<li><code>selectedProjectID</code> + <code>selectedSessionID</code> identify the selected conversation.</li>
+<li><code>isRightPaneOpen</code> and nullable <code>rightPaneMode</code> distinguish closed, picker-open, and selected-mode states.</li>
+<li>Left visibility and pane widths persist; right-pane open state intentionally resets at launch.</li>
+</ul>
+<h2 id="entry-points">Entry points</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/ProjectSidebarView.swift&amp;line=1">ProjectSidebarView.swift</a> routes New Chat, project rows, chat rows, pin/archive actions, promotion, and pending changes.</li>
+<li><code>⌘N</code> starts a projectless Quick Chat; <code>⌘1…⌘9</code> follows visible sidebar order.</li>
+<li>Right-pane shortcuts open Pending Changes and Browser without replacing the selected conversation.</li>
+<li>Settings and Promote to Project are sheets owned by <a href="http://127.0.0.1:43117/open?path=PiNative/MainWindowView.swift&amp;line=1">MainWindowView.swift</a>.</li>
+</ul></section>
+<hr class="sep">
+<section id="03-data-and-persistence-md"><div class="doc-tag">03-data-and-persistence.md</div>
+<h1 id="data-persistence">Data &amp; Persistence</h1>
+<h2 id="app-local-model">App-local model</h2>
+<ul>
+<li><code>Project</code> contains a stable app-local ID, folder path, sessions, and current Git totals.</li>
+<li><code>Session</code> contains sidebar metadata, optional Pi session path, pending first prompt, pin/archive flags, and cached <code>[TranscriptItem]</code>.</li>
+<li><code>ConversationKey(projectID, sessionID)</code> is the stable routing key for runtime state and callbacks.</li>
+<li>These types and their persistence logic live together in <a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a>.</li>
+</ul>
+<h2 id="two-persistence-layers">Two persistence layers</h2>
+<ul>
+<li><strong>Pi owns canonical sessions:</strong> JSONL files under <code>~/.pi/agent/sessions/--&lt;encoded-project-path&gt;--/</code>.</li>
+<li><strong>PiNative owns UI continuity:</strong> project bookmarks, selected project, pane settings, promotion settings, standalone chats, per-project session metadata, and cached transcripts in <code>UserDefaults</code>.</li>
+<li>At startup, project sessions are merged by Pi session <code>filePath</code>: disk supplies current name/date/count; PiNative supplies stable local ID, pin/archive state, and cached transcript.</li>
+<li>New sessions begin app-local with a <code>pendingInitialPrompt</code>; after <code>new_session</code>, Pi's resolved <code>sessionFile</code> is written back through a keyed callback.</li>
+</ul>
+<h2 id="why-cache-transcripts">Why cache transcripts?</h2>
+<ul>
+<li>The center pane can render immediately while Pi starts or hydrates.</li>
+<li>A transient process/session error does not erase visible history.</li>
+<li>Drafts and transcripts remain isolated because each chat keeps its own runtime model.</li>
+<li>Transient startup failure notices are filtered before persistence.</li>
+</ul>
+<h2 id="lifecycle-safeguards">Lifecycle safeguards</h2>
+<ul>
+<li>Session-generation tokens reject stale async hydration results.</li>
+<li>Process-generation tokens reject events from replaced clients.</li>
+<li>Runtime callbacks capture <code>ConversationKey</code>, never ambient selection.</li>
+<li>Archiving preserves session files and cache; runtime cleanup only removes the live process/model.</li>
+</ul></section>
+<hr class="sep">
+<section id="04-chat-architecture-md"><div class="doc-tag">04-chat-architecture.md</div>
+<h1 id="chat-architecture">Chat Architecture</h1>
+<h2 id="runtime-topology">Runtime topology</h2>
+<pre><code>AppModel.conversationRuntimes
+  ConversationKey A → PiConversationModel A → PiRPCClient A → pi process A
+  ConversationKey B → PiConversationModel B → PiRPCClient B → pi process B</code></pre>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a> lazily creates one <code>ConversationRuntime</code> per selected or pending chat.</li>
+<li><code>activeConversationModel</code> is only the center view's pointer to the selected runtime; it is not the sole live conversation.</li>
+<li>Combine subscriptions mirror each model's running/loading/error state into <code>conversationRuntimeStates</code> for sidebar indicators.</li>
+<li>Keyed callbacks persist session path, title summary, and transcript to the owning chat even after the user navigates away.</li>
+<li>Switching chats does not stop the old runtime; archive/promotion cleanup and app termination do.</li>
+</ul>
+<h2 id="one-conversation-model">One conversation model</h2>
+<p><a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationModel.swift&amp;line=1">PiConversationModel.swift</a> owns:</p>
+<ul>
+<li>Draft and attachment state.</li>
+<li>Cached/live transcript items.</li>
+<li>Session readiness, loading, failure, and running state.</li>
+<li>Current model and thinking level.</li>
+<li>Pending initial prompt and current Pi session path.</li>
+<li>One <code>PiRPCClient</code>, scoped to a working directory and planning mode.</li>
+</ul>
+<h2 id="project-chat-vs-quick-chat">Project chat vs Quick Chat</h2>
+<ul>
+<li>Project chat working directory is the project folder and tools are enabled.</li>
+<li>Quick Chat working directory is the user's home folder, Pi launches with <code>--no-tools</code>, and prompts receive an explicit planning-only preamble.</li>
+<li>Promotion creates a new project chat/runtime; it does not retarget the Quick Chat's process.</li>
+</ul></section>
+<hr class="sep">
+<section id="05-turn-lifecycle-md"><div class="doc-tag">05-turn-lifecycle.md</div>
+<h1 id="chat-message-lifecycle">Chat Message Lifecycle</h1>
+<h2 id="the-critical-boundary">The critical boundary</h2>
+<p>PiNative does <strong>not</strong> call an LLM provider directly. It starts <code>pi --mode rpc</code>, sends Pi newline-delimited JSON commands through stdin, and interprets Pi's newline-delimited responses/events from stdout. Pi owns the provider request, model authentication, agent loop, tool execution, retries, compaction, and canonical session write.</p>
+<ul>
+<li>Native input/rendering: <a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationView.swift&amp;line=1">PiConversationView.swift</a></li>
+<li>Turn state/event interpretation: <a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationModel.swift&amp;line=1">PiConversationModel.swift</a></li>
+<li>Process/JSONL transport: <a href="http://127.0.0.1:43117/open?path=PiNative/PiRPCClient.swift&amp;line=1">PiRPCClient.swift</a></li>
+<li>Owning-chat persistence: <a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a></li>
+</ul>
+<h2 id="end-to-end-user-presses-enter">End-to-end: user presses Enter</h2>
+<pre><code>┌──────────────┐
+│ User presses │
+│    Enter     │
+└──────┬───────┘
+       │ keyDown → onSubmit
+       ▼
+┌─────────────────────────────── PiNative process ───────────────────────────────┐
+│ PasteAwareTextView / AttachmentComposerShell                                  │
+│       │                                                                       │
+│       ▼                                                                       │
+│ PiConversationModel.sendDraft()                                               │
+│       │                                                                       │
+│       ├─ PromptAttachmentAssembler.prepare()                                  │
+│       │    ├─ text + file paths → message                                     │
+│       │    └─ image bytes → RPC image payloads                                │
+│       │                                                                       │
+│       ├─ append .user TranscriptItem                                          │
+│       ├─ AppModel callback persists title + cached transcript                 │
+│       ├─ set isRunning = true                                                 │
+│       │                                                                       │
+│       ▼                                                                       │
+│ PiRPCClient.prompt() actor                                                    │
+│       │ writes one JSON object + newline to child-process stdin               │
+└───────┼───────────────────────────────────────────────────────────────────────┘
+        │ {"id":42,"type":"prompt","message":"…","images":[…]}\n
+        ▼
+┌────────────────────────────── pi --mode rpc ──────────────────────────────────┐
+│ RPC command router → Pi AgentSession                                          │
+│       │                                                                       │
+│       ├─ immediately returns response #42: prompt accepted                    │
+│       │                                                                       │
+│       ▼                                                                       │
+│ Agent loop → selected provider/model                                          │
+│       │             │                                                         │
+│       │             └── authenticated provider request ──► LLM                │
+│       │                                                   │                   │
+│       │             ◄── streamed text / reasoning / tool calls ───────────────┘
+│       │                                                                       │
+│       ├─ executes requested tools when enabled                                │
+│       ├─ may call the LLM again with tool results                             │
+│       ├─ writes canonical Pi session JSONL                                    │
+│       └─ emits agent/message/tool lifecycle events to stdout                  │
+└───────┼───────────────────────────────────────────────────────────────────────┘
+        │ agent_start
+        │ message_update { assistantMessageEvent: { type:"text_delta", … } }
+        │ tool_execution_start / update / end   (zero or more)
+        │ message_update …                      (zero or more)
+        │ agent_end
+        ▼
+┌─────────────────────────────── PiNative process ───────────────────────────────┐
+│ PiRPCClient                                                                   │
+│       ├─ buffers stdout until newline                                          │
+│       ├─ decodes RPCEnvelope                                                   │
+│       ├─ resolves matching response IDs                                        │
+│       └─ forwards non-response envelopes through onEvent                       │
+│                       │                                                        │
+│                       ▼ @MainActor                                              │
+│ PiConversationModel.handle(event)                                              │
+│       ├─ agent_start/end → running state                                       │
+│       ├─ text_delta → append/update .assistantText                             │
+│       ├─ tool events → correlate ActivityGroup by toolCallId                   │
+│       └─ items didSet → keyed AppModel persistence callback                    │
+│                       │                                                        │
+│                       ▼ @Published                                              │
+│ PiConversationView re-renders transcript and scrolls to the new bottom         │
+└────────────────────────────────────────────────────────────────────────────────┘</code></pre>
+<h2 id="command-acknowledgement-vs-generated-answer">Command acknowledgement vs generated answer</h2>
+<p>These are separate channels and must not be conflated:</p>
+<pre><code>stdin command #42 ─────► Pi
+                       ├─► stdout response #42  = “accepted”
+                       └─► stdout async events  = actual turn lifecycle/content</code></pre>
+<ul>
+<li><code>PiRPCClient.prompt()</code> completes when response <code>id: 42</code> arrives; it does <strong>not</strong> wait for the LLM answer.</li>
+<li><code>PiConversationModel.isRunning</code> is driven by <code>agent_start</code> and <code>agent_end</code>, not by the prompt method returning.</li>
+<li>Streaming text arrives through <code>message_update</code> events and mutates one stable assistant transcript item incrementally.</li>
+<li>Tools can interleave with text and trigger additional provider turns before the final <code>agent_end</code>.</li>
+</ul>
+<h2 id="first-message-and-restored-chat-variations">First message and restored-chat variations</h2>
+<ul>
+<li><strong>Brand-new chat:</strong> <code>AppModel</code> creates a local <code>Session</code> with <code>pendingInitialPrompt</code>; the model starts Pi, sends <code>new_session</code>, asks <code>get_state</code> for the resolved session file, then flushes the prompt.</li>
+<li><strong>Existing chat:</strong> the model sends <code>switch_session</code>, calls <code>get_messages</code>, hydrates history, and then accepts/flushes queued input.</li>
+<li><strong>Cached transcript:</strong> visible immediately while either path completes; live hydration replaces it only when the response belongs to the current session generation.</li>
+<li><strong>Quick Chat:</strong> the same flow launches Pi with <code>--no-tools</code> and wraps the message in a planning-only instruction.</li>
+</ul>
+<h2 id="failure-recovery-and-stop">Failure, recovery, and Stop</h2>
+<ul>
+<li>Request IDs are correlated inside the actor; each command races a timeout and all pending continuations fail if Pi exits.</li>
+<li>Process-exited/not-running failures get one client restart plus session rehydrate attempt.</li>
+<li>Catastrophic startup/session failure becomes visible chat status and disables the composer; transient notices are not persisted.</li>
+<li>Stop clears selected-chat UI state immediately, sends Pi's real <code>abort</code> command, suppresses late events from that turn, and restarts the client after a short abort window.</li>
+<li>Because every chat has its own model/client/process, stopping one chat does not interrupt another.</li>
+</ul></section>
+<hr class="sep">
+<section id="06-transcript-and-composer-md"><div class="doc-tag">06-transcript-and-composer.md</div>
+<h1 id="transcript-composer">Transcript &amp; Composer</h1>
+<h2 id="transcript-representation">Transcript representation</h2>
+<p><a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationModel.swift&amp;line=1">PiConversationModel.swift</a> publishes four <code>TranscriptItem</code> cases:</p>
+<ul>
+<li><code>user(UserMessagePayload)</code> — text plus display attachments.</li>
+<li><code>assistantText</code> — streamed text accumulated by stable item ID.</li>
+<li><code>activity(ActivityGroup)</code> — one or more correlated tool calls.</li>
+<li><code>notice</code> — loading, failure, compaction, Stop, and extension feedback.</li>
+</ul>
+<h2 id="live-and-historical-reconstruction">Live and historical reconstruction</h2>
+<ul>
+<li>Live <code>text_delta</code> events append to the current assistant buffer.</li>
+<li>Tool events are correlated by <code>toolCallId</code>; a group remains open across interleaved assistant text until <code>agent_end</code> or the next user message.</li>
+<li>Historical hydration first indexes top-level tool results, then reduces assistant tool calls and text in order.</li>
+<li>Stale hydration and stale-process events are rejected before mutating the transcript.</li>
+</ul>
+<h2 id="native-rendering">Native rendering</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationView.swift&amp;line=1">PiConversationView.swift</a> renders user bubbles, bubble-free assistant prose, fenced code, plain-language activity summaries, notices, and the animated end mark.</li>
+<li>Activity expansion and picker presentation remain view-local so UI-only changes do not mutate/persist the transcript or trigger unwanted auto-scroll.</li>
+<li>The composer uses an AppKit-backed text view for reliable focus, Enter submission, paste interception, and drag/drop.</li>
+<li>Model and effort are loaded and changed with real Pi RPC commands.</li>
+<li>The composer remains editable while session hydration is pending; only catastrophic Pi startup/session failure disables it.</li>
+</ul></section>
+<hr class="sep">
+<section id="07-feature-workflows-md"><div class="doc-tag">07-feature-workflows.md</div>
+<h1 id="feature-workflows">Feature Workflows</h1>
+<h2 id="attachments">Attachments</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/AttachmentSupport.swift&amp;line=1">AttachmentSupport.swift</a> accepts picker, pasteboard, and drag/drop input.</li>
+<li>Supported images are decoded and sent as base64 RPC image content; formats Pi cannot send directly are normalized to PNG.</li>
+<li>Other readable regular files remain path references—contents are not silently inlined.</li>
+<li>Attachment-only prompts receive useful fallback text, and missing/folder inputs produce visible errors.</li>
+</ul>
+<h2 id="promote-to-project">Promote to Project</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/PromoteToProject.swift&amp;line=1">PromoteToProject.swift</a> splits filesystem policy (<code>PromoteToProjectService</code>), progress state (<code>PromoteToProjectWorkflowModel</code>), and modal UI.</li>
+<li>Project name is slugged under the configured project folder; normalized and symlink-resolved paths must remain inside that root.</li>
+<li>Non-empty folders are reused only when their <code>.pinative/promote-to-project.json</code> marker matches project, destination, and source session.</li>
+<li>Writes are create-if-missing, making retries non-destructive.</li>
+<li>Output can include <code>README.md</code>, project plan/log, <code>AGENTS.md</code>, <code>promoted-chat.md</code>, and optional <code>git init</code>.</li>
+<li>On success, <a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a> registers/reuses the project, starts a context-rich project chat, archives the source Quick Chat, and cleans its runtime.</li>
+</ul>
+<h2 id="pinning-and-archiving">Pinning and archiving</h2>
+<ul>
+<li>Pin/archive flags are PiNative metadata; the underlying Pi session file is retained.</li>
+<li>Pinned chats are promoted to a global sidebar section.</li>
+<li>Archived chats disappear from normal lists and can be restored from the right pane.</li>
+<li>Working or queued chats cannot be archived until stopped/completed.</li>
+</ul></section>
+<hr class="sep">
+<section id="08-supporting-surfaces-md"><div class="doc-tag">08-supporting-surfaces.md</div>
+<h1 id="supporting-surfaces">Supporting Surfaces</h1>
+<h2 id="right-pane-router">Right pane router</h2>
+<p><a href="http://127.0.0.1:43117/open?path=PiNative/RightPaneView.swift&amp;line=1">RightPaneView.swift</a> keeps a picker plus four routed modes:</p>
+<ul>
+<li><strong>Pending Changes:</strong> <a href="http://127.0.0.1:43117/open?path=PiNative/DiffPaneView.swift&amp;line=1">DiffPaneView.swift</a> runs <code>/usr/bin/git status</code> and numstat off the main actor, then shows branch, totals, and file rows.</li>
+<li><strong>Browser:</strong> <a href="http://127.0.0.1:43117/open?path=PiNative/BrowserPaneView.swift&amp;line=1">BrowserPaneView.swift</a> wraps a retained <code>WKWebView</code>, normalizes URLs/searches/local dev servers, and preserves history across mode changes.</li>
+<li><strong>Plugins:</strong> <a href="http://127.0.0.1:43117/open?path=PiNative/ExtensionsPageView.swift&amp;line=1">ExtensionsPageView.swift</a> presents commands, prompt templates, and skills with tabs/search.</li>
+<li><strong>Archived Chats:</strong> lists retained archived sessions and removes the archive flag on restore.</li>
+</ul>
+<h2 id="independent-supporting-models">Independent supporting models</h2>
+<ul>
+<li><code>BrowserModel</code> and <code>DiffModel</code> are lazily instantiated by <code>AppModel</code> outside SwiftUI body evaluation and retained for app lifetime.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNative/ExtensionsModel.swift&amp;line=1">ExtensionsModel.swift</a> launches a short-lived Pi client in the selected project and calls <code>get_commands</code>.</li>
+<li>Supporting panes do not own or retarget the selected conversation runtime.</li>
+</ul>
+<h2 id="settings">Settings</h2>
+<ul>
+<li>Settings currently persists appearance and Promote-to-Project defaults; model favorites are planned next.</li>
+</ul></section>
+<hr class="sep">
+<section id="09-quality-and-delivery-md"><div class="doc-tag">09-quality-and-delivery.md</div>
+<h1 id="quality-delivery">Quality &amp; Delivery</h1>
+<h2 id="test-layers">Test layers</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=PiNativeTests/AttachmentSupportTests.swift&amp;line=1">AttachmentSupportTests.swift</a> covers classification, prompt assembly, image RPC encoding, and promotion defaults.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNativeTests/ParallelRuntimeTests.swift&amp;line=1">ParallelRuntimeTests.swift</a> covers keyed runtime navigation, output/draft isolation, scoped Stop, archive guards, and shutdown cleanup.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNativeTests/StopButtonTests.swift&amp;line=1">StopButtonTests.swift</a> covers immediate Stop and late-event fencing.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNativeTests/RequirementsCoverageTests.swift&amp;line=1">RequirementsCoverageTests.swift</a> exercises promotion safety, retries, persistence, hydration, and readiness invariants.</li>
+<li><a href="http://127.0.0.1:43117/open?path=PiNativeUITests/PiNativeUITests.swift&amp;line=1">PiNativeUITests.swift</a> uses environment-controlled mock/stall/failure modes plus an opt-in real-Pi smoke test.</li>
+</ul>
+<h2 id="requirements-discipline">Requirements discipline</h2>
+<ul>
+<li>Observable obligations live in the Markdown specs under <a href="http://127.0.0.1:43117/open?path=specs/REQ-003-conversation-navigation-and-active-work.md&amp;line=1">specs</a>.</li>
+<li>Automated tests carry <code>// 2119: REQ-…</code> markers; manual-only UI/release obligations stay explicit.</li>
+<li><a href="http://127.0.0.1:43117/open?path=.github/workflows/ci.yml&amp;line=1">ci.yml</a> runs RFC 2119 lint/check, serialized unit tests, and build-for-testing on macOS.</li>
+</ul>
+<h2 id="build-and-distribution">Build and distribution</h2>
+<ul>
+<li><a href="http://127.0.0.1:43117/open?path=scripts/run-app.sh&amp;line=1">run-app.sh</a> builds into repo-local DerivedData and safely relaunches the app.</li>
+<li>The Xcode project targets macOS 14 and Swift 6, with PostHog as its package dependency.</li>
+<li><a href="http://127.0.0.1:43117/open?path=scripts/build-release-dmg.sh&amp;line=1">build-release-dmg.sh</a> currently creates clearly labeled internal unsigned DMGs and checksums.</li>
+<li>Developer ID signing, notarization, polished artwork, and tagged draft releases remain the active distribution milestone.</li>
+</ul></section>
+<hr class="sep">
+<section id="10-change-map-md"><div class="doc-tag">10-change-map.md</div>
+<h1 id="change-map">Change Map</h1>
+<h2 id="where-a-new-developer-usually-starts">Where a new developer usually starts</h2>
+<table><thead><tr><th>Goal</th><th>Primary files</th></tr></thead><tbody><tr><td>Change shell layout/titlebar/panes</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/MainWindowView.swift&amp;line=1">MainWindowView.swift</a>, <a href="http://127.0.0.1:43117/open?path=PiNative/Components/WindowChromeConfigurator.swift&amp;line=1">WindowChromeConfigurator.swift</a></td></tr><tr><td>Change sidebar/projects/chat selection</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/ProjectSidebarView.swift&amp;line=1">ProjectSidebarView.swift</a>, <a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a></td></tr><tr><td>Change runtime ownership/persistence</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a></td></tr><tr><td>Add or interpret Pi RPC commands/events</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/PiRPCClient.swift&amp;line=1">PiRPCClient.swift</a>, <a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationModel.swift&amp;line=1">PiConversationModel.swift</a></td></tr><tr><td>Change transcript/composer/model picker</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/PiConversationView.swift&amp;line=1">PiConversationView.swift</a></td></tr><tr><td>Change attachments</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/AttachmentSupport.swift&amp;line=1">AttachmentSupport.swift</a></td></tr><tr><td>Change promotion safety/handoff</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/PromoteToProject.swift&amp;line=1">PromoteToProject.swift</a>, <a href="http://127.0.0.1:43117/open?path=PiNative/AppModel.swift&amp;line=1">AppModel.swift</a></td></tr><tr><td>Change Git/browser/plugins/archive panes</td><td><a href="http://127.0.0.1:43117/open?path=PiNative/RightPaneView.swift&amp;line=1">RightPaneView.swift</a>, <a href="http://127.0.0.1:43117/open?path=PiNative/DiffPaneView.swift&amp;line=1">DiffPaneView.swift</a>, <a href="http://127.0.0.1:43117/open?path=PiNative/BrowserPaneView.swift&amp;line=1">BrowserPaneView.swift</a></td></tr></tbody></table>
+<h2 id="architectural-guardrails">Architectural guardrails</h2>
+<ul>
+<li>Route asynchronous callbacks by <code>ConversationKey</code>; never assume the selected chat owns incoming work.</li>
+<li>Keep Pi as the execution/runtime boundary—do not scrape terminal output.</li>
+<li>Keep ephemeral expansion/hover/navigation presentation state out of persisted transcript models.</li>
+<li>Do not erase cached transcript while attempting live hydration or recovery.</li>
+<li>Treat Stop as server-side cancellation plus stale-event fencing, scoped to one runtime.</li>
+<li>Keep filesystem promotion writes derived, contained, non-overwriting, and retry-safe.</li>
+<li>Preserve deliberate native polish: mounted pane state, immediate hover response, focused composer behavior, and hand-tuned AppKit bridges.</li>
+</ul></section>
+</main></div>
+<script>
+document.querySelectorAll('a[href^="http://127.0.0.1:43117/open"]').forEach(link => {
+  link.target = '_blank';
+  link.rel = 'noopener';
+});
+const navLinks = [...document.querySelectorAll('nav a')];
+const sections = navLinks.map(link => document.getElementById(link.hash.slice(1))).filter(Boolean);
+const setActive = id => navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + id));
+const observer = new IntersectionObserver(entries => {
+  const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+  if (visible) setActive(visible.target.id);
+}, { rootMargin: '-12% 0px -70% 0px', threshold: [0, .1, .5] });
+sections.forEach(section => observer.observe(section));
+navLinks.forEach(link => link.addEventListener('click', () => setActive(link.getAttribute('href').slice(1))));
+setActive((location.hash || '#00-orientation-md').slice(1));
+</script>
+</body></html>

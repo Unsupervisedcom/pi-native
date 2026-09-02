@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.7--e838ef8d7138",
+  "requirementId": "REQ-009.2.7",
+  "hash": "e838ef8d7138",
+  "verdict": "pass",
+  "summary": "Up-key tests reject composer population for both empty and assistant-only focused transcripts, while asserting history remains empty.",
+  "timestamp": "2026-08-11T00:40:58.553Z"
+}

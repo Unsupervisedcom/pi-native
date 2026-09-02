@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.3--73c773d920ea",
+  "requirementId": "REQ-002.1.3",
+  "hash": "73c773d920ea",
+  "verdict": "pass",
+  "summary": "PromoteToProjectService.validate/prepare/create reject file destinations, escaping destinations, and non-empty folders with absent, wrong-session, or wrong-destination markers.",
+  "timestamp": "2026-08-10T17:29:10.137Z"
+}

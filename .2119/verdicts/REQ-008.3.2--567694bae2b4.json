@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.3.2--567694bae2b4",
+  "requirementId": "REQ-008.3.2",
+  "hash": "567694bae2b4",
+  "verdict": "pass",
+  "summary": "Real subprocess fixtures cover success, failure, and timeout; each helper is designed to stay alive absent cleanup and is verified gone by PID liveness.",
+  "timestamp": "2026-08-11T03:04:09.044Z"
+}

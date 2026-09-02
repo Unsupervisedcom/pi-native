@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.2.3--54bb5dda1704",
+  "requirementId": "REQ-003.2.3",
+  "hash": "54bb5dda1704",
+  "verdict": "pass",
+  "summary": "Chat and project row UI tests click hidden-control regions and verify selection still changes via real row actions.",
+  "timestamp": "2026-08-10T17:32:39.588Z"
+}

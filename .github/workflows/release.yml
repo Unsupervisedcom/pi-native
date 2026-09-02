@@ -1,0 +1,181 @@
+name: Official Release DMG
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Sign, notarize, and draft release
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout tagged source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Validate tag and derive release version
+        id: release
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="${GITHUB_REF_NAME#v}"
+          [[ "$GITHUB_REF_NAME" == "v$version" && "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([.-][A-Za-z0-9]+)*$ ]] || {
+            echo "Release tags must use vX.Y.Z format; received $GITHUB_REF_NAME" >&2
+            exit 1
+          }
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Validate signing configuration
+        env:
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${APPLE_TEAM_ID:?Missing APPLE_TEAM_ID Actions variable}"
+
+      - name: Import Developer ID certificate into temporary keychain
+        env:
+          CERTIFICATE_P12_BASE64: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_P12_BASE64 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.APPLE_KEYCHAIN_PASSWORD }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${CERTIFICATE_P12_BASE64:?Missing APPLE_DEVELOPER_ID_CERTIFICATE_P12_BASE64 secret}"
+          : "${CERTIFICATE_PASSWORD:?Missing APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD secret}"
+          : "${KEYCHAIN_PASSWORD:?Missing APPLE_KEYCHAIN_PASSWORD secret}"
+
+          keychain="$RUNNER_TEMP/pinative-signing.keychain-db"
+          certificate="$RUNNER_TEMP/developer-id.p12"
+          echo "$CERTIFICATE_P12_BASE64" | base64 --decode > "$certificate"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$keychain"
+          security set-keychain-settings -lut 21600 "$keychain"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$keychain"
+          security import "$certificate" -k "$keychain" -P "$CERTIFICATE_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$keychain"
+          security list-keychain -d user -s "$keychain"
+          security default-keychain -d user -s "$keychain"
+          rm -f "$certificate"
+
+      - name: Configure temporary notarization credentials
+        env:
+          API_KEY_ID: ${{ secrets.APPLE_NOTARY_API_KEY_ID }}
+          API_ISSUER_ID: ${{ secrets.APPLE_NOTARY_API_ISSUER_ID }}
+          API_KEY_P8_BASE64: ${{ secrets.APPLE_NOTARY_API_KEY_P8_BASE64 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          : "${API_KEY_ID:?Missing APPLE_NOTARY_API_KEY_ID secret}"
+          : "${API_ISSUER_ID:?Missing APPLE_NOTARY_API_ISSUER_ID secret}"
+          : "${API_KEY_P8_BASE64:?Missing APPLE_NOTARY_API_KEY_P8_BASE64 secret}"
+
+          keychain="$RUNNER_TEMP/pinative-signing.keychain-db"
+          key="$RUNNER_TEMP/AuthKey_${API_KEY_ID}.p8"
+          echo "$API_KEY_P8_BASE64" | base64 --decode > "$key"
+          xcrun notarytool store-credentials "pinative-notary-${GITHUB_RUN_ID}" \
+            --key "$key" \
+            --key-id "$API_KEY_ID" \
+            --issuer "$API_ISSUER_ID" \
+            --keychain "$keychain"
+          rm -f "$key"
+
+      - name: Build, sign, notarize, and verify DMG
+        env:
+          APPLE_TEAM_ID: ${{ vars.APPLE_TEAM_ID }}
+          POSTHOG_PROJECT_API_KEY: ${{ secrets.POSTHOG_PROJECT_API_KEY }}
+          NOTARYTOOL_PROFILE: pinative-notary-${{ github.run_id }}
+          NOTARY_SUBMISSION_RESULT_PATH: ${{ runner.temp }}/pinative-notary-result.json
+        run: |
+          scripts/build-release-dmg.sh --official "${{ steps.release.outputs.version }}" \
+            --build-number "$GITHUB_RUN_NUMBER" \
+            --notary-profile "$NOTARYTOOL_PROFILE"
+
+      - name: Capture Apple notarization diagnostics
+        if: failure()
+        env:
+          NOTARYTOOL_PROFILE: pinative-notary-${{ github.run_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="$RUNNER_TEMP/pinative-notary-result.json"
+          log="$RUNNER_TEMP/pinative-notary-log.json"
+          [[ -s "$result" ]] || {
+            echo "No notarization submission result was created; the failure occurred before or during submission."
+            exit 0
+          }
+          submission_id="$(plutil -extract id raw "$result")"
+          xcrun notarytool log "$submission_id" "$log" \
+            --keychain-profile "$NOTARYTOOL_PROFILE" \
+            --keychain "$RUNNER_TEMP/pinative-signing.keychain-db"
+          cat "$log"
+
+      - name: Upload notarization diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: notarization-diagnostics-${{ github.run_id }}
+          path: |
+            ${{ runner.temp }}/pinative-notary-result.json
+            ${{ runner.temp }}/pinative-notary-log.json
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Upload verified release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: PiNative-${{ steps.release.outputs.version }}
+          path: |
+            dist/PiNative-${{ steps.release.outputs.version }}.dmg
+            dist/PiNative-${{ steps.release.outputs.version }}.dmg.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Create draft GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.release.outputs.version }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          notes="$RUNNER_TEMP/release-notes.md"
+          cat > "$notes" <<EOF
+          ## PiNative $VERSION
+
+          ### Requirements
+          - macOS 14 or newer.
+          - [Pi](https://pi.dev) installed and configured separately before launching PiNative.
+
+          ### Install
+          1. Open \`PiNative-$VERSION.dmg\`.
+          2. Drag \`PiNative.app\` into Applications.
+          3. Launch PiNative from Applications.
+
+          macOS may request permission for features that need it on first use. This official release is Developer ID signed and Apple-notarized; do not disable Gatekeeper.
+          EOF
+          gh release create "$GITHUB_REF_NAME" \
+            --verify-tag \
+            --draft \
+            --title "PiNative $VERSION" \
+            --notes-file "$notes" \
+            "dist/PiNative-$VERSION.dmg" \
+            "dist/PiNative-$VERSION.dmg.sha256"
+
+      - name: Remove temporary signing keychain
+        if: always()
+        shell: bash
+        run: |
+          security delete-keychain "$RUNNER_TEMP/pinative-signing.keychain-db" || true

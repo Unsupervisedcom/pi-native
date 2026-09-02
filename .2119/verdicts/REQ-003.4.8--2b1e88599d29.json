@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.8--2b1e88599d29",
+  "requirementId": "REQ-003.4.8",
+  "hash": "2b1e88599d29",
+  "verdict": "pass",
+  "summary": "test opens the new-chat surface while another chat is running and then creates a standalone chat, proving the in-flight work does not block either action",
+  "timestamp": "2026-08-04T21:55:48.433Z"
+}

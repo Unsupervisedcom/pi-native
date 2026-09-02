@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.2--f66f963182ad",
+  "requirementId": "REQ-009.3.2",
+  "hash": "f66f963182ad",
+  "verdict": "pass",
+  "summary": "Mounted tests genuinely verify chat-switch isolation: recall chatA, switch to chatB, confirm chatB draft appears without chatA content/attachments; would fail if content leaked across chats",
+  "timestamp": "2026-08-11T21:38:13.807Z"
+}

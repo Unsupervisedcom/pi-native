@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.2.2--f72efff89605",
+  "requirementId": "REQ-011.2.2",
+  "hash": "f72efff89605",
+  "verdict": "pass",
+  "summary": "Real-subprocess RPCFixture exercises all six conjuncts (unresolved, unlaunchable, exits, timeout, RPC failure, interactive attention) with content-specific exact/prefix message assertions, and AppModel.piHealthIssue propagation tests confirm the described issue is exposed as global @Published state, not just returned from check().",
+  "timestamp": "2026-08-31T19:51:19.366Z"
+}

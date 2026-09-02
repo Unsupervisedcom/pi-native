@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.1--e649eb44673b",
+  "requirementId": "REQ-003.5.1",
+  "hash": "e649eb44673b",
+  "verdict": "pass",
+  "summary": "Test genuinely verifies Stop→Send replacement with timing: clicks Stop, asserts Stop.exists=false AND Send.exists=true, measures elapsed<1s",
+  "timestamp": "2026-08-11T03:46:44.506Z"
+}

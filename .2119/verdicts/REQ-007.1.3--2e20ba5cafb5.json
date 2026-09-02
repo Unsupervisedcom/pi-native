@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.3--2e20ba5cafb5",
+  "requirementId": "REQ-007.1.3",
+  "hash": "2e20ba5cafb5",
+  "verdict": "pass",
+  "summary": "Annotated Models UI test asserts visible favorite buttons for openrouter/alpha, openai/alpha, and openai/beta listed from the catalog fixture.",
+  "timestamp": "2026-08-10T17:46:30.204Z"
+}

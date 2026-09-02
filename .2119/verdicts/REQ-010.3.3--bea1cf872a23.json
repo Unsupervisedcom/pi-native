@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.3--bea1cf872a23",
+  "requirementId": "REQ-010.3.3",
+  "hash": "bea1cf872a23",
+  "verdict": "fail",
+  "summary": "Missing positive control: test lacks valid-key case to prove analytics would fire normally, cannot verify boundary",
+  "timestamp": "2026-08-18T03:41:41.051Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.3.1--08867e51827e",
+  "requirementId": "REQ-013.3.1",
+  "hash": "08867e51827e",
+  "verdict": "fail",
+  "summary": "Test only verifies restore, not archive; project/Quick Chat association conjunct lacks counterexample tests - no verification that project chats stay in projects or Quick Chats stay standalone after archive/restore",
+  "timestamp": "2026-08-31T21:57:06.789Z"
+}

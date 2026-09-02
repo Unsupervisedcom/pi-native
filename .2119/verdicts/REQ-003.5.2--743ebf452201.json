@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--743ebf452201",
+  "requirementId": "REQ-003.5.2",
+  "hash": "743ebf452201",
+  "verdict": "pass",
+  "summary": "Genuine coverage: StopButtonTests injects late events post-stop (isSuppressingStoppedTurnEvents path) and drives a real fake-RPC subprocess through stop+abort and stop-then-restart races (processGeneration gating), asserting no append/merge of the stopped turn's text or tool activity; ActiveWorkUITests confirms via real accessibilityIdentifier that no transcript.assistantMessage element appears after Stop. Counterexamples (late event after stop, late event after a new turn already started, partial-append onto existing bubble) are all exercised and rejected; no tautology/over-mocking/keyword theater found.",
+  "timestamp": "2026-08-19T23:50:11.249Z"
+}

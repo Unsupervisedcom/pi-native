@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.1.2--4dcc71a4fb9a",
+  "requirementId": "REQ-013.1.2",
+  "hash": "4dcc71a4fb9a",
+  "verdict": "pass",
+  "summary": "Test verifies archivedChats (computed by filtering real session.isArchived data, not settable directly) is empty and rightPaneMode/isRightPaneOpen update correctly after openRightPane(.archivedChats); production ArchivedChatsPaneView gates ComingSoonPane solely on archivedChats.isEmpty, so the model-level assertion is a faithful 1:1 proxy for the observable empty-state UI outcome. Boundary counterexample (archived chats present) is rejected by the companion non-empty test.",
+  "timestamp": "2026-08-31T21:51:48.612Z"
+}

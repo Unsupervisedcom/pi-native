@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.1.3--7efdb4887f53",
+  "requirementId": "REQ-003.1.3",
+  "hash": "7efdb4887f53",
+  "verdict": "pass",
+  "summary": "Same-session resync with empty cached items is exercised after a visible transcript is displayed and would fail if the transcript were cleared.",
+  "timestamp": "2026-08-04T02:33:53.123Z"
+}

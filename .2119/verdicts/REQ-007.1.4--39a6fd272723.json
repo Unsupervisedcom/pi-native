@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.4--39a6fd272723",
+  "requirementId": "REQ-007.1.4",
+  "hash": "39a6fd272723",
+  "verdict": "pass",
+  "summary": "Models UI test removes an existing Alpha favorite via the Models section control and observes it becomes addable; model test verifies removeFavorite drops a stored favorite.",
+  "timestamp": "2026-08-10T17:47:17.443Z"
+}

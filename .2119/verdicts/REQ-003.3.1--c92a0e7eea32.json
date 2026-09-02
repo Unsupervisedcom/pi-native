@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.1--c92a0e7eea32",
+  "requirementId": "REQ-003.3.1",
+  "hash": "c92a0e7eea32",
+  "verdict": "pass",
+  "summary": "Project row and AppModel tests select newest visible unpinned project chat while rejecting older, pinned, archived, and other-project candidates.",
+  "timestamp": "2026-08-10T17:32:51.664Z"
+}

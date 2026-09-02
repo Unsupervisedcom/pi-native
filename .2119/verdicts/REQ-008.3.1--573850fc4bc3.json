@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.3.1--573850fc4bc3",
+  "requirementId": "REQ-008.3.1",
+  "hash": "573850fc4bc3",
+  "verdict": "pass",
+  "summary": "The lifecycle test reaches successful automatic generation and exact pre/post equality checks independently protect both visible items and the cached transcript from mutation.",
+  "timestamp": "2026-08-11T02:38:28.599Z"
+}

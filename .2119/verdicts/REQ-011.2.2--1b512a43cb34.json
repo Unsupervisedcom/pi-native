@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.2.2--1b512a43cb34",
+  "requirementId": "REQ-011.2.2",
+  "hash": "1b512a43cb34",
+  "verdict": "pass",
+  "summary": "Genuinely tests all six conjuncts (unresolved, unlaunchable, exits-before-responding, timeout, RPC failure, interactive-attention) via real subprocess fixtures feeding PiHealthChecker.check into a .needsAttention issue, plus a real AppModel propagation test confirming the trivial pass-through exposes piHealthIssue as global state; previously-failing 'cannot resolve' gap (verdict da34f2589fbf) is now closed by testHealthCheckSurfacesUnresolvedAndUnlaunchablePi.",
+  "timestamp": "2026-08-19T19:57:08.507Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.2--b477a4ba8b04",
+  "requirementId": "REQ-009.2.2",
+  "hash": "b477a4ba8b04",
+  "verdict": "pass",
+  "summary": "Tests verify only user messages from focused chat are used, with strong counterexample coverage for assistant/notice/activity exclusion and cross-chat isolation",
+  "timestamp": "2026-08-11T21:17:55.869Z"
+}

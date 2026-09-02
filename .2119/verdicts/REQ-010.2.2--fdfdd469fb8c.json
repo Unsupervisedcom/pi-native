@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.2.2--fdfdd469fb8c",
+  "requirementId": "REQ-010.2.2",
+  "hash": "fdfdd469fb8c",
+  "verdict": "pass",
+  "summary": "Test verifies disable→block→enable cycle with state propagation; would fail if events reported while disabled or didn't resume after re-enable",
+  "timestamp": "2026-08-19T21:34:04.522Z"
+}

@@ -1,0 +1,89 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - chore/requirements-checks
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  requirements-and-unit-tests:
+    name: Requirements and unit tests
+    runs-on: macos-15
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
+
+      - name: Show tool versions
+        run: |
+          xcodebuild -version
+          swift --version
+          node --version
+          npm --version
+
+      - name: RFC 2119 lint
+        id: rfc-lint
+        continue-on-error: true
+        run: npx --yes rfc2119 lint
+
+      - name: RFC 2119 check
+        id: rfc-check
+        continue-on-error: true
+        run: npx --yes rfc2119 check
+
+      - name: Summarize RFC 2119 checks
+        if: always()
+        run: |
+          if [[ "${{ steps.rfc-lint.outcome }}" == "failure" ]]; then
+            echo "::warning::RFC 2119 lint failed. Review the lint output above."
+            echo "- ⚠️ RFC 2119 lint failed (non-blocking)." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- ✅ RFC 2119 lint passed." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+          if [[ "${{ steps.rfc-check.outcome }}" == "failure" ]]; then
+            echo "::warning::RFC 2119 check failed. Review the requirement coverage output above."
+            echo "- ⚠️ RFC 2119 check failed (non-blocking)." >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "- ✅ RFC 2119 check passed." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Validate release DMG command
+        run: scripts/test-release-dmg.sh
+
+      - name: Run unit tests
+        run: |
+          rm -rf build/test-results/PiNativeTests.xcresult
+          mkdir -p build/test-results
+          xcodebuild test \
+            -project PiNative.xcodeproj \
+            -scheme PiNativeUnitTests \
+            -destination 'platform=macOS' \
+            -parallel-testing-enabled NO \
+            -resultBundlePath build/test-results/PiNativeTests.xcresult
+
+      - name: Build test bundles
+        run: |
+          xcodebuild build-for-testing \
+            -project PiNative.xcodeproj \
+            -scheme PiNativeUnitTests \
+            -destination 'platform=macOS' \
+            -parallel-testing-enabled NO
+
+      - name: Upload test results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: PiNativeTests.xcresult
+          path: build/test-results/PiNativeTests.xcresult
+          if-no-files-found: ignore

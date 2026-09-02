@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.3.1--6d529d9ac909",
+  "requirementId": "REQ-012.3.1",
+  "hash": "6d529d9ac909",
+  "verdict": "pass",
+  "summary": "Test performs a real second git-backed refresh after mutating the working tree and asserts the stale staged.txt entry and old counts are gone (changedFileCount 3→2) with updated additions/deletions, genuinely rejecting a merge/append counterexample; DiffModel.refresh does a direct summary= assignment confirming replace semantics.",
+  "timestamp": "2026-08-31T22:53:11.266Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.3.1--f119b42be733",
+  "requirementId": "REQ-011.3.1",
+  "hash": "f119b42be733",
+  "verdict": "pass",
+  "summary": "testFailureShowsBottomRecoveryBarAndResolveAction genuinely verifies all conjuncts: bottom anchoring (frame.maxY vs window.maxY within 3pt), a specific problem description (contains the failing executable path, not generic text), and message-before-action ordering (message.maxX <= action.minX), driven by a real (unmocked) health-check failure.",
+  "timestamp": "2026-08-19T23:50:43.265Z"
+}

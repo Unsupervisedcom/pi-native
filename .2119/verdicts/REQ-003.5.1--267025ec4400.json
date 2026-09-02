@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.1--267025ec4400",
+  "requirementId": "REQ-003.5.1",
+  "hash": "267025ec4400",
+  "verdict": "pass",
+  "summary": "Genuine: test polls real Stop-button non-existence and Send-button existence within a 1s budget measured from the click action (RPC delay 2500ms keeps turn active), so it fails on late transitions, missing Send reappearance, or lingering Stop; only the backend RPC response is mocked, not the UI transition; requirement is a clear, testable observable outcome.",
+  "timestamp": "2026-08-19T23:57:44.468Z"
+}

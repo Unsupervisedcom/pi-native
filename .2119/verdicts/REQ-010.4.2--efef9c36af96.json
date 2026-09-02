@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.4.2--efef9c36af96",
+  "requirementId": "REQ-010.4.2",
+  "hash": "efef9c36af96",
+  "verdict": "fail",
+  "summary": "testAppModelDerivesProjectBackedLoadFailureFromTheRuntimeKey (AnalyticsTests.swift:167-187) always re-selects the chat before firing its onPiLoadFailed callback, so is_project_chat is only ever asserted for the currently-active runtime; it can't distinguish the correct per-runtime key.projectID attribution (AppModel.swift:1057-58) from a regression that reads live selection state instead, even though cached background runtimes (conversationRuntimes, AppModel.swift:419) can legitimately fire onPiLoadFailed while a different chat is selected. No test exercises that case.",
+  "timestamp": "2026-08-18T03:49:37.124Z"
+}

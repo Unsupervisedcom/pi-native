@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--80a4a8f87dd5",
+  "requirementId": "REQ-003.5.2",
+  "hash": "80a4a8f87dd5",
+  "verdict": "pass",
+  "summary": "Tests reject late stopped-turn transcript output, including stale first-turn output after a later turn starts.",
+  "timestamp": "2026-08-10T18:14:41.173Z"
+}

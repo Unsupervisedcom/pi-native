@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.2.3--6b4912de7cab",
+  "requirementId": "REQ-007.2.3",
+  "hash": "6b4912de7cab",
+  "verdict": "pass",
+  "summary": "Search-filtered settings rows preserve favorite and non-favorite button state for displayed models",
+  "timestamp": "2026-08-10T17:53:55.659Z"
+}

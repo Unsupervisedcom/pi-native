@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--a39814d692e5",
+  "requirementId": "REQ-003.5.2",
+  "hash": "a39814d692e5",
+  "verdict": "pass",
+  "summary": "Tests reject stale stopped-turn text/activity output after Stop, including real RPC late output and after a later turn starts.",
+  "timestamp": "2026-08-10T18:09:26.564Z"
+}

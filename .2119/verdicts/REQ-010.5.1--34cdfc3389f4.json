@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.1--34cdfc3389f4",
+  "requirementId": "REQ-010.5.1",
+  "hash": "34cdfc3389f4",
+  "verdict": "fail",
+  "summary": "Over-mocking: both tests instantiate PiConversationModel directly and manually assign onHandledPiOperationFailure = { analytics.track(.handledException($0)) }, never exercising AppModel.installRuntimeCallbacks (AppModel.swift:1060), the only production site that wires model failures to analytics reporting; deleting/breaking that wiring would not fail these tests, unlike the sibling REQ-010.4.2 test which correctly invokes AppModel's installed closure.",
+  "timestamp": "2026-08-18T03:48:53.351Z"
+}

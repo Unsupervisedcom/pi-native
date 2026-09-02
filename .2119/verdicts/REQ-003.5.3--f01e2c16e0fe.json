@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.3--f01e2c16e0fe",
+  "requirementId": "REQ-003.5.3",
+  "hash": "f01e2c16e0fe",
+  "verdict": "pass",
+  "summary": "ActiveWorkUITests presses production Stop during a running turn, then proves the composer accepts and submits a later prompt.",
+  "timestamp": "2026-08-10T17:40:37.530Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.1--2a76c1f9bec4",
+  "requirementId": "REQ-003.3.1",
+  "hash": "2a76c1f9bec4",
+  "verdict": "pass",
+  "summary": "Three tests verify project row selection: unit test rejects archived chat (t=30) for newest visible (t=20); integration test with real session files rejects pinned (12:02) for newest visible (12:01); UI test rejects archived, pinned, and other-project chats across multiple click positions. All counterexamples covered; tests would fail if requirement violated.",
+  "timestamp": "2026-08-11T05:01:23.748Z"
+}

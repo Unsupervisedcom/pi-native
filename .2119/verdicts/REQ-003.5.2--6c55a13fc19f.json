@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--6c55a13fc19f",
+  "requirementId": "REQ-003.5.2",
+  "hash": "6c55a13fc19f",
+  "verdict": "pass",
+  "summary": "Five tests spanning unit/process/UI levels create genuine async race conditions with delayed output (120ms-2500ms, background shell processes) and verify late stopped-turn output is absent from transcript; counterexample (late output after stop) explicitly constructed and rejected",
+  "timestamp": "2026-08-11T03:47:12.380Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.1--1ff01924f188",
+  "requirementId": "REQ-010.1.1",
+  "hash": "1ff01924f188",
+  "verdict": "pass",
+  "summary": "Test exercises the real PiNativeApp.init -> AnalyticsService.track gating path (not a stub), asserts exact app_opened event/props on the configured+enabled path, and rejects the 'enabled' boundary violation by showing a second launch with analytics disabled reports nothing further.",
+  "timestamp": "2026-08-19T21:27:45.924Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-005.2.1--a72812c2c499",
+  "requirementId": "REQ-005.2.1",
+  "hash": "a72812c2c499",
+  "verdict": "pass",
+  "summary": "Process-exit and launch-failure tests exercise production RPC failure handling, red visible status, and disabled composer controls for selected/displayed chats.",
+  "timestamp": "2026-08-10T17:33:50.485Z"
+}

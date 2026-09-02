@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.1--0eaa9d8ba134",
+  "requirementId": "REQ-007.1.1",
+  "hash": "0eaa9d8ba134",
+  "verdict": "pass",
+  "summary": "SettingsSection.models is exercised through the production Settings sidebar and pane switch; removing the Models section breaks the UI path.",
+  "timestamp": "2026-08-10T17:44:18.867Z"
+}

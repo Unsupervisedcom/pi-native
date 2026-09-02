@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.7--1cc30e58b562",
+  "requirementId": "REQ-009.2.7",
+  "hash": "1cc30e58b562",
+  "verdict": "fail",
+  "summary": "testEmptyChatHistoryLeavesNavigatorInactive doesn't verify draft/attachments remain empty after navigateOlder",
+  "timestamp": "2026-08-11T21:20:11.366Z"
+}

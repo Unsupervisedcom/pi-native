@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.5.5--16d914a2164b",
+  "requirementId": "REQ-007.5.5",
+  "hash": "16d914a2164b",
+  "verdict": "pass",
+  "summary": "UI test drives production RPC refresh from a missing levels response and verifies unavailable text only for that current conversation.",
+  "timestamp": "2026-08-10T18:03:53.302Z"
+}

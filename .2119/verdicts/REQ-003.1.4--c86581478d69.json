@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.1.4--c86581478d69",
+  "requirementId": "REQ-003.1.4",
+  "hash": "c86581478d69",
+  "verdict": "pass",
+  "summary": "Test genuinely verifies scroll-to-bottom: unique final response element becomes hittable and the source-confirmed prior bottom item becomes non-hittable, rejecting the case where transcript updates but the view stays scrolled at its old position.",
+  "timestamp": "2026-09-01T19:10:08.950Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.1--dcadee2387c1",
+  "requirementId": "REQ-009.2.1",
+  "hash": "dcadee2387c1",
+  "verdict": "pass",
+  "summary": "Tests verify preservation via counterexamples: non-empty text blocks browsing, attachments block browsing, both preserved when Up rejected; coverage spans unit/keyboard/mounted levels",
+  "timestamp": "2026-08-11T21:16:54.528Z"
+}

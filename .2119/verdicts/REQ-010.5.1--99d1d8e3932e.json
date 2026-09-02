@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.1--99d1d8e3932e",
+  "requirementId": "REQ-010.5.1",
+  "hash": "99d1d8e3932e",
+  "verdict": "fail",
+  "summary": "Tests verify 'enabled' condition but missing counterexample for 'configured' condition (nil/invalid API key should not report)",
+  "timestamp": "2026-08-19T21:42:53.770Z"
+}

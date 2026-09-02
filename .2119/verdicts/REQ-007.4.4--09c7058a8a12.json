@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.4.4--09c7058a8a12",
+  "requirementId": "REQ-007.4.4",
+  "hash": "09c7058a8a12",
+  "verdict": "pass",
+  "summary": "UI test clicks Select Favorites and requires the Models settings search field; unit coverage verifies presentModelSettings sets isSettingsPresented and settingsSection=.models.",
+  "timestamp": "2026-08-10T17:57:43.484Z"
+}

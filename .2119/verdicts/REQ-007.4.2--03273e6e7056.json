@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.4.2--03273e6e7056",
+  "requirementId": "REQ-007.4.2",
+  "hash": "03273e6e7056",
+  "verdict": "pass",
+  "summary": "Composer picker UI rejects available non-favorite beta when alpha/gamma favorites exist",
+  "timestamp": "2026-08-10T18:01:50.648Z"
+}

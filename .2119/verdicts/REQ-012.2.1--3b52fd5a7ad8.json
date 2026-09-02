@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.1--3b52fd5a7ad8",
+  "requirementId": "REQ-012.2.1",
+  "hash": "3b52fd5a7ad8",
+  "verdict": "fail",
+  "summary": "Test omits staged changes and deletion counts; requirement mandates both staged/unstaged/untracked work and deletions but test only verifies unstaged modifications and untracked additions",
+  "timestamp": "2026-08-31T21:43:30.147Z"
+}

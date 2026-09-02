@@ -1,0 +1,27 @@
+.build/
+.swiftpm/
+.derivedData/
+.derived-data/
+.DS_Store
+DerivedData/
+*.xcuserdata/
+xcuserdata/
+*.xcuserstate
+*.xcscheme
+!PiNative.xcodeproj/xcshareddata/xcschemes/*.xcscheme
+*.profraw
+*.profdata
+build/
+dist/
+Config/Secrets.xcconfig
+Config/Signing.xcconfig
+
+# Private exploratory notes and generated plans; never publish.
+research/
+# 2119:gitignore-begin
+# Review packets are scratch; verdicts are committed audit history.
+!.2119/
+.2119/reviews/
+!.2119/verdicts/
+!.2119/verdicts/**
+# 2119:gitignore-end

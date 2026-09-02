@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.2.1--f6245af7240e",
+  "requirementId": "REQ-007.2.1",
+  "hash": "f6245af7240e",
+  "verdict": "pass",
+  "summary": "ModelSettingsUITests types alpha and beta into the Models search field and verifies matching rows remain while nonmatching model rows are removed.",
+  "timestamp": "2026-08-10T17:52:41.289Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.2.1--b0ce038c5df9",
+  "requirementId": "REQ-003.2.1",
+  "hash": "b0ce038c5df9",
+  "verdict": "pass",
+  "summary": "Genuinely tests project row selection at multiple regions (left/center/right) and verifies visible controls (diff pill, new chat button) perform their own actions instead of selecting chat; would fail if controls selected chat or if non-control areas failed to select",
+  "timestamp": "2026-09-01T19:19:39.852Z"
+}

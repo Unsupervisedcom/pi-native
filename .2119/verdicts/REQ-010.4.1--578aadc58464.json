@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.4.1--578aadc58464",
+  "requirementId": "REQ-010.4.1",
+  "hash": "578aadc58464",
+  "verdict": "pass",
+  "summary": "Test exercises the real PostHogAnalyticsClient.configuration()/init() path (the sole PostHogSDK.shared.setup call site) and asserts errorTrackingConfig.autoCapture==false, which vendored SDK source confirms is the sole gate installing PostHogErrorTrackingAutoCaptureIntegration (the source of automatic $exception events, unaffected by remote config when false); no manual captureException/$exception calls exist elsewhere; counterexample (autoCapture=true) is rejected by the assertion; requirement text is a clear observable outcome, not implementation mechanism.",
+  "timestamp": "2026-08-19T22:25:57.129Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--db723316cf82",
+  "requirementId": "REQ-012.2.2",
+  "hash": "db723316cf82",
+  "verdict": "fail",
+  "summary": "UI tests (ProjectUITests) genuinely verify all 4 distinct states end-to-end, but the unit test's no-project segment (AppModelConversationTests.swift:376-379) is tautological: it asserts default field values on a freshly-constructed, never-refreshed DiffModel that is never instantiated in the real no-project path (RightPaneView shows its 'No Project' ComingSoonPane only when appModel.diffModel is nil, bypassing DiffModel entirely), so it cannot fail regardless of whether the actual no-project UI is broken.",
+  "timestamp": "2026-08-31T22:51:15.449Z"
+}

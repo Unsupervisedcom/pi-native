@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.1--c8ae51c300a4",
+  "requirementId": "REQ-010.3.1",
+  "hash": "c8ae51c300a4",
+  "verdict": "pass",
+  "summary": "Properties are built from a closed enum allowlist (no free-form data ever threaded in); tests inject a forbidden string covering prompt/path/session-id/project-id/account-email/raw-exception-text into real error paths and assert it never appears in captured properties.",
+  "timestamp": "2026-08-18T03:55:38.654Z"
+}

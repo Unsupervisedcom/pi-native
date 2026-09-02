@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.4--088ba48f0651",
+  "requirementId": "REQ-002.1.4",
+  "hash": "088ba48f0651",
+  "verdict": "pass",
+  "summary": "Integrated AppModel test removes the persisted default, expects literal ~/Projects, and verifies the created home/Projects directory exists.",
+  "timestamp": "2026-08-04T05:33:00.383Z"
+}

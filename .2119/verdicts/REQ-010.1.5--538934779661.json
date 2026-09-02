@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.5--538934779661",
+  "requirementId": "REQ-010.1.5",
+  "hash": "538934779661",
+  "verdict": "pass",
+  "summary": "testAppModelReportsChatSettingsAndRightPaneInteractions exercises both entry points (openRightPane and direct selectRightPaneMode) with two distinct panes (browser/plugins) and exact ordered-array equality, genuinely rejecting a missing, duplicate, misordered, misnamed, or swapped-identifier event; minor residual gap: review/archivedChats pane identifiers and the toggleRightPane reveal-only path are not separately exercised.",
+  "timestamp": "2026-08-18T03:26:21.165Z"
+}

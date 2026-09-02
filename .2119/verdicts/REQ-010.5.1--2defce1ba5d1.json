@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.1--2defce1ba5d1",
+  "requirementId": "REQ-010.5.1",
+  "hash": "2defce1ba5d1",
+  "verdict": "pass",
+  "summary": "Tests exercise real subprocess RPC failures (exit-triggered) for model/effort/prompt areas and verify handled_exception emission gated correctly by configured/enabled state, with the start/session-load exclusion confirmed by exact-event-array assertions against pi_load_failed calls.",
+  "timestamp": "2026-08-19T21:51:41.433Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.2.4--e3592a9c2a37",
+  "requirementId": "REQ-011.2.4",
+  "hash": "e3592a9c2a37",
+  "verdict": "pass",
+  "summary": "Unit test exercises real handle()/onInteractiveAttention wiring to confirm background (non-active) conversation attention sets shared AppModel.piHealthIssue while only the originating conversation's items gain the local notice (selected conversation explicitly asserted to lack it); UI test confirms the same piHealth.statusBar/message/openTerminal surface used by real startup failures plus the chat-local notice, so both conjuncts are genuinely covered with a real negative check.",
+  "timestamp": "2026-08-31T19:41:53.119Z"
+}

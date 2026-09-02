@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.4--ea8ca8713aee",
+  "requirementId": "REQ-009.1.4",
+  "hash": "ea8ca8713aee",
+  "verdict": "pass",
+  "summary": "Down arrow (keyCode 125) moves from older to newer user messages; tests verify directional movement with real key events, would fail if reversed",
+  "timestamp": "2026-08-11T21:13:44.431Z"
+}

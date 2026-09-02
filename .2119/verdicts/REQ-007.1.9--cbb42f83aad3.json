@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.9--cbb42f83aad3",
+  "requirementId": "REQ-007.1.9",
+  "hash": "cbb42f83aad3",
+  "verdict": "pass",
+  "summary": "ModelSettingsUITests verifies the Favorites header and favorite rows render above Available Models before and after favoriting beta.",
+  "timestamp": "2026-08-10T17:51:43.428Z"
+}

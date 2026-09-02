@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.3--ae8ac364bc00",
+  "requirementId": "REQ-012.2.3",
+  "hash": "ae8ac364bc00",
+  "verdict": "pass",
+  "summary": "testSwitchingPendingChangesProjectsClearsPriorSummaryBeforeLoading exercises the real DiffModel.refresh(projectPath:) (unmocked, real git subprocess) and asserts summary/hasLoadedOnce are synchronously cleared to nil/false the instant a project switch is triggered, directly matching the pane's rendering logic (DiffPaneView shows content only when model.summary != nil); a violating implementation that kept the prior project's summary displayed until the new load completed would fail this assertion, so it is a genuine, non-tautological counterexample-catching test.",
+  "timestamp": "2026-08-31T20:37:52.470Z"
+}

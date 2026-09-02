@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--8db708f408ac",
+  "requirementId": "REQ-012.1.1",
+  "hash": "8db708f408ac",
+  "verdict": "fail",
+  "summary": "UI evidence (ProjectUITests testProjectDiffPillOpensGitDiffPane) triggers the global App-menu 'Pending Changes' command (openRightPane(.review) via PiNativeApp.swift CommandGroup), not the actual project-specific control ('Show Pending Changes' context-menu row action -> showPendingChanges(projectID:) in ProjectSidebarView.swift); the unit test that does exercise the real project-specific control (testShowPendingChangesOpensProjectReviewWithoutChangingSelectedConversation) only asserts navigation state (isRightPaneOpen/rightPaneMode/reviewProjectID) and never asserts that the Git status summary is displayed, so no test verifies the requirement's actual conjunction of project-specific-control + displayed summary together.",
+  "timestamp": "2026-08-31T22:44:24.483Z"
+}

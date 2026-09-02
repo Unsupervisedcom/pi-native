@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.4--9ac15afca742",
+  "requirementId": "REQ-002.1.4",
+  "hash": "9ac15afca742",
+  "verdict": "pass",
+  "summary": "testMissingPersistedDefaultInitializesProjectsFolderUnderHome comprehensively verifies both default path and folder creation; negative case confirmed by testPersistedProjectFolderOverridesProjectsDefaultAndIsCreated",
+  "timestamp": "2026-08-11T05:16:04.941Z"
+}

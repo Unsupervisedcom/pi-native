@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.3.2--8be5e4202637",
+  "requirementId": "REQ-001.3.2",
+  "hash": "8be5e4202637",
+  "verdict": "pass",
+  "summary": "Tests exact Attached files blocks with paths plus user text or fixed attachment-only instruction, and reject any extra preview content.",
+  "timestamp": "2026-07-22T18:42:28.852Z"
+}

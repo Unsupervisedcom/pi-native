@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.11--c0223a30b2da",
+  "requirementId": "REQ-007.1.11",
+  "hash": "c0223a30b2da",
+  "verdict": "pass",
+  "summary": "UI test rejects duplicate rows for the default favorite and a newly added favorite that are also present in the available catalog.",
+  "timestamp": "2026-08-10T17:52:55.197Z"
+}

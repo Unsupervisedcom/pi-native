@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.1.2--7c118bb44c6e",
+  "requirementId": "REQ-003.1.2",
+  "hash": "7c118bb44c6e",
+  "verdict": "pass",
+  "summary": "Returning to newest restoration chat exercises production selection/RPC transcript hydration and would fail if the long transcript reopened at top because latest assistant content is not hittable.",
+  "timestamp": "2026-08-10T17:31:37.762Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--1573451e053f",
+  "requirementId": "REQ-012.2.2",
+  "hash": "1573451e053f",
+  "verdict": "fail",
+  "summary": "Only the no-project state is verified at the UI level (via RightPaneView's separate ComingSoonPane path); the initial-loading, clean-working-tree, and Git-failure states are asserted only against DiffModel's published flags in a unit test, never against DiffPaneView's actual rendered content, so a regression collapsing DiffPaneView.content to always render the populated file list would go undetected.",
+  "timestamp": "2026-08-31T21:49:34.138Z"
+}

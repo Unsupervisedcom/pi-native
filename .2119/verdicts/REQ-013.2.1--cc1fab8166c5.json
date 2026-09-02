@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.2.1--cc1fab8166c5",
+  "requirementId": "REQ-013.2.1",
+  "hash": "cc1fab8166c5",
+  "verdict": "fail",
+  "summary": "Only the pinned+project restore case is tested; unpinned/no-project branch and the actual pinnedSessions section-output are never asserted, so a bug forcing isPinned=true on restore or breaking section derivation would go undetected",
+  "timestamp": "2026-08-31T21:57:15.800Z"
+}

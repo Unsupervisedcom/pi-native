@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.3.1--9a79dbc49162",
+  "requirementId": "REQ-011.3.1",
+  "hash": "9a79dbc49162",
+  "verdict": "pass",
+  "summary": "testFailureShowsBottomRecoveryBarAndResolveAction triggers a real subprocess launch failure (bad executable path) and asserts genuine behavior: statusBar frame within 3pt of window bottom, no overlap with composer, message text contains the actual failure detail, message positioned left of the action button (verifies 'followed by'), and action label exactly 'Resolve in Terminal' -- no tautology, mocking-out, or keyword-only checks found.",
+  "timestamp": "2026-08-31T20:18:07.612Z"
+}

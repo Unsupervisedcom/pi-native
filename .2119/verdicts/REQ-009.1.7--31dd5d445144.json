@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.7--31dd5d445144",
+  "requirementId": "REQ-009.1.7",
+  "hash": "31dd5d445144",
+  "verdict": "pass",
+  "summary": "Ordered array equality after model promptHistory recall and mounted composer navigation rejects reversed, missing, duplicated, or substituted attachments.",
+  "timestamp": "2026-08-11T00:27:29.265Z"
+}

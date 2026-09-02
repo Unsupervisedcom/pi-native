@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--a190f1108867",
+  "requirementId": "REQ-012.2.2",
+  "hash": "a190f1108867",
+  "verdict": "pass",
+  "summary": "UI tests assert distinct static text for loading/no-project/clean/failure states and explicitly reject a populated 'Files' summary being shown in any of them; verified against real DiffPaneView branching logic.",
+  "timestamp": "2026-08-31T22:43:48.503Z"
+}

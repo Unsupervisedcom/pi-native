@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.7--e3c8d62579da",
+  "requirementId": "REQ-009.1.7",
+  "hash": "e3c8d62579da",
+  "verdict": "pass",
+  "summary": "Array equality assertions verify order preservation; tests would reject reversed, shuffled, or reordered attachments",
+  "timestamp": "2026-08-11T21:33:48.730Z"
+}

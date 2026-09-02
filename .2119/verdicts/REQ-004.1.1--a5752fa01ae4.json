@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-004.1.1--a5752fa01ae4",
+  "requirementId": "REQ-004.1.1",
+  "hash": "a5752fa01ae4",
+  "verdict": "pass",
+  "summary": "testSidebarTogglesKeepCenterChatVisible drives real left/right pane toggles and asserts genuine geometry: center title/transcript/composer stay hittable, fully inside the window frame, and non-overlapping with visible (non-empty-frame) shell.leftPane/rightPane regions after each toggle, plus a real keystroke into the composer confirms interactivity; helpers use real XCUIElement frames (not stubs) and panes collapse to zero-width in source, so the checks would fail on a real overlap/hiding regression.",
+  "timestamp": "2026-08-19T23:49:33.876Z"
+}

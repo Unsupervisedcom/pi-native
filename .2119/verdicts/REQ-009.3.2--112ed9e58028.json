@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.2--112ed9e58028",
+  "requirementId": "REQ-009.3.2",
+  "hash": "112ed9e58028",
+  "verdict": "pass",
+  "summary": "Mounted composer model switches replace recalled chat A text and attachments with chat B's empty or own draft state through the production identity-aware text bridge.",
+  "timestamp": "2026-08-11T00:41:47.930Z"
+}

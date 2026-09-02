@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.3.1--1b052471e289",
+  "requirementId": "REQ-008.3.1",
+  "hash": "1b052471e289",
+  "verdict": "fail",
+  "summary": "Test 2 uses keyword theater: verifies --no-session flag presence rather than behavioral outcome that Pi session list is unmodified. No test directly verifies the requirement's second conjunct (persisted Pi session list unchanged).",
+  "timestamp": "2026-08-11T01:19:50.439Z"
+}

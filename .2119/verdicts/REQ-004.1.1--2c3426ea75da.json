@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-004.1.1--2c3426ea75da",
+  "requirementId": "REQ-004.1.1",
+  "hash": "2c3426ea75da",
+  "verdict": "pass",
+  "summary": "testSidebarTogglesKeepCenterChatVisible drives real left/right toggle controls and asserts geometric containment, hittability, and non-overlap of center chat elements against actual sidebar frames (empty when collapsed via effectiveWidth=0), plus a live composer-typing check, so a real overlap/occlusion regression would fail the test.",
+  "timestamp": "2026-08-31T19:42:35.983Z"
+}

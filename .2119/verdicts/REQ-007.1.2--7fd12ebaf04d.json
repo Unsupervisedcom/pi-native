@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.2--7fd12ebaf04d",
+  "requirementId": "REQ-007.1.2",
+  "hash": "7fd12ebaf04d",
+  "verdict": "pass",
+  "summary": "Real-app UI test captures parsed Pi get_available_models output and requires each captured provider/id row plus matching count in Models settings.",
+  "timestamp": "2026-08-10T17:46:07.753Z"
+}

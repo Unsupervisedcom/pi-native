@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.3.7--a74523bc0b5f",
+  "requirementId": "REQ-007.3.7",
+  "hash": "a74523bc0b5f",
+  "verdict": "pass",
+  "summary": "Model tests reject direct/toggle removal when one favorite remains; UI tests disable available and unavailable sole-favorite remove controls.",
+  "timestamp": "2026-08-10T17:55:38.654Z"
+}

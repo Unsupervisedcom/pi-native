@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.1--3a807e9b1463",
+  "requirementId": "REQ-010.1.1",
+  "hash": "3a807e9b1463",
+  "verdict": "fail",
+  "summary": "Test is tautological; directly calls track(.appOpened) instead of verifying app launch triggers the event",
+  "timestamp": "2026-08-18T03:21:36.613Z"
+}

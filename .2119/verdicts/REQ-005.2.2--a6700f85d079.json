@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-005.2.2--a6700f85d079",
+  "requirementId": "REQ-005.2.2",
+  "hash": "a6700f85d079",
+  "verdict": "pass",
+  "summary": "Pre-ready extension UI prompts are asserted to surface status and transcript feedback containing request content, so silent drops fail.",
+  "timestamp": "2026-08-11T01:33:25.048Z"
+}

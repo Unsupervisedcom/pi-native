@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--e45013909654",
+  "requirementId": "REQ-012.1.1",
+  "hash": "e45013909654",
+  "verdict": "pass",
+  "summary": "UI test exercises the real diff-pill control end to end and switches projects to confirm no stale data; paired unit test confirms the second project-specific control routes to the correct project; both share the same downstream display path. No tautology found.",
+  "timestamp": "2026-08-31T23:37:30.765Z"
+}

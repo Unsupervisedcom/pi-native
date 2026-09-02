@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.3--2981aa8cb0e6",
+  "requirementId": "REQ-003.3.3",
+  "hash": "2981aa8cb0e6",
+  "verdict": "pass",
+  "summary": "Two tests verify pinned chats are never selected when clicking project rows: unit test covers edge case with only pinned chats, UI test verifies 21 row coordinates with mixed chat types, both assert negative space and would fail if violated",
+  "timestamp": "2026-08-11T05:05:05.221Z"
+}

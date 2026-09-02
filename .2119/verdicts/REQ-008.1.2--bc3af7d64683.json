@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.1.2--bc3af7d64683",
+  "requirementId": "REQ-008.1.2",
+  "hash": "bc3af7d64683",
+  "verdict": "pass",
+  "summary": "Five tests verify at-most-once constraint across lifecycle edges (second turn, interruption, teardown) and only-after-settlement timing via RecordingTitleGenerator call counts; counterexamples (duplicate attempt, pre-settlement attempt) would fail count assertions",
+  "timestamp": "2026-08-11T04:35:39.482Z"
+}

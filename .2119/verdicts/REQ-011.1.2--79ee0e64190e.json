@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.1.2--79ee0e64190e",
+  "requirementId": "REQ-011.1.2",
+  "hash": "79ee0e64190e",
+  "verdict": "pass",
+  "summary": "testRealLoginShellDiscoversPiOutsideFinderPath uses a real zsh subprocess (via ZDOTDIR .zshrc) with a Finder-like restricted PATH lacking pi, so resolve() only succeeds by genuinely invoking login-shell resolution; a violating 'Finder-PATH-only' implementation would return nil and fail the XCTUnwrap.",
+  "timestamp": "2026-08-19T20:12:31.951Z"
+}

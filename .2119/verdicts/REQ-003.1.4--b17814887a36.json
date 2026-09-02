@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.1.4--b17814887a36",
+  "requirementId": "REQ-003.1.4",
+  "hash": "b17814887a36",
+  "verdict": "pass",
+  "summary": "ConversationNavigationUITests selected-chat streaming update verifies final response and transcript bottom are hittable after production scroll-on-content-change.",
+  "timestamp": "2026-08-10T17:31:24.811Z"
+}

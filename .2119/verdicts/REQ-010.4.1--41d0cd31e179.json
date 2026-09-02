@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.4.1--41d0cd31e179",
+  "requirementId": "REQ-010.4.1",
+  "hash": "41d0cd31e179",
+  "verdict": "fail",
+  "summary": "Tests verify callback invocation but not the 'when analytics are configured and enabled' conditional; missing counterexample for retry-then-fail producing exactly one event",
+  "timestamp": "2026-08-18T03:55:44.835Z"
+}

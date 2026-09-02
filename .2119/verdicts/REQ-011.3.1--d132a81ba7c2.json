@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.3.1--d132a81ba7c2",
+  "requirementId": "REQ-011.3.1",
+  "hash": "d132a81ba7c2",
+  "verdict": "pass",
+  "summary": "Test verifies status bar existence, bottom placement (within 3px), problem description content, 'Resolve in Terminal' action label, and correct ordering (message before action)",
+  "timestamp": "2026-08-31T20:06:29.545Z"
+}

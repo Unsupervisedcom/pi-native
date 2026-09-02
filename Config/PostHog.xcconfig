@@ -1,0 +1,7 @@
+// Loads the developer-local PostHog project key when present. The local file is
+// intentionally ignored; builds without it run normally with analytics disabled.
+#include? "Secrets.xcconfig"
+
+// Loads an optional developer-local Apple Team ID for signing. Official release
+// automation supplies APPLE_TEAM_ID instead, so this file is never required.
+#include? "Signing.xcconfig"

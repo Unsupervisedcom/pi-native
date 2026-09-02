@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.1--44c0536e6864",
+  "requirementId": "REQ-010.5.1",
+  "hash": "44c0536e6864",
+  "verdict": "pass",
+  "summary": "Tests verify all three failure types report handled_exception with correct areas, session-load exclusion works, and disabled analytics prevents reporting via real subprocess failures",
+  "timestamp": "2026-08-18T04:17:28.832Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--226820bc1178",
+  "requirementId": "REQ-012.2.2",
+  "hash": "226820bc1178",
+  "verdict": "fail",
+  "summary": "Initial-loading state untested; unit tests tautological/over-mocked, missing view-layer verification",
+  "timestamp": "2026-08-31T21:55:41.216Z"
+}

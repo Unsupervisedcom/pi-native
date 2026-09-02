@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.1--c8b80b71b6ce",
+  "requirementId": "REQ-009.3.1",
+  "hash": "c8b80b71b6ce",
+  "verdict": "pass",
+  "summary": "Unit test directly asserts isBrowsing becomes false after chatDidChange; mounted tests verify switching displays new chat content and subsequent navigation uses new chat history",
+  "timestamp": "2026-08-11T21:25:12.558Z"
+}

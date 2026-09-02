@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.1--54cef845eeb5",
+  "requirementId": "REQ-009.2.1",
+  "hash": "54cef845eeb5",
+  "verdict": "pass",
+  "summary": "Up-arrow tests preserve nonempty text and attachment-only drafts outside browsing, including the focused mounted composer path.",
+  "timestamp": "2026-08-11T00:27:36.858Z"
+}

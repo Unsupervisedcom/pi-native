@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.5--8d3169bd849d",
+  "requirementId": "REQ-002.1.5",
+  "hash": "8d3169bd849d",
+  "verdict": "pass",
+  "summary": "Settings-driven workflow snapshots outside-destination paths, contents, entry types, and POSIX permissions before promotion and rejects generated files escaping through symlinked destination children.",
+  "timestamp": "2026-08-10T17:29:21.040Z"
+}

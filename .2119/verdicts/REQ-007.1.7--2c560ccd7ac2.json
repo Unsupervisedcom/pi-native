@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.7--2c560ccd7ac2",
+  "requirementId": "REQ-007.1.7",
+  "hash": "2c560ccd7ac2",
+  "verdict": "pass",
+  "summary": "ModelSettingsUITests drives the production RPC process path with get_available_models returning an empty models array and verifies the Models empty state with no available rows.",
+  "timestamp": "2026-08-10T17:51:31.084Z"
+}

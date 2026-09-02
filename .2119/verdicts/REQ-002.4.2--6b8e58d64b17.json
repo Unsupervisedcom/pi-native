@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.4.2--6b8e58d64b17",
+  "requirementId": "REQ-002.4.2",
+  "hash": "6b8e58d64b17",
+  "verdict": "pass",
+  "summary": "Covers successful promotion by asserting the source standalone chat becomes archived and its session file and cached transcript remain intact for reload.",
+  "timestamp": "2026-08-04T21:28:46.724Z"
+}

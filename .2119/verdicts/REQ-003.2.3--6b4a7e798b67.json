@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.2.3--6b4a7e798b67",
+  "requirementId": "REQ-003.2.3",
+  "hash": "6b4a7e798b67",
+  "verdict": "pass",
+  "summary": "testHiddenHoverControlsDoNotBlockSidebarRowSelection uses a deterministic fixture that ties both opacity(0) and allowsHitTesting to the same visibility flag under real hover; since SwiftUI opacity(0) does not disable hit-testing by default, removing the allowsHitTesting binding would make the archive/newChat/diff buttons hittable and hijack the click, which the chatTitle-equality and isHittable(false) assertions would genuinely catch.",
+  "timestamp": "2026-09-01T19:04:19.150Z"
+}

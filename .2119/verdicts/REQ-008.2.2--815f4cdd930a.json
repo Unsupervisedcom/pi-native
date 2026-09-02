@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.2.2--815f4cdd930a",
+  "requirementId": "REQ-008.2.2",
+  "hash": "815f4cdd930a",
+  "verdict": "pass",
+  "summary": "Genuine tests verify first exchange inclusion and later exchange exclusion via RPC arguments inspection and snapshot recording with distinctive sentinels",
+  "timestamp": "2026-08-11T05:08:45.689Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.4.5--216bc1390bc6",
+  "requirementId": "REQ-001.4.5",
+  "hash": "216bc1390bc6",
+  "verdict": "pass",
+  "summary": "File-reference attachments are prepared and encoded to RPC fields with an empty images payload and omitted images field.",
+  "timestamp": "2026-07-22T18:40:12.393Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.5--1d60955f1552",
+  "requirementId": "REQ-009.2.5",
+  "hash": "1d60955f1552",
+  "verdict": "pass",
+  "summary": "Tests verify new turn appended with distinct ID to focused chat; would fail on ID reuse, wrong chat, or modification instead of append",
+  "timestamp": "2026-08-11T21:18:52.129Z"
+}

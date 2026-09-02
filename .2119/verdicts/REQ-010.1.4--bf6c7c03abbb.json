@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.4--bf6c7c03abbb",
+  "requirementId": "REQ-010.1.4",
+  "hash": "bf6c7c03abbb",
+  "verdict": "pass",
+  "summary": "testAppModelReportsChatSettingsAndRightPaneInteractions genuinely verifies REQ-010.1.4: exact ordered/property equality on the recorded event array confirms presentSettings() emits settings_opened{} exactly once at the right position, and that disabling analytics (service.setEnabled(false)) before a second presentSettings() call suppresses the event, rejecting wrong-name, wrong-property, duplicate, and enabled-gating violations. Requirement text is an unambiguous, testable observable outcome.",
+  "timestamp": "2026-08-19T21:27:44.421Z"
+}

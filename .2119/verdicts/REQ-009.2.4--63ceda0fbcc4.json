@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.4--63ceda0fbcc4",
+  "requirementId": "REQ-009.2.4",
+  "hash": "63ceda0fbcc4",
+  "verdict": "pass",
+  "summary": "Text/attachment edits end browsing; selection movement and programmatic navigation preserve it; verified via unit tests plus integration tests through full UI stack",
+  "timestamp": "2026-08-11T21:18:33.328Z"
+}

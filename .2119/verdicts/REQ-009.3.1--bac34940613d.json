@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.1--bac34940613d",
+  "requirementId": "REQ-009.3.1",
+  "hash": "bac34940613d",
+  "verdict": "pass",
+  "summary": "Direct navigator and mounted composer tests start history browsing, switch the focused model/text identity, and verify browsing resets before destination history navigation.",
+  "timestamp": "2026-08-11T00:40:44.526Z"
+}

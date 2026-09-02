@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.1--17e03c9f143f",
+  "requirementId": "REQ-010.1.1",
+  "hash": "17e03c9f143f",
+  "verdict": "fail",
+  "summary": "handled_exception's area property has 4 enumerated values (model_selection, effort_selection, prompt_submission, extension_ui_response) hardcoded at 4 independent call sites in PiConversationModel; REQ-010.1.1-annotated tests exercise only 3 of the 4 end-to-end (testFailedModelAndEffortSelectionsReportTheirSanitizedAreas, testFailedPromptReportsHandledExceptionOnlyWhenAnalyticsAreConfigured), leaving the extension_ui_response call site (PiConversationModel.swift:994) with no test verifying its outcome reports area=extension_ui_response -- a mislabeled/omitted area value there would pass the full suite undetected",
+  "timestamp": "2026-08-19T22:23:39.489Z"
+}

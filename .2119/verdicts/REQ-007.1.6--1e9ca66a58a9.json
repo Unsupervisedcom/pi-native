@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.6--1e9ca66a58a9",
+  "requirementId": "REQ-007.1.6",
+  "hash": "1e9ca66a58a9",
+  "verdict": "pass",
+  "summary": "ModelSettings UI test opens Models during a delayed production catalog refresh and observes the loading text before loaded content replaces it.",
+  "timestamp": "2026-08-10T17:51:28.111Z"
+}

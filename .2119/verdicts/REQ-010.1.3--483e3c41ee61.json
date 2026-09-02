@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.3--483e3c41ee61",
+  "requirementId": "REQ-010.1.3",
+  "hash": "483e3c41ee61",
+  "verdict": "fail",
+  "summary": "testSubmittedPromptReportsNoPromptContent only exercises sendNewChatPrompt (first message of a brand-new chat); it never exercises PiConversationModel.sendDraft()'s onPromptSubmitted callback wired via AppModel.installRuntimeCallbacks (AppModel.swift:1054-1056), which is the path used for every ordinary message sent in an existing conversation, so a regression that stops reporting prompt_submitted there would not be caught.",
+  "timestamp": "2026-08-19T21:27:36.927Z"
+}

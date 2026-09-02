@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.3.1--36ab3b417e4f",
+  "requirementId": "REQ-001.3.1",
+  "hash": "36ab3b417e4f",
+  "verdict": "pass",
+  "summary": "Tests reject missing image payload shape, MIME propagation, and non-base64 prepared image data for RPC prompt images.",
+  "timestamp": "2026-07-29T20:43:10.337Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--9a7c178874d2",
+  "requirementId": "REQ-012.2.2",
+  "hash": "9a7c178874d2",
+  "verdict": "pass",
+  "summary": "Four UI tests exercise the real mutually-exclusive if/else-if branches in DiffPaneView (loading, no-project, clean, git-failure) via injected env-var-driven backend data, each asserting its distinct state text and the absence of the populated 'Files' summary; contrast confirmed against the populated state test (REQ-012.1.1).",
+  "timestamp": "2026-08-31T23:35:29.782Z"
+}

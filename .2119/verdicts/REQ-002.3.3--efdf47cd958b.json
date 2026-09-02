@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.3.3--efdf47cd958b",
+  "requirementId": "REQ-002.3.3",
+  "hash": "efdf47cd958b",
+  "verdict": "pass",
+  "summary": "All three MUST NOT conjuncts verified: (1) user-edit survival proves no artifact overwrite, (2) occurrence-count checks across five distinguishing fields prove no duplication, (3) double-registration test proves registration idempotency; each counterexample is concrete and would fail if violated",
+  "timestamp": "2026-08-11T19:18:32.712Z"
+}

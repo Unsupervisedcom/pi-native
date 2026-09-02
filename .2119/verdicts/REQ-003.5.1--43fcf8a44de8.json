@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.1--43fcf8a44de8",
+  "requirementId": "REQ-003.5.1",
+  "hash": "43fcf8a44de8",
+  "verdict": "pass",
+  "summary": "ActiveWorkUITests clicks the production Stop button for the selected chat and requires the Stop label to disappear and Send to appear within one second.",
+  "timestamp": "2026-08-10T17:40:33.924Z"
+}

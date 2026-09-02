@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.2--396c5605b6aa",
+  "requirementId": "REQ-010.1.2",
+  "hash": "396c5605b6aa",
+  "verdict": "pass",
+  "summary": "AppModel.startNewChat()/startNewChat(in:) is exercised through the real AnalyticsService gate (isConfigured && isEnabled); test asserts exact ordered chat_started events for two real start-chat calls, confirms no extra chat_started after disabling analytics, and confirms unrelated actions (settings/right-pane) don't emit it -- genuine, non-tautological coverage with only the terminal PostHog sink faked.",
+  "timestamp": "2026-08-19T21:27:34.706Z"
+}

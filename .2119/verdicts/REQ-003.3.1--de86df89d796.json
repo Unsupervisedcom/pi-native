@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.1--de86df89d796",
+  "requirementId": "REQ-003.3.1",
+  "hash": "de86df89d796",
+  "verdict": "pass",
+  "summary": "Tests verify most-recently-updated visible unpinned chat selection with genuine counterexamples rejecting archived, pinned, and other-project chats",
+  "timestamp": "2026-08-11T03:43:53.893Z"
+}

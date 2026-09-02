@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--0df74e1107c6",
+  "requirementId": "REQ-012.1.1",
+  "hash": "0df74e1107c6",
+  "verdict": "pass",
+  "summary": "UI test (ProjectUITests.testProjectDiffPillOpensGitDiffPane) opens Pending Changes via project-row context menu and asserts branch/file/Files/Added/Deleted content, then switches to a second project and confirms the summary updates and the first project's file disappears, genuinely rejecting wrong-project-summary violations; the paired unit test only covers correct project routing/selection-preservation, not summary display, but does not misrepresent itself and complements the UI evidence.",
+  "timestamp": "2026-08-31T22:50:53.132Z"
+}

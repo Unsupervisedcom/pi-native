@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.2.1--3349a8b3665d",
+  "requirementId": "REQ-010.2.1",
+  "hash": "3349a8b3665d",
+  "verdict": "pass",
+  "summary": "testSettingsAnalyticsPreferenceStopsReportingAndPersistsBothStates exercises the real AppModel.analyticsEnabled binding (same code path as the Settings Toggle) through both false->true and true->false transitions, and forces fresh AnalyticsService instances to re-read the shared UserDefaults suite, which fails under plausible violations (ignoring stored value, always defaulting true/false, or not persisting a transition); no over-mocking beyond the external PostHog client, no tautologies found.",
+  "timestamp": "2026-08-19T22:23:28.992Z"
+}

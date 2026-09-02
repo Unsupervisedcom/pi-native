@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.2.2--f04fc31c12b6",
+  "requirementId": "REQ-010.2.2",
+  "hash": "f04fc31c12b6",
+  "verdict": "pass",
+  "summary": "Genuine coverage: AnalyticsService.track() is the sole choke point (all 7 event-contract call sites funnel through it, no bypass), tests toggle the real setEnabled/analyticsEnabled path and assert no growth in the recorded-event list across app_opened, chat_started, settings_opened, right_pane_opened, prompt_submitted, pi_load_failed, and handled_exception, plus resumed reporting on re-enable; mock only stands in for the network-facing capture() call, not the enable/disable gate, so removing the guard would fail these assertions.",
+  "timestamp": "2026-08-19T22:23:06.086Z"
+}

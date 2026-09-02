@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.1.1--7bea2297107b",
+  "requirementId": "REQ-013.1.1",
+  "hash": "7bea2297107b",
+  "verdict": "pass",
+  "summary": "Test verifies all conjuncts: both chat types listed together, most-recently-updated order (timestamp 30 before 20), title/source/messageCount for each; would fail if order reversed, types omitted, or metadata missing",
+  "timestamp": "2026-08-31T21:50:42.367Z"
+}

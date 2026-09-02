@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.2.2--23289a63e64c",
+  "requirementId": "REQ-002.2.2",
+  "hash": "23289a63e64c",
+  "verdict": "pass",
+  "summary": "Tests exercise real promotion artifacts and fail if session ID, timestamp, transcript-availability markers, or cached transcript text are omitted.",
+  "timestamp": "2026-08-04T17:55:33.134Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.1--d49b805f98ea",
+  "requirementId": "REQ-010.3.1",
+  "hash": "d49b805f98ea",
+  "verdict": "pass",
+  "summary": "Exhaustive fixed-property equality test over all 7 AnalyticsEvent cases, plus targeted near-miss tests for prompt text, attachment name/content, and raw exception text, genuinely reject any leaked category; coverage for session/project/model/provider/account identifiers is indirect (via the exhaustive allowlist) rather than dedicated, and won't auto-extend to a future new event case.",
+  "timestamp": "2026-08-19T22:48:54.029Z"
+}

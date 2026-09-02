@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.3.1--6cda8e078b2e",
+  "requirementId": "REQ-007.3.1",
+  "hash": "6cda8e078b2e",
+  "verdict": "pass",
+  "summary": "Disk-backed recreation of ModelSettingsModel proves favorites survive a fresh instance, so a lost-persistence bug would fail the REQ-007.3.1 test.",
+  "timestamp": "2026-08-05T20:00:48.543Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-005.2.1--6a1ac0b47044",
+  "requirementId": "REQ-005.2.1",
+  "hash": "6a1ac0b47044",
+  "verdict": "pass",
+  "summary": "Real subprocess failures (process-exit, launch-failure) drive pixel-verified red status text and behavioral composer-disable checks (typing rejected, controls disabled); counterexamples reject non-catastrophic stall and background (non-displayed) chat failures.",
+  "timestamp": "2026-08-19T23:52:19.972Z"
+}

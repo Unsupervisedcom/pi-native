@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.4--c36fad55ab8f",
+  "requirementId": "REQ-010.1.4",
+  "hash": "c36fad55ab8f",
+  "verdict": "pass",
+  "summary": "Test now drives AppModel through a real AnalyticsService (not a raw mock) and toggles disabled after the first presentSettings(), asserting the exact ordered event list catches a broken enabled-gate or wrong event/ordering for settings_opened; 'configured=false' isn't exercised in this specific test but is verified on the identical shared guard by REQ-010.3.3's test.",
+  "timestamp": "2026-08-18T03:37:34.406Z"
+}

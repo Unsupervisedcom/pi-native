@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.2.4--4b7ff7cad296",
+  "requirementId": "REQ-007.2.4",
+  "hash": "4b7ff7cad296",
+  "verdict": "pass",
+  "summary": "Clearing an active search to an empty query is asserted to restore filteredCatalog to the full catalog, so a stale filtered list would fail.",
+  "timestamp": "2026-08-05T19:48:40.457Z"
+}

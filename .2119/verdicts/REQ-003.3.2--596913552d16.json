@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.2--596913552d16",
+  "requirementId": "REQ-003.3.2",
+  "hash": "596913552d16",
+  "verdict": "pass",
+  "summary": "Project row click/select tests use newer archived project sessions and assert the archived session/title is not selected.",
+  "timestamp": "2026-08-10T17:33:49.472Z"
+}

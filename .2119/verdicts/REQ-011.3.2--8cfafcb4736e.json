@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.3.2--8cfafcb4736e",
+  "requirementId": "REQ-011.3.2",
+  "hash": "8cfafcb4736e",
+  "verdict": "pass",
+  "summary": "testTerminalRecoveryOpensTerminalWithResolvedAndFallbackScripts drives the actual PiTerminalRecovery.open() call site behind the button, asserting real com.apple.Terminal bundle/URL usage and exact generated script content (resolved executable+args+PATH vs. login-shell 'pi' fallback with SHELL env) with only the NSWorkspace OS boundary mocked; no tautologies or keyword theater.",
+  "timestamp": "2026-08-19T23:52:33.547Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.1--b3139892faf7",
+  "requirementId": "REQ-003.4.1",
+  "hash": "b3139892faf7",
+  "verdict": "pass",
+  "summary": "Selecting a second chat while the first is running still succeeds and leaves the first chat running.",
+  "timestamp": "2026-08-04T21:47:03.298Z"
+}

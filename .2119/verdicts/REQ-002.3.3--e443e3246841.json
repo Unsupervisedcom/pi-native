@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.3.3--e443e3246841",
+  "requirementId": "REQ-002.3.3",
+  "hash": "e443e3246841",
+  "verdict": "pass",
+  "summary": "Retry-after-partial-failure is exercised; tests verify no artifact rewrites on retry, single log/provenance entry, and only one project registration.",
+  "timestamp": "2026-08-04T17:18:46.942Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.4.3--94e888541a97",
+  "requirementId": "REQ-002.4.3",
+  "hash": "94e888541a97",
+  "verdict": "pass",
+  "summary": "UI test drives a real filesystem creation failure and verifies the promotion sheet remains visible with its error and Retry, while both Open Project and the promoted sidebar row are absent.",
+  "timestamp": "2026-08-05T21:43:56.392Z"
+}

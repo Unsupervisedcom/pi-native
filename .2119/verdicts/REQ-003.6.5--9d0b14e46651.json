@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.6.5--9d0b14e46651",
+  "requirementId": "REQ-003.6.5",
+  "hash": "9d0b14e46651",
+  "verdict": "pass",
+  "summary": "Quick Chat agent_start can no longer block selecting the project runtime or queuing project work while the Quick Chat remains running.",
+  "timestamp": "2026-08-10T17:46:20.189Z"
+}

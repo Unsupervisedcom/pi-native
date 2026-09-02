@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.2.1--4889dc07b416",
+  "requirementId": "REQ-002.2.1",
+  "hash": "4889dc07b416",
+  "verdict": "pass",
+  "summary": "Settings-driven workflow tests cover enabled memory/agent artifact creation and preserving existing AGENTS/plan/log files.",
+  "timestamp": "2026-08-04T01:42:39.234Z"
+}

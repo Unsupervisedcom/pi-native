@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--31e8577c4b13",
+  "requirementId": "REQ-003.5.2",
+  "hash": "31e8577c4b13",
+  "verdict": "pass",
+  "summary": "Tests drive stopped-turn late output through UI, model, and real RPC paths and reject stale appends after stop/restart.",
+  "timestamp": "2026-08-10T18:19:44.251Z"
+}

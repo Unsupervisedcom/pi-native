@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.4.1--cb648c0cd84c",
+  "requirementId": "REQ-001.4.1",
+  "hash": "cb648c0cd84c",
+  "verdict": "pass",
+  "summary": "Pasteboard-only bitmap image test exercises real NSPasteboard image data and would fail if it were unsupported or classified as a non-image attachment.",
+  "timestamp": "2026-07-22T18:06:50.638Z"
+}

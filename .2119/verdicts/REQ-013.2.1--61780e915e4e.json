@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.2.1--61780e915e4e",
+  "requirementId": "REQ-013.2.1",
+  "hash": "61780e915e4e",
+  "verdict": "pass",
+  "summary": "Tests use real AppModel state (no mocks) and assert both the archived-removal and section-placement conjuncts, including negative-space checks that an unpinned restored chat is absent from pinnedSessions and a pinned quick chat is absent from project sessions.",
+  "timestamp": "2026-08-31T22:12:56.388Z"
+}

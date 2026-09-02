@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-004.1.1--1600844371fb",
+  "requirementId": "REQ-004.1.1",
+  "hash": "1600844371fb",
+  "verdict": "pass",
+  "summary": "ShellChromeUITests.testSidebarTogglesKeepCenterChatVisible drives production left/right toggles and rejects missing, clipped, non-hittable, pane-overlapped, or non-editable center chat content after each state change.",
+  "timestamp": "2026-08-05T21:48:10.961Z"
+}

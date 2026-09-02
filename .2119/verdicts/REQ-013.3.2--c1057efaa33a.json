@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.3.2--c1057efaa33a",
+  "requirementId": "REQ-013.3.2",
+  "hash": "c1057efaa33a",
+  "verdict": "pass",
+  "summary": "Test creates new AppModel instances to simulate relaunch, verifies both archived and restored state persist via UserDefaults, checks session identity and metadata survive, would fail if state didn't persist",
+  "timestamp": "2026-08-31T22:12:34.184Z"
+}

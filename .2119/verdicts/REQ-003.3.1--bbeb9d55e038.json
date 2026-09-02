@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.1--bbeb9d55e038",
+  "requirementId": "REQ-003.3.1",
+  "hash": "bbeb9d55e038",
+  "verdict": "pass",
+  "summary": "Unit tests reject newer archived and pinned sessions in favor of the newest visible unpinned one (including a real-session-load path), and the UI test rejects other-project and pinned/archived chats while confirming the correct chat opens on project-row click; requirement is observable and unambiguous.",
+  "timestamp": "2026-08-31T21:43:20.017Z"
+}

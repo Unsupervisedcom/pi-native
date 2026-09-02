@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.1.1--c36f196e43be",
+  "requirementId": "REQ-011.1.1",
+  "hash": "c36f196e43be",
+  "verdict": "pass",
+  "summary": "testHealthResolutionIsReusedByProductionFeatureEntryPoints exercises the real shared PiInvocationCache (not a stub): it resolves Pi via a temp fixture executable through the health check (refresh:true), then confirms defaultPiCommand/defaultModelListCommand/isolatedRPCCommand()  the only three production Pi-launch entry points in the codebase  return the identical executable/environmentPath from cache rather than independently re-resolving against the real process environment (which would diverge). This is a genuine counterexample-sensitive test: an entry point that bypassed the shared cache would fail the assertion.",
+  "timestamp": "2026-08-19T19:53:13.451Z"
+}

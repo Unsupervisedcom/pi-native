@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.2--16d37876445a",
+  "requirementId": "REQ-010.1.2",
+  "hash": "16d37876445a",
+  "verdict": "pass",
+  "summary": "3 tests exercise real subprocess start/session-load failures via PiConversationModel: exactly-one-event assertions for process_start (no retry applicable) and session_load (with a genuine internal retry via restartClientAndSwitchToSession) reject double-reporting, and a recovered-retry test confirms zero events when the retry succeeds, correctly distinguishing terminal from recoverable failure.",
+  "timestamp": "2026-08-19T22:23:22.708Z"
+}

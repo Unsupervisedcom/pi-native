@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--e956a1972e64",
+  "requirementId": "REQ-012.2.2",
+  "hash": "e956a1972e64",
+  "verdict": "fail",
+  "summary": "no-project assertions (lines ~276-279) check a freshly-constructed, never-refreshed DiffModel's default property values (summary=nil, isLoading=false, hasLoadedOnce=false) — a tautology true for any un-refreshed instance, not the real no-project code path in RightPaneView.swift (reviewProject==nil -> ComingSoonPane), which is never exercised by any test; a violation that merged no-project into the initial-loading/populated summary view would not be caught.",
+  "timestamp": "2026-08-31T21:45:15.253Z"
+}

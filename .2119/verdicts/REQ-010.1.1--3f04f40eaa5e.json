@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.1--3f04f40eaa5e",
+  "requirementId": "REQ-010.1.1",
+  "hash": "3f04f40eaa5e",
+  "verdict": "pass",
+  "summary": "Test genuinely exercises PiNativeApp.init→track call with real guard check; verifies enabled/disabled states and exact event name via counterexamples",
+  "timestamp": "2026-08-18T03:41:34.206Z"
+}

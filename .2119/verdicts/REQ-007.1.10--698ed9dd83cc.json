@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.10--698ed9dd83cc",
+  "requirementId": "REQ-007.1.10",
+  "hash": "698ed9dd83cc",
+  "verdict": "pass",
+  "summary": "UI test verifies Favorites header and favorite rows render above the Available Models header and remaining available row.",
+  "timestamp": "2026-08-10T17:54:05.876Z"
+}

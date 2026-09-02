@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.4.1--2976f1978f0c",
+  "requirementId": "REQ-002.4.1",
+  "hash": "2976f1978f0c",
+  "verdict": "pass",
+  "summary": "Unit and UI tests verify destination registration or exact-path reuse, a distinct selected project session, and displayed source planning text in the promoted project chat.",
+  "timestamp": "2026-08-05T21:24:38.419Z"
+}

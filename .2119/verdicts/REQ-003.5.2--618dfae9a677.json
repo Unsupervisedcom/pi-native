@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--618dfae9a677",
+  "requirementId": "REQ-003.5.2",
+  "hash": "618dfae9a677",
+  "verdict": "pass",
+  "summary": "StopButtonTests reject late stopped-turn text append via real RPC stdout and model event paths, including stale first-turn output after a later prompt.",
+  "timestamp": "2026-08-10T17:44:06.336Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.2.1--f7481ea048ed",
+  "requirementId": "REQ-010.2.1",
+  "hash": "f7481ea048ed",
+  "verdict": "fail",
+  "summary": "Test bypasses Settings UI entirely, directly calling service.setEnabled(); does not verify user can actually toggle analytics from Settings as requirement constrains",
+  "timestamp": "2026-08-18T03:25:03.857Z"
+}

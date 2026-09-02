@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.5.1--3172c1db2147",
+  "requirementId": "REQ-007.5.1",
+  "hash": "3172c1db2147",
+  "verdict": "pass",
+  "summary": "Composer UI test opens model and effort controls separately and rejects effort rows in the model popover and model rows/actions in the effort popover.",
+  "timestamp": "2026-08-10T18:01:30.568Z"
+}

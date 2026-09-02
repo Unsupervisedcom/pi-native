@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.2--e205381e1ef0",
+  "requirementId": "REQ-009.1.2",
+  "hash": "e205381e1ef0",
+  "verdict": "pass",
+  "summary": "Tests verify newer-to-older direction with concrete assertions that would fail if reversed; not tautological or over-mocked",
+  "timestamp": "2026-08-11T21:11:47.286Z"
+}

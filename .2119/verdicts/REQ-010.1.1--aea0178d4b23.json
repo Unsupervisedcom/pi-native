@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.1--aea0178d4b23",
+  "requirementId": "REQ-010.1.1",
+  "hash": "aea0178d4b23",
+  "verdict": "pass",
+  "summary": "All 12 REQ-010.1.1-tagged tests genuinely bind documented outcomes to exact events/properties via full ordered array+dict equality (rejecting extra/missing properties or events) and enabled/disabled toggling; the archivedChats pane value, previously untested while analytics enabled per the prior fail verdict for this review ID, is now exercised live (selectRightPaneMode(.archivedChats) before setEnabled(false)) with its event asserted in the expected array.",
+  "timestamp": "2026-08-19T22:47:47.326Z"
+}

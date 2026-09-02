@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.2.4--65c4397d48d8",
+  "requirementId": "REQ-011.2.4",
+  "hash": "65c4397d48d8",
+  "verdict": "pass",
+  "summary": "Unit test isolates the any-live-conversation routing (background chat triggers global piHealthIssue with matching command/message while the notice stays only on that conversation and is absent from the selected one) and the UI test drives a real fake-pi subprocess confirming both the status-bar (piHealth.message) and chat.notice render simultaneously with matching content; no tautology, over-mocking of the constrained routing logic, or keyword-only checks found.",
+  "timestamp": "2026-08-31T20:07:21.365Z"
+}

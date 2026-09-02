@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.1.4--a4e8776c9b88",
+  "requirementId": "REQ-008.1.4",
+  "hash": "a4e8776c9b88",
+  "verdict": "pass",
+  "summary": "Test properly verifies that persisted ineligible chats are not retitled on open/select: checks title unchanged and generator never called",
+  "timestamp": "2026-08-11T01:09:59.227Z"
+}

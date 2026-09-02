@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.3.3--f4762662cff2",
+  "requirementId": "REQ-011.3.3",
+  "hash": "f4762662cff2",
+  "verdict": "pass",
+  "summary": "testReturningToPiNativeRechecksHealthAndClearsRecoveredStatus genuinely re-triggers didBecomeActive via real Finder/PiNative app-switch, and a server-side sequence-file counter (not a canned single value) proves a fresh health check runs each activation: message updates from setup-needed to a different unavailable text, then status bar clears only on the healthy result, rejecting stale-cache and unconditional-clear counterexamples.",
+  "timestamp": "2026-08-19T23:52:48.637Z"
+}

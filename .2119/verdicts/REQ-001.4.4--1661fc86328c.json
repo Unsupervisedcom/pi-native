@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.4.4--1661fc86328c",
+  "requirementId": "REQ-001.4.4",
+  "hash": "1661fc86328c",
+  "verdict": "pass",
+  "summary": "Missing-file URL test uses the real classifier and rejects both no-error and attachment-returning violations.",
+  "timestamp": "2026-07-22T18:08:11.398Z"
+}

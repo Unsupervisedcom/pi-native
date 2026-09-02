@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.3.6--0c2fc863c5a9",
+  "requirementId": "REQ-007.3.6",
+  "hash": "0c2fc863c5a9",
+  "verdict": "pass",
+  "summary": "Composer model menu test seeds a stale persisted favorite absent from the catalog and rejects its selectable row while available favorites remain selectable.",
+  "timestamp": "2026-08-10T17:55:51.163Z"
+}

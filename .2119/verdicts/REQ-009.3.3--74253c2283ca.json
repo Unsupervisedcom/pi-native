@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.3--74253c2283ca",
+  "requirementId": "REQ-009.3.3",
+  "hash": "74253c2283ca",
+  "verdict": "pass",
+  "summary": "Tests verify starting browsing in new chat recalls that chat's most recent user message; multi-message scenario confirms most-recent-first ordering; cross-chat assertions prevent old-chat pollution",
+  "timestamp": "2026-08-11T21:48:46.241Z"
+}

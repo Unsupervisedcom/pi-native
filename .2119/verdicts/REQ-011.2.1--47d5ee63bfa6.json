@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.2.1--47d5ee63bfa6",
+  "requirementId": "REQ-011.2.1",
+  "hash": "47d5ee63bfa6",
+  "verdict": "pass",
+  "summary": "Unit test spawns a real fake-pi subprocess and verifies exactly one get_state RPC with all isolation flags (--no-session/--no-tools/etc), and a stalling backend genuinely times out to needsAttention within the bound, rejecting extra commands, missing isolation args, and unbounded hangs; UI test's REQ-011.2.1 tag is only tangential (bypasses real RPC via env shortcut) but doesn't undermine the genuine unit coverage.",
+  "timestamp": "2026-08-19T19:56:22.371Z"
+}

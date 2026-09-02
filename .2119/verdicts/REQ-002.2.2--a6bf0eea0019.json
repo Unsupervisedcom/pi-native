@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.2.2--a6bf0eea0019",
+  "requirementId": "REQ-002.2.2",
+  "hash": "a6bf0eea0019",
+  "verdict": "pass",
+  "summary": "All four provenance elements (session identity, promotion time, transcript availability, cached text) are verified in actual file contents across present/absent transcript cases; tests use real filesystem operations and would fail if any element were omitted or malformed",
+  "timestamp": "2026-08-11T05:16:11.766Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.3--cd5681a9125b",
+  "requirementId": "REQ-003.3.3",
+  "hash": "cd5681a9125b",
+  "verdict": "pass",
+  "summary": "Project row click and pinned-only model tests reject pinned-chat selection.",
+  "timestamp": "2026-08-10T17:33:45.061Z"
+}

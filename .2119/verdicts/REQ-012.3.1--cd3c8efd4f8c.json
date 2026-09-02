@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.3.1--cd3c8efd4f8c",
+  "requirementId": "REQ-012.3.1",
+  "hash": "cd3c8efd4f8c",
+  "verdict": "fail",
+  "summary": "Second refresh assertion only checks summary.files.contains(...) for the updated tracked.txt entry; it never asserts changedFileCount or absence of a stale duplicate, so an implementation that appended the new read onto the old array instead of replacing it would still pass, leaving the requirement's core 'replace' behavior unverified.",
+  "timestamp": "2026-08-31T21:44:53.308Z"
+}

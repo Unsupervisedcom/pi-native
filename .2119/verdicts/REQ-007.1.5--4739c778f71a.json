@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.5--4739c778f71a",
+  "requirementId": "REQ-007.1.5",
+  "hash": "4739c778f71a",
+  "verdict": "pass",
+  "summary": "ModelSettingsUITests verifies listed alpha is labeled the only favorite while direct alpha and beta are labeled add-to-favorites.",
+  "timestamp": "2026-08-10T17:47:38.051Z"
+}

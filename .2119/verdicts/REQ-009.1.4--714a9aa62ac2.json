@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.1.4--714a9aa62ac2",
+  "requirementId": "REQ-009.1.4",
+  "hash": "714a9aa62ac2",
+  "verdict": "pass",
+  "summary": "Down-arrow tests reject staying on or moving older from the oldest user entry: production key routing invokes navigateNewer, and mounted coverage consumes PiConversationModel.promptHistory with an interleaved assistant item before asserting the newer user prompt.",
+  "timestamp": "2026-08-11T00:26:28.205Z"
+}

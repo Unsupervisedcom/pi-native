@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.4.2--010a1f794e9d",
+  "requirementId": "REQ-002.4.2",
+  "hash": "010a1f794e9d",
+  "verdict": "fail",
+  "summary": "Missing negative test: no verification that source chat remains un-archived when promotion fails",
+  "timestamp": "2026-08-11T05:06:54.602Z"
+}

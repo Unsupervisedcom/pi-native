@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.2.1--021fb4193da0",
+  "requirementId": "REQ-002.2.1",
+  "hash": "021fb4193da0",
+  "verdict": "pass",
+  "summary": "Tests verify conditional creation, correct artifact-to-option correspondence, and non-overwriting of existing files through real filesystem operations and counterexample coverage",
+  "timestamp": "2026-08-11T04:56:56.684Z"
+}

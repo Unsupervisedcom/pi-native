@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.1--1ed2c82326f1",
+  "requirementId": "REQ-003.3.1",
+  "hash": "1ed2c82326f1",
+  "verdict": "pass",
+  "summary": "Unit tests exercise the real select(projectID:) sort/filter logic (archived+pinned excluded, newest-updated chosen), one loaded from real Pi session jsonl files; UI test additionally rejects a newer chat from a different project, covering all four conjuncts (most-recent, visible, unpinned, in-project) with genuine counterexamples.",
+  "timestamp": "2026-09-01T18:58:15.412Z"
+}

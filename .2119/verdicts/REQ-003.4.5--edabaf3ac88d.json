@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.5--edabaf3ac88d",
+  "requirementId": "REQ-003.4.5",
+  "hash": "edabaf3ac88d",
+  "verdict": "pass",
+  "summary": "Selection changes do not reroute in-flight output: the test emits a runtime text delta for the original chat after switching selection and verifies it lands only in that chat's transcript.",
+  "timestamp": "2026-08-04T21:55:27.273Z"
+}

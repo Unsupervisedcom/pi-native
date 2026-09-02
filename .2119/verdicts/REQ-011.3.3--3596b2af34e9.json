@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.3.3--3596b2af34e9",
+  "requirementId": "REQ-011.3.3",
+  "hash": "3596b2af34e9",
+  "verdict": "pass",
+  "summary": "Unit tests verify recheck arms only after a successful recovery invocation and fires exactly once on the return signal (checkCount 1->2, failure case correctly arms zero rechecks); UI test drives a real app deactivate/reactivate cycle via Finder and asserts the actual status-bar text updates to the new check result (failure message, then removal on healthy) — genuine, non-mocked coverage of both conjuncts.",
+  "timestamp": "2026-09-01T20:10:15.564Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.3--d70ae19381ba",
+  "requirementId": "REQ-003.5.3",
+  "hash": "d70ae19381ba",
+  "verdict": "pass",
+  "summary": "Test exercises the real composer/send path after Stop: types into the real composer.textEditor and asserts the value was accepted, then clicks the real Send button and asserts transcript.userMessage count increases, genuinely rejecting a disabled/non-functional composer; no over-mocking (mock only stubs RPC response content, not composer/send logic) or keyword theater.",
+  "timestamp": "2026-08-19T23:49:44.037Z"
+}

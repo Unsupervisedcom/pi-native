@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--23ee5f218e91",
+  "requirementId": "REQ-012.2.2",
+  "hash": "23ee5f218e91",
+  "verdict": "pass",
+  "summary": "Four UI tests (no-project, initial-loading via FIFO gate, clean-tree, git-failure) each assert a state-specific, mutually-exclusive text and assert absence of the 'Files' stat card, which only renders in the populated-summary branch of DiffPaneView; states are exclusive if/else branches in DiffModel/DiffPaneView so the counterexample of a state leaking into a populated summary is genuinely rejected.",
+  "timestamp": "2026-08-31T22:53:13.885Z"
+}

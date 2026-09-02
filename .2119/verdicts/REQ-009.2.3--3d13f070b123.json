@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.3--3d13f070b123",
+  "requirementId": "REQ-009.2.3",
+  "hash": "3d13f070b123",
+  "verdict": "pass",
+  "summary": "Text and attachment edits to recalled prompts verified not to modify original transcript messages via direct chatAModel.promptHistory assertions",
+  "timestamp": "2026-08-11T21:47:14.506Z"
+}

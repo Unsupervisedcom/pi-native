@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.1--121053f06c2d",
+  "requirementId": "REQ-002.1.1",
+  "hash": "121053f06c2d",
+  "verdict": "pass",
+  "summary": "Unit and UI tests verify name-only modal input, new session creation, and project scoping via equality checks and workflow assertions that would fail if source were reused or chat weren't scoped to promoted project",
+  "timestamp": "2026-08-11T04:54:28.140Z"
+}

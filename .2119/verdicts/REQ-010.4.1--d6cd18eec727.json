@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.4.1--d6cd18eec727",
+  "requirementId": "REQ-010.4.1",
+  "hash": "d6cd18eec727",
+  "verdict": "pass",
+  "summary": "Genuine coverage: real-subprocess tests cover terminal process-start and terminal session-load failures, including the case where the automatic session-load retry (shouldRestartClient/hasRetriedAfterRestart) fires and still fails, asserting exactly one pi_load_failed event; a paired recovered-retry test confirms zero events when the retry succeeds; enabled/disabled gating is verified separately.",
+  "timestamp": "2026-08-19T21:41:23.179Z"
+}

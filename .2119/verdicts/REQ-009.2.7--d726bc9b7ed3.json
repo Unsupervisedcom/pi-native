@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.7--d726bc9b7ed3",
+  "requirementId": "REQ-009.2.7",
+  "hash": "d726bc9b7ed3",
+  "verdict": "pass",
+  "summary": "Three tests verify composer stays empty when no user messages exist: unit test with empty model, mounted test with assistant-only chat, mounted test with explicit empty history",
+  "timestamp": "2026-08-11T21:35:24.941Z"
+}

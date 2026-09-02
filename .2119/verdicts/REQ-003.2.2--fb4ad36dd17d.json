@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.2.2--fb4ad36dd17d",
+  "requirementId": "REQ-003.2.2",
+  "hash": "fb4ad36dd17d",
+  "verdict": "pass",
+  "summary": "Test clicks real row (leading/center/trailing-corner, with control visible) confirming selection, then clicks the actual chat.archiveButton element and asserts selection does NOT change and the row is archived out — genuine full-rectangle contentShape row vs. overlaid hit-testable-only-when-visible archive button, matching ProjectSidebarView.swift implementation; no mocking of the interaction path.",
+  "timestamp": "2026-09-01T19:19:40.565Z"
+}

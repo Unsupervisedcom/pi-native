@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--c71b78e9774a",
+  "requirementId": "REQ-012.1.1",
+  "hash": "c71b78e9774a",
+  "verdict": "fail",
+  "summary": "Test only verifies reviewProjectID is set but does not verify DiffModel.refresh() is called or that Git status summary is actually displayed for that project",
+  "timestamp": "2026-08-31T21:43:33.410Z"
+}

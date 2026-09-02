@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.1.1--478000b9ced4",
+  "requirementId": "REQ-008.1.1",
+  "hash": "478000b9ced4",
+  "verdict": "pass",
+  "summary": "Immediate lifecycle, repeated-input, gated-pending, and failure/restoration assertions reject empty, nondeterministic, or prematurely replaced fallbacks.",
+  "timestamp": "2026-08-11T03:00:04.223Z"
+}

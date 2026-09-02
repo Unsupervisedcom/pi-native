@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.2--3106b99e38cf",
+  "requirementId": "REQ-010.3.2",
+  "hash": "3106b99e38cf",
+  "verdict": "pass",
+  "summary": "Test calls the real production PostHogAnalyticsClient.configuration factory (no mocking) and asserts errorTrackingConfig.autoCapture is false, which the vendored PostHog SDK confirms is the exact flag gating installation of the exception-autocapture integration, so it fails if that flag were flipped true.",
+  "timestamp": "2026-08-19T21:44:20.254Z"
+}

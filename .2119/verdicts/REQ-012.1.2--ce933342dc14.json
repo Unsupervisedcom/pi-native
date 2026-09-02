@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.2--ce933342dc14",
+  "requirementId": "REQ-012.1.2",
+  "hash": "ce933342dc14",
+  "verdict": "pass",
+  "summary": "Test selects a session in one project then opens Pending Changes via context-menu action for a different project, and asserts selectedProjectID/selectedSessionID are unchanged; implementation confirmed to only touch reviewProjectID/right-pane state, so a regression reintroducing selection-following would fail this test.",
+  "timestamp": "2026-08-31T21:49:30.959Z"
+}

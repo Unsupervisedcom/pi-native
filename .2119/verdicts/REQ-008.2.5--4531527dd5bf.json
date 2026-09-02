@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.2.5--4531527dd5bf",
+  "requirementId": "REQ-008.2.5",
+  "hash": "4531527dd5bf",
+  "verdict": "pass",
+  "summary": "Genuine verification: unit test rejects exact/case/whitespace/newline matches; lifecycle test confirms system honors rejection",
+  "timestamp": "2026-08-11T04:25:15.300Z"
+}

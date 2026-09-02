@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.6.6--e3f1777f09e7",
+  "requirementId": "REQ-003.6.6",
+  "hash": "e3f1777f09e7",
+  "verdict": "pass",
+  "summary": "Quick-chat output is appended only to the active quick chat transcript; the test proves the same delta does not appear in other quick chats or project chats after selection changes.",
+  "timestamp": "2026-08-04T21:58:10.244Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.1.8--e6d96e1cf28a",
+  "requirementId": "REQ-007.1.8",
+  "hash": "e6d96e1cf28a",
+  "verdict": "pass",
+  "summary": "Models UI test drives a failing Pi catalog process and asserts the Models pane shows the failed catalog state title.",
+  "timestamp": "2026-08-10T17:49:19.679Z"
+}

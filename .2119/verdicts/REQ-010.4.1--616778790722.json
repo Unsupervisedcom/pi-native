@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.4.1--616778790722",
+  "requirementId": "REQ-010.4.1",
+  "hash": "616778790722",
+  "verdict": "pass",
+  "summary": "Real-subprocess tests confirm exactly one pi_load_failed for process-start (no retry) and session-load-after-failed-retry, zero events when retry recovers (rejects premature reporting), and zero events while analytics disabled; array-equality assertions and fulfillment timeouts genuinely reject double-report, no-report, and premature-report counterexamples.",
+  "timestamp": "2026-08-18T04:16:22.023Z"
+}

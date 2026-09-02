@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.1--0081fa9e9313",
+  "requirementId": "REQ-010.5.1",
+  "hash": "0081fa9e9313",
+  "verdict": "fail",
+  "summary": "Over-mocking: testFailedPromptReportsSanitizedHandledException and testFailedModelAndEffortSelectionsReportTheirSanitizedAreas create PiConversationModel directly and manually install onHandledPiOperationFailure callbacks, bypassing AppModel.installRuntimeCallbacks (line 1060), the production wiring; deleting that wiring would not fail those tests; need end-to-end test using AppModel to create runtime with installed callbacks, then trigger real failures",
+  "timestamp": "2026-08-18T04:11:15.290Z"
+}

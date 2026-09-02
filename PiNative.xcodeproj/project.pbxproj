@@ -1,0 +1,202 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B10000000000000000000001 /* PiNativeUITestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10000000000000000000002 /* PiNativeUITestCase.swift */; };
+		C10000000000000000000001 /* ProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000002 /* ProjectUITests.swift */; };
+		C10000000000000000000003 /* ShellChromeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000004 /* ShellChromeUITests.swift */; };
+		C10000000000000000000005 /* NewChatUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000006 /* NewChatUITests.swift */; };
+		C10000000000000000000007 /* PromoteToProjectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000008 /* PromoteToProjectUITests.swift */; };
+		C10000000000000000000009 /* ConversationNavigationUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000010 /* ConversationNavigationUITests.swift */; };
+		C10000000000000000000011 /* ChatReadinessUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000012 /* ChatReadinessUITests.swift */; };
+		C10000000000000000000013 /* ActiveWorkUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000014 /* ActiveWorkUITests.swift */; };
+		C10000000000000000000015 /* ModelSettingsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000016 /* ModelSettingsUITests.swift */; };
+		B20000000000000000000001 /* AttachmentSupportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000002 /* AttachmentSupportTests.swift */; };
+		B20000000000000000000051 /* ComposerPromptHistoryUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000052 /* ComposerPromptHistoryUnitTests.swift */; };
+		B20000000000000000000053 /* ComposerPromptHistoryMountedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000054 /* ComposerPromptHistoryMountedTests.swift */; };
+		B20000000000000000000020 /* StopButtonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000021 /* StopButtonTests.swift */; };
+		B20000000000000000000040 /* PromoteToProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000041 /* PromoteToProjectTests.swift */; };
+		B20000000000000000000044 /* AppModelConversationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000045 /* AppModelConversationTests.swift */; };
+		B20000000000000000000046 /* ConversationRestorationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000047 /* ConversationRestorationTests.swift */; };
+		B20000000000000000000042 /* ParallelRuntimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000043 /* ParallelRuntimeTests.swift */; };
+		B20000000000000000000030 /* ChatReadinessTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B20000000000000000000031 /* ChatReadinessTests.swift */; };
+		C91A821BBD8FC19135EFCBCA /* PiNativeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C84606F68DFF82AAD6188CA7 /* PiNativeApp.swift */; };
+		94A8D39EFF7FB95895DA2429 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CBE4FCD8A524D79E75AB937 /* AppModel.swift */; };
+		0A05B88A079DBE985586E196 /* MainWindowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CB86D6D5E6DF695BBFC4648 /* MainWindowView.swift */; };
+		48688F523F9A83A0E9442735 /* ProjectSidebarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D3854512F688EC89284C386 /* ProjectSidebarView.swift */; };
+		5276C82553DEF1BA0318E7F2 /* ChatPaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0FAB1DF804CEE1B91D9B4C /* ChatPaneView.swift */; };
+		B6B0755D2911C382985AF503 /* ExtensionsPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639F8CF536299A8279E3BDF3 /* ExtensionsPageView.swift */; };
+		F9929FC807AAF9F82196B366 /* PiRPCClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37BDA846F2D5F231576CC31A /* PiRPCClient.swift */; };
+		H10000000000000000000001 /* PiHealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = H10000000000000000000002 /* PiHealth.swift */; };
+		H20000000000000000000001 /* PiStartupHealthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = H20000000000000000000002 /* PiStartupHealthTests.swift */; };
+		H30000000000000000000001 /* PiStartupHealthUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = H30000000000000000000002 /* PiStartupHealthUITests.swift */; };
+		235685A27DDE01B5D736BB3C /* ExtensionsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39174CAEDA0A24BA7426D974 /* ExtensionsModel.swift */; };
+		A11111111111111111111111 /* PiConversationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A22222222222222222222222 /* PiConversationModel.swift */; };
+		A33333333333333333333333 /* PiConversationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A44444444444444444444444 /* PiConversationView.swift */; };
+		4A910114936B41909D5C475F /* ResizableDividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B6CCA67BBC5465080FDEDA3 /* ResizableDividerView.swift */; };
+		B2CF10EA35FC4681BB02C530 /* ComingSoonPane.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E66A9D075FC494B888EB403 /* ComingSoonPane.swift */; };
+		8DAC23A1E9A942EFB74071DB /* RightPaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83244A51E66C4FB7B47C044E /* RightPaneView.swift */; };
+		C8BCB535833E41F6AD37358B /* BrowserPaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF1D997813F7495191EA5BAA /* BrowserPaneView.swift */; };
+		9A1111111111111111111111 /* NewChatStartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2222222222222222222222 /* NewChatStartView.swift */; };
+		9A3333333333333333333333 /* WindowChromeConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4444444444444444444444 /* WindowChromeConfigurator.swift */; };
+		9A5555555555555555555555 /* MapleFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6666666666666666666666 /* MapleFont.swift */; };
+		1D2E3F4A5B6C7D8E9F001122 /* DiffPaneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D3E4F5A6B7C8D9E0F112233 /* DiffPaneView.swift */; };
+		AC1000000000000000000001 /* AttachmentSupport.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC1000000000000000000002 /* AttachmentSupport.swift */; };
+		P20000000000000000000001 /* PromoteToProject.swift in Sources */ = {isa = PBXBuildFile; fileRef = P20000000000000000000002 /* PromoteToProject.swift */; };
+		M00000000000000000000001 /* ModelSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = M00000000000000000000002 /* ModelSettingsModel.swift */; };
+		M00000000000000000000003 /* ModelSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = M00000000000000000000004 /* ModelSettingsView.swift */; };
+		M00000000000000000000005 /* SettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = M00000000000000000000006 /* SettingsSection.swift */; };
+		M00000000000000000000007 /* ModelSettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = M00000000000000000000008 /* ModelSettingsTests.swift */; };
+		T10000000000000000000001 /* ChatTitleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = T10000000000000000000002 /* ChatTitleService.swift */; };
+		T20000000000000000000001 /* ChatTitleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = T20000000000000000000002 /* ChatTitleTests.swift */; };
+		PH10000000000000000000001 /* Analytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = PH10000000000000000000002 /* Analytics.swift */; };
+		PH20000000000000000000001 /* AnalyticsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = PH20000000000000000000002 /* AnalyticsTests.swift */; };
+		PH30000000000000000000001 /* PostHog in Frameworks */ = {isa = PBXBuildFile; productRef = PH30000000000000000000002 /* PostHog */; };
+		F0A000000000000000000001 /* MapleMono-NF-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A000000000000000000011 /* MapleMono-NF-Regular.ttf */; };
+		F0A000000000000000000002 /* MapleMono-NF-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A000000000000000000012 /* MapleMono-NF-Bold.ttf */; };
+		F0A000000000000000000003 /* MapleMono-NF-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A000000000000000000013 /* MapleMono-NF-Italic.ttf */; };
+		F0A000000000000000000004 /* MapleMono-NF-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F0A000000000000000000014 /* MapleMono-NF-BoldItalic.ttf */; };
+		AA1000000000000000000001 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA1000000000000000000002 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		B10000000000000000000002 /* PiNativeUITestCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiNativeUITestCase.swift; sourceTree = "<group>"; };
+		C10000000000000000000002 /* ProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectUITests.swift; sourceTree = "<group>"; };
+		C10000000000000000000004 /* ShellChromeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShellChromeUITests.swift; sourceTree = "<group>"; };
+		C10000000000000000000006 /* NewChatUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatUITests.swift; sourceTree = "<group>"; };
+		C10000000000000000000008 /* PromoteToProjectUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoteToProjectUITests.swift; sourceTree = "<group>"; };
+		C10000000000000000000010 /* ConversationNavigationUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationNavigationUITests.swift; sourceTree = "<group>"; };
+		C10000000000000000000012 /* ChatReadinessUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatReadinessUITests.swift; sourceTree = "<group>"; };
+		C10000000000000000000014 /* ActiveWorkUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveWorkUITests.swift; sourceTree = "<group>"; };
+		C10000000000000000000016 /* ModelSettingsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettingsUITests.swift; sourceTree = "<group>"; };
+		B10000000000000000000003 /* PiNativeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiNativeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B20000000000000000000002 /* AttachmentSupportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentSupportTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000052 /* ComposerPromptHistoryUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerPromptHistoryUnitTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000054 /* ComposerPromptHistoryMountedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposerPromptHistoryMountedTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000021 /* StopButtonTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopButtonTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000041 /* PromoteToProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoteToProjectTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000045 /* AppModelConversationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelConversationTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000047 /* ConversationRestorationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationRestorationTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000043 /* ParallelRuntimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParallelRuntimeTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000031 /* ChatReadinessTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatReadinessTests.swift; sourceTree = "<group>"; };
+		B20000000000000000000003 /* PiNativeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PiNativeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6D94458E85CF86C5F4069DA6 /* PiNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PiNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		C84606F68DFF82AAD6188CA7 /* PiNativeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiNativeApp.swift; sourceTree = "<group>"; };
+		5CBE4FCD8A524D79E75AB937 /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		4CB86D6D5E6DF695BBFC4648 /* MainWindowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindowView.swift; sourceTree = "<group>"; };
+		6D3854512F688EC89284C386 /* ProjectSidebarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectSidebarView.swift; sourceTree = "<group>"; };
+		2E0FAB1DF804CEE1B91D9B4C /* ChatPaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatPaneView.swift; sourceTree = "<group>"; };
+		639F8CF536299A8279E3BDF3 /* ExtensionsPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsPageView.swift; sourceTree = "<group>"; };
+		37BDA846F2D5F231576CC31A /* PiRPCClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiRPCClient.swift; sourceTree = "<group>"; };
+		H10000000000000000000002 /* PiHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiHealth.swift; sourceTree = "<group>"; };
+		H20000000000000000000002 /* PiStartupHealthTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStartupHealthTests.swift; sourceTree = "<group>"; };
+		H30000000000000000000002 /* PiStartupHealthUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiStartupHealthUITests.swift; sourceTree = "<group>"; };
+		39174CAEDA0A24BA7426D974 /* ExtensionsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionsModel.swift; sourceTree = "<group>"; };
+		A22222222222222222222222 /* PiConversationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiConversationModel.swift; sourceTree = "<group>"; };
+		A44444444444444444444444 /* PiConversationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiConversationView.swift; sourceTree = "<group>"; };
+		7B6CCA67BBC5465080FDEDA3 /* ResizableDividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResizableDividerView.swift; sourceTree = "<group>"; };
+		2E66A9D075FC494B888EB403 /* ComingSoonPane.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComingSoonPane.swift; sourceTree = "<group>"; };
+		83244A51E66C4FB7B47C044E /* RightPaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RightPaneView.swift; sourceTree = "<group>"; };
+		EF1D997813F7495191EA5BAA /* BrowserPaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserPaneView.swift; sourceTree = "<group>"; };
+		9A2222222222222222222222 /* NewChatStartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChatStartView.swift; sourceTree = "<group>"; };
+		9A4444444444444444444444 /* WindowChromeConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowChromeConfigurator.swift; sourceTree = "<group>"; };
+		9A6666666666666666666666 /* MapleFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapleFont.swift; sourceTree = "<group>"; };
+		2D3E4F5A6B7C8D9E0F112233 /* DiffPaneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiffPaneView.swift; sourceTree = "<group>"; };
+		AC1000000000000000000002 /* AttachmentSupport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttachmentSupport.swift; sourceTree = "<group>"; };
+		P20000000000000000000002 /* PromoteToProject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromoteToProject.swift; sourceTree = "<group>"; };
+		M00000000000000000000002 /* ModelSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettingsModel.swift; sourceTree = "<group>"; };
+		M00000000000000000000004 /* ModelSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettingsView.swift; sourceTree = "<group>"; };
+		M00000000000000000000006 /* SettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsSection.swift; sourceTree = "<group>"; };
+		M00000000000000000000008 /* ModelSettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSettingsTests.swift; sourceTree = "<group>"; };
+		T10000000000000000000002 /* ChatTitleService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTitleService.swift; sourceTree = "<group>"; };
+		T20000000000000000000002 /* ChatTitleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTitleTests.swift; sourceTree = "<group>"; };
+		PH10000000000000000000002 /* Analytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiNative/Analytics.swift; sourceTree = SOURCE_ROOT; };
+		PH20000000000000000000002 /* AnalyticsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PiNativeTests/AnalyticsTests.swift; sourceTree = SOURCE_ROOT; };
+		PH40000000000000000000001 /* PostHog.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config/PostHog.xcconfig; sourceTree = SOURCE_ROOT; };
+		A4F4E099E55872B7CD055B17 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F0A000000000000000000011 /* MapleMono-NF-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MapleMono-NF-Regular.ttf"; sourceTree = "<group>"; };
+		F0A000000000000000000012 /* MapleMono-NF-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MapleMono-NF-Bold.ttf"; sourceTree = "<group>"; };
+		F0A000000000000000000013 /* MapleMono-NF-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MapleMono-NF-Italic.ttf"; sourceTree = "<group>"; };
+		F0A000000000000000000014 /* MapleMono-NF-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MapleMono-NF-BoldItalic.ttf"; sourceTree = "<group>"; };
+		AA1000000000000000000002 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXContainerItemProxy section */
+		B10000000000000000000006 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = F72EA8FEEDB360C1D0ABE502 /* Project object */; proxyType = 1; remoteGlobalIDString = 7BE44667E9CD6E93E9890B93; remoteInfo = PiNative; };
+		B20000000000000000000006 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = F72EA8FEEDB360C1D0ABE502 /* Project object */; proxyType = 1; remoteGlobalIDString = 7BE44667E9CD6E93E9890B93; remoteInfo = PiNative; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B10000000000000000000004 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		B20000000000000000000004 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		E9C4400B517D8CE9B8454E66 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (PH30000000000000000000001 /* PostHog in Frameworks */,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		E089F906CDE66AC4DE0B4F15 = {isa = PBXGroup; children = (D0E626B11EE2E26B8A53ED03 /* PiNative */, B20000000000000000000005 /* PiNativeTests */, B10000000000000000000005 /* PiNativeUITests */, BD9F9D28A4CE3701DBFE1F16 /* Products */,); sourceTree = "<group>"; };
+		D0E626B11EE2E26B8A53ED03 /* PiNative */ = {isa = PBXGroup; children = (A4F4E099E55872B7CD055B17 /* Info.plist */, C84606F68DFF82AAD6188CA7, 5CBE4FCD8A524D79E75AB937, T10000000000000000000002 /* ChatTitleService.swift */, AC1000000000000000000002, P20000000000000000000002 /* PromoteToProject.swift */, M00000000000000000000002 /* ModelSettingsModel.swift */, M00000000000000000000004 /* ModelSettingsView.swift */, M00000000000000000000006 /* SettingsSection.swift */, 39174CAEDA0A24BA7426D974, 639F8CF536299A8279E3BDF3, 4CB86D6D5E6DF695BBFC4648, A22222222222222222222222, A44444444444444444444444, 37BDA846F2D5F231576CC31A, H10000000000000000000002 /* PiHealth.swift */, 6D3854512F688EC89284C386, 2E0FAB1DF804CEE1B91D9B4C, 83244A51E66C4FB7B47C044E, EF1D997813F7495191EA5BAA, 2D3E4F5A6B7C8D9E0F112233, F0A000000000000000000020 /* Resources */, 0AAD256F0C3440739EFB395D /* Components */,); path = PiNative; sourceTree = "<group>"; };
+		B20000000000000000000005 /* PiNativeTests */ = {isa = PBXGroup; children = (B20000000000000000000002 /* AttachmentSupportTests.swift */, B20000000000000000000052 /* ComposerPromptHistoryUnitTests.swift */, B20000000000000000000054 /* ComposerPromptHistoryMountedTests.swift */, B20000000000000000000021 /* StopButtonTests.swift */, B20000000000000000000031 /* ChatReadinessTests.swift */, H20000000000000000000002 /* PiStartupHealthTests.swift */, B20000000000000000000047 /* ConversationRestorationTests.swift */, B20000000000000000000045 /* AppModelConversationTests.swift */, B20000000000000000000041 /* PromoteToProjectTests.swift */, B20000000000000000000043 /* ParallelRuntimeTests.swift */, M00000000000000000000008 /* ModelSettingsTests.swift */, T20000000000000000000002 /* ChatTitleTests.swift */,); path = PiNativeTests; sourceTree = "<group>"; };
+		B10000000000000000000005 /* PiNativeUITests */ = {isa = PBXGroup; children = (B10000000000000000000002 /* PiNativeUITestCase.swift */, C10000000000000000000002 /* ProjectUITests.swift */, C10000000000000000000004 /* ShellChromeUITests.swift */, C10000000000000000000006 /* NewChatUITests.swift */, C10000000000000000000008 /* PromoteToProjectUITests.swift */, C10000000000000000000010 /* ConversationNavigationUITests.swift */, C10000000000000000000012 /* ChatReadinessUITests.swift */, H30000000000000000000002 /* PiStartupHealthUITests.swift */, C10000000000000000000014 /* ActiveWorkUITests.swift */, C10000000000000000000016 /* ModelSettingsUITests.swift */,); path = PiNativeUITests; sourceTree = "<group>"; };
+		0AAD256F0C3440739EFB395D /* Components */ = {isa = PBXGroup; children = (7B6CCA67BBC5465080FDEDA3 /* ResizableDividerView.swift */, 2E66A9D075FC494B888EB403 /* ComingSoonPane.swift */, 9A2222222222222222222222 /* NewChatStartView.swift */, 9A4444444444444444444444 /* WindowChromeConfigurator.swift */, 9A6666666666666666666666 /* MapleFont.swift */,); path = Components; sourceTree = "<group>"; };
+		F0A000000000000000000020 /* Resources */ = {isa = PBXGroup; children = (AA1000000000000000000002 /* Assets.xcassets */, F0A000000000000000000021 /* Fonts */,); path = Resources; sourceTree = "<group>"; };
+		F0A000000000000000000021 /* Fonts */ = {isa = PBXGroup; children = (F0A000000000000000000011 /* MapleMono-NF-Regular.ttf */, F0A000000000000000000012 /* MapleMono-NF-Bold.ttf */, F0A000000000000000000013 /* MapleMono-NF-Italic.ttf */, F0A000000000000000000014 /* MapleMono-NF-BoldItalic.ttf */,); path = Fonts; sourceTree = "<group>"; };
+		BD9F9D28A4CE3701DBFE1F16 /* Products */ = {isa = PBXGroup; children = (6D94458E85CF86C5F4069DA6 /* PiNative.app */, B20000000000000000000003 /* PiNativeTests.xctest */, B10000000000000000000003 /* PiNativeUITests.xctest */,); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B20000000000000000000008 /* PiNativeTests */ = {isa = PBXNativeTarget; buildConfigurationList = B20000000000000000000011 /* Build configuration list for PBXNativeTarget "PiNativeTests" */; buildPhases = (B20000000000000000000009 /* Sources */, B20000000000000000000004 /* Frameworks */,); buildRules = (); dependencies = (B20000000000000000000007 /* PBXTargetDependency */,); name = PiNativeTests; productName = PiNativeTests; productReference = B20000000000000000000003 /* PiNativeTests.xctest */; productType = "com.apple.product-type.bundle.unit-test"; };
+		B10000000000000000000008 /* PiNativeUITests */ = {isa = PBXNativeTarget; buildConfigurationList = B10000000000000000000011 /* Build configuration list for PBXNativeTarget "PiNativeUITests" */; buildPhases = (B10000000000000000000009 /* Sources */, B10000000000000000000004 /* Frameworks */,); buildRules = (); dependencies = (B10000000000000000000007 /* PBXTargetDependency */,); name = PiNativeUITests; productName = PiNativeUITests; productReference = B10000000000000000000003 /* PiNativeUITests.xctest */; productType = "com.apple.product-type.bundle.ui-testing"; };
+		7BE44667E9CD6E93E9890B93 /* PiNative */ = {isa = PBXNativeTarget; buildConfigurationList = 2B8340D454783DBA0828E039 /* Build configuration list for PBXNativeTarget "PiNative" */; buildPhases = (3B7F5E0625A26093DFD7689A /* Sources */, E9C4400B517D8CE9B8454E66 /* Frameworks */, F0A000000000000000000030 /* Resources */,); buildRules = (); dependencies = (); name = PiNative; packageProductDependencies = (PH30000000000000000000002 /* PostHog */,); productName = PiNative; productReference = 6D94458E85CF86C5F4069DA6 /* PiNative.app */; productType = "com.apple.product-type.application"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		F72EA8FEEDB360C1D0ABE502 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 1600; LastUpgradeCheck = 1600; TargetAttributes = {7BE44667E9CD6E93E9890B93 = {CreatedOnToolsVersion = 16.0;}; B20000000000000000000008 = {CreatedOnToolsVersion = 16.0; TestTargetID = 7BE44667E9CD6E93E9890B93;}; B10000000000000000000008 = {CreatedOnToolsVersion = 16.0; TestTargetID = 7BE44667E9CD6E93E9890B93;};};}; buildConfigurationList = 1E809576EC7518903FED2DB9 /* Build configuration list for PBXProject "PiNative" */; compatibilityVersion = "Xcode 15.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base,); mainGroup = E089F906CDE66AC4DE0B4F15; packageReferences = (PH30000000000000000000003 /* XCRemoteSwiftPackageReference "PostHog" */,); productRefGroup = BD9F9D28A4CE3701DBFE1F16 /* Products */; projectDirPath = ""; projectRoot = ""; targets = (7BE44667E9CD6E93E9890B93 /* PiNative */, B20000000000000000000008 /* PiNativeTests */, B10000000000000000000008 /* PiNativeUITests */,); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		F0A000000000000000000030 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AA1000000000000000000001 /* Assets.xcassets in Resources */, F0A000000000000000000001 /* MapleMono-NF-Regular.ttf in Resources */, F0A000000000000000000002 /* MapleMono-NF-Bold.ttf in Resources */, F0A000000000000000000003 /* MapleMono-NF-Italic.ttf in Resources */, F0A000000000000000000004 /* MapleMono-NF-BoldItalic.ttf in Resources */,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B20000000000000000000009 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B20000000000000000000001 /* AttachmentSupportTests.swift in Sources */, PH20000000000000000000001 /* AnalyticsTests.swift in Sources */, B20000000000000000000051 /* ComposerPromptHistoryUnitTests.swift in Sources */, B20000000000000000000053 /* ComposerPromptHistoryMountedTests.swift in Sources */, B20000000000000000000020 /* StopButtonTests.swift in Sources */, B20000000000000000000030 /* ChatReadinessTests.swift in Sources */, H20000000000000000000001 /* PiStartupHealthTests.swift in Sources */, B20000000000000000000046 /* ConversationRestorationTests.swift in Sources */, B20000000000000000000044 /* AppModelConversationTests.swift in Sources */, B20000000000000000000040 /* PromoteToProjectTests.swift in Sources */, B20000000000000000000042 /* ParallelRuntimeTests.swift in Sources */, M00000000000000000000007 /* ModelSettingsTests.swift in Sources */, T20000000000000000000001 /* ChatTitleTests.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0; };
+		B10000000000000000000009 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (B10000000000000000000001 /* PiNativeUITestCase.swift in Sources */, C10000000000000000000001 /* ProjectUITests.swift in Sources */, C10000000000000000000003 /* ShellChromeUITests.swift in Sources */, C10000000000000000000005 /* NewChatUITests.swift in Sources */, C10000000000000000000007 /* PromoteToProjectUITests.swift in Sources */, C10000000000000000000009 /* ConversationNavigationUITests.swift in Sources */, C10000000000000000000011 /* ChatReadinessUITests.swift in Sources */, H30000000000000000000001 /* PiStartupHealthUITests.swift in Sources */, C10000000000000000000013 /* ActiveWorkUITests.swift in Sources */, C10000000000000000000015 /* ModelSettingsUITests.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0; };
+		3B7F5E0625A26093DFD7689A /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (C91A821BBD8FC19135EFCBCA, PH10000000000000000000001 /* Analytics.swift in Sources */, 94A8D39EFF7FB95895DA2429, AC1000000000000000000001, P20000000000000000000001 /* PromoteToProject.swift in Sources */, 235685A27DDE01B5D736BB3C, B6B0755D2911C382985AF503, 0A05B88A079DBE985586E196, A11111111111111111111111, A33333333333333333333333, F9929FC807AAF9F82196B366, H10000000000000000000001 /* PiHealth.swift in Sources */, 48688F523F9A83A0E9442735, 5276C82553DEF1BA0318E7F2, 4A910114936B41909D5C475F, B2CF10EA35FC4681BB02C530, 8DAC23A1E9A942EFB74071DB, C8BCB535833E41F6AD37358B, 9A1111111111111111111111, 9A3333333333333333333333, 9A5555555555555555555555, 1D2E3F4A5B6C7D8E9F001122, M00000000000000000000001 /* ModelSettingsModel.swift in Sources */, M00000000000000000000003 /* ModelSettingsView.swift in Sources */, M00000000000000000000005 /* SettingsSection.swift in Sources */, T10000000000000000000001 /* ChatTitleService.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B20000000000000000000007 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 7BE44667E9CD6E93E9890B93 /* PiNative */; targetProxy = B20000000000000000000006 /* PBXContainerItemProxy */; };
+		B10000000000000000000007 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 7BE44667E9CD6E93E9890B93 /* PiNative */; targetProxy = B10000000000000000000006 /* PBXContainerItemProxy */; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6FCB229B94C0B28CE87183D1 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ANALYZER_NONNULL = YES; CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_STRICT_OBJC_MSGSEND = YES; ENABLE_TESTABILITY = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_DYNAMIC_NO_PIC = NO; GCC_NO_COMMON_BLOCKS = YES; GCC_OPTIMIZATION_LEVEL = 0; MACOSX_DEPLOYMENT_TARGET = 14.0; MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE; MTL_FAST_MATH = YES; ONLY_ACTIVE_ARCH = YES; SDKROOT = macosx; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
+		2320DED0757D9AD9B92CC20B /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ANALYZER_NONNULL = YES; CLANG_CXX_LANGUAGE_STANDARD = "gnu++20"; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_NS_ASSERTIONS = NO; ENABLE_STRICT_OBJC_MSGSEND = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_NO_COMMON_BLOCKS = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; MTL_ENABLE_DEBUG_INFO = NO; MTL_FAST_MATH = YES; SDKROOT = macosx; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release; };
+		D04CE614603C3656F8EEAE86 /* Debug */ = {isa = XCBuildConfiguration; baseConfigurationReference = PH40000000000000000000001 /* PostHog.xcconfig */; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; ENABLE_HARDENED_RUNTIME = NO; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = PiNative/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks",); MARKETING_VERSION = 0.1; PRODUCT_BUNDLE_IDENTIFIER = com.unsupervised.PiNative; PRODUCT_NAME = PiNative; SWIFT_VERSION = 6.0; VERSIONING_SYSTEM = "apple-generic"; }; name = Debug; };
+		26145F75AB841CD6DF79660F /* Release */ = {isa = XCBuildConfiguration; baseConfigurationReference = PH40000000000000000000001 /* PostHog.xcconfig */; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = "$(PINATIVE_DEVELOPMENT_TEAM)"; ENABLE_HARDENED_RUNTIME = YES; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = PiNative/Info.plist; LD_RUNPATH_SEARCH_PATHS = ("$(inherited)", "@executable_path/../Frameworks",); MARKETING_VERSION = 0.1; PRODUCT_BUNDLE_IDENTIFIER = com.unsupervised.PiNative; PRODUCT_NAME = PiNative; SWIFT_VERSION = 6.0; VERSIONING_SYSTEM = "apple-generic"; }; name = Release; };
+		B20000000000000000000012 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.unsupervised.PiNativeTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 6.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiNative.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PiNative"; }; name = Debug; };
+		B20000000000000000000013 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.unsupervised.PiNativeTests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 6.0; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PiNative.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PiNative"; }; name = Release; };
+		B10000000000000000000012 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.unsupervised.PiNativeUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 6.0; TEST_TARGET_NAME = PiNative; }; name = Debug; };
+		B10000000000000000000013 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {CODE_SIGN_STYLE = Automatic; DEVELOPMENT_TEAM = ""; GENERATE_INFOPLIST_FILE = YES; MACOSX_DEPLOYMENT_TARGET = 14.0; PRODUCT_BUNDLE_IDENTIFIER = com.unsupervised.PiNativeUITests; PRODUCT_NAME = "$(TARGET_NAME)"; SWIFT_VERSION = 6.0; TEST_TARGET_NAME = PiNative; }; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1E809576EC7518903FED2DB9 /* Build configuration list for PBXProject "PiNative" */ = {isa = XCConfigurationList; buildConfigurations = (6FCB229B94C0B28CE87183D1, 2320DED0757D9AD9B92CC20B,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		2B8340D454783DBA0828E039 /* Build configuration list for PBXNativeTarget "PiNative" */ = {isa = XCConfigurationList; buildConfigurations = (D04CE614603C3656F8EEAE86, 26145F75AB841CD6DF79660F,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		B20000000000000000000011 /* Build configuration list for PBXNativeTarget "PiNativeTests" */ = {isa = XCConfigurationList; buildConfigurations = (B20000000000000000000012, B20000000000000000000013,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		B10000000000000000000011 /* Build configuration list for PBXNativeTarget "PiNativeUITests" */ = {isa = XCConfigurationList; buildConfigurations = (B10000000000000000000012, B10000000000000000000013,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		PH30000000000000000000003 /* XCRemoteSwiftPackageReference "PostHog" */ = {isa = XCRemoteSwiftPackageReference; repositoryURL = "https://github.com/PostHog/posthog-ios.git"; requirement = {kind = upToNextMajorVersion; minimumVersion = 3.56.0;}; };
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		PH30000000000000000000002 /* PostHog */ = {isa = XCSwiftPackageProductDependency; package = PH30000000000000000000003 /* XCRemoteSwiftPackageReference "PostHog" */; productName = PostHog; };
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = F72EA8FEEDB360C1D0ABE502 /* Project object */;
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.3--1077223ac8dc",
+  "requirementId": "REQ-010.3.3",
+  "hash": "1077223ac8dc",
+  "verdict": "pass",
+  "summary": "testMissingOrInvalidProjectKeyDisablesAnalyticsWithoutPreventingAppActions exercises real AnalyticsService.init/track with nil and malformed keys, confirms no events reach the client while AppModel actions still succeed, and includes a valid-key positive control proving the mock wiring isn't vacuously disconnected.",
+  "timestamp": "2026-08-19T21:41:32.990Z"
+}

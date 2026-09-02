@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--d52470811c50",
+  "requirementId": "REQ-012.1.1",
+  "hash": "d52470811c50",
+  "verdict": "pass",
+  "summary": "UI test (ProjectUITests.testProjectDiffPillOpensGitDiffPane) drives a real git repo and asserts branch/file/added/deleted content actually renders after clicking the project-specific diffPill; unit test (testShowPendingChangesOpensProjectReviewWithoutChangingSelectedConversation) uses two distinct projects to confirm the summary shown is tied to the clicked project's ID/path, not the currently-selected one. No mocking of the git-status rendering path, no tautological or keyword-only assertions found.",
+  "timestamp": "2026-08-31T21:49:18.993Z"
+}

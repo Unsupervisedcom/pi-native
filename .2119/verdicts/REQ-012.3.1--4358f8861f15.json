@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.3.1--4358f8861f15",
+  "requirementId": "REQ-012.3.1",
+  "hash": "4358f8861f15",
+  "verdict": "pass",
+  "summary": "Test drives a real git repo through two DiffModel.refresh() calls on the same path and asserts the second summary reflects the new git state (staged.txt removed, tracked.txt stats updated) with no duplicate tracked.txt entry, genuinely catching both a no-op refresh and an append-instead-of-replace bug; DiffModel.refresh assigns self.summary = summary wholesale from a fresh git status/diff read, confirming the test isn't tautological or over-mocked.",
+  "timestamp": "2026-08-31T21:55:12.555Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.4.1--48cb517f7a3e",
+  "requirementId": "REQ-002.4.1",
+  "hash": "48cb517f7a3e",
+  "verdict": "fail",
+  "summary": "Test 1 does not verify project added to appModel.projects collection; checks only selectedProjectID/selectedProject computed properties, insufficient for 'add' path",
+  "timestamp": "2026-08-11T05:00:34.601Z"
+}

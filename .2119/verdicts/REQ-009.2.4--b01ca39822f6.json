@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.2.4--b01ca39822f6",
+  "requirementId": "REQ-009.2.4",
+  "hash": "b01ca39822f6",
+  "verdict": "pass",
+  "summary": "Mounted composer tests prove user text edits, pasted attachment additions, and attachment removals end active browsing by rejecting the next older-history traversal, while selection-only movement remains browseable.",
+  "timestamp": "2026-08-11T00:28:22.973Z"
+}

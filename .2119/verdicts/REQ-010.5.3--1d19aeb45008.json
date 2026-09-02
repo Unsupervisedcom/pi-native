@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.3--1d19aeb45008",
+  "requirementId": "REQ-010.5.3",
+  "hash": "1d19aeb45008",
+  "verdict": "fail",
+  "summary": "Tests verify positive cases only; missing counterexample tests that would fail if area/failure_kind values outside the allowed taxonomies appeared, or if extra properties were added to the event—'only' constraint untested",
+  "timestamp": "2026-08-18T03:49:46.430Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.3--d73efdde4fc2",
+  "requirementId": "REQ-009.3.3",
+  "hash": "d73efdde4fc2",
+  "verdict": "pass",
+  "summary": "Three tests verify starting browsing after chat switch recalls most recent user message; counterexamples for second-newest, wrong-chat history, non-user messages, and stale browsing state all rejected",
+  "timestamp": "2026-08-11T21:24:37.421Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.3.2--c05f7806323f",
+  "requirementId": "REQ-013.3.2",
+  "hash": "c05f7806323f",
+  "verdict": "fail",
+  "summary": "Test only exercises standalone/Quick Chat archive+restore persistence across relaunch (AppModel() reload); project-scoped chat archiving uses a distinct, more complex persistence path (persistProjectSessions + disk-session merge) that is completely untested for relaunch persistence, so a regression there (e.g. project session reverting to unarchived after relaunch) would go undetected.",
+  "timestamp": "2026-08-31T22:06:53.482Z"
+}

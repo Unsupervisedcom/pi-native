@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.2--161ec18e9754",
+  "requirementId": "REQ-003.4.2",
+  "hash": "161ec18e9754",
+  "verdict": "pass",
+  "summary": "Test confirms in-flight work (agent_start) does not block project selection; assertion verifies both project/session switched successfully and original chat remained running",
+  "timestamp": "2026-08-11T00:15:53.336Z"
+}

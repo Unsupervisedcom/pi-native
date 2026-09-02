@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.2--74b00767b2e5",
+  "requirementId": "REQ-002.1.2",
+  "hash": "74b00767b2e5",
+  "verdict": "pass",
+  "summary": "Filesystem and persisted-Settings tests catch wrong-root, non-normalized-slug, missing-directory, and destructive-reuse failures.",
+  "timestamp": "2026-08-05T21:50:23.204Z"
+}

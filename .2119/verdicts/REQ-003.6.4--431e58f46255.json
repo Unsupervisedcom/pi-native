@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.6.4--431e58f46255",
+  "requirementId": "REQ-003.6.4",
+  "hash": "431e58f46255",
+  "verdict": "pass",
+  "summary": "ParallelRuntimeTests verifies draft isolation across project chats and multiple Quick Chats; switching sessions must preserve each chat’s own draft and would fail on leakage.",
+  "timestamp": "2026-08-04T21:56:10.854Z"
+}

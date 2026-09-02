@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.5.2--a7781ed0bec7",
+  "requirementId": "REQ-007.5.2",
+  "hash": "a7781ed0bec7",
+  "verdict": "pass",
+  "summary": "Effort popover is driven by get_available_thinking_levels for the switched conversation and rejects stale/default levels.",
+  "timestamp": "2026-08-10T18:03:29.125Z"
+}

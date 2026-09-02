@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.2--8535818ea10a",
+  "requirementId": "REQ-012.1.2",
+  "hash": "8535818ea10a",
+  "verdict": "pass",
+  "summary": "Test creates counterexample (showPendingChanges on different project) and verifies selected conversation IDs remain unchanged",
+  "timestamp": "2026-08-31T21:55:37.726Z"
+}

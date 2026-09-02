@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.1.4--3b89b34b7f61",
+  "requirementId": "REQ-011.1.4",
+  "hash": "3b89b34b7f61",
+  "verdict": "pass",
+  "summary": "Test genuinely spawns the resolved NVM pi via PiRPCClient and asserts a real get_state RPC success, with a broken older-version directory as a negative control that would fail if the wrong/mismatched NVM dir or PATH were used.",
+  "timestamp": "2026-08-19T19:54:15.190Z"
+}

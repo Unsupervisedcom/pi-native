@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--dc21124dc79b",
+  "requirementId": "REQ-012.2.2",
+  "hash": "dc21124dc79b",
+  "verdict": "pass",
+  "summary": "Model test confirms distinct no-project/clean/failure states and UI tests (loading/no-project/clean/failure) each assert their unique status text plus absence of the 'Files' populated-summary label, giving real behavioral coverage against collapsing states into a populated summary.",
+  "timestamp": "2026-08-31T22:47:41.734Z"
+}

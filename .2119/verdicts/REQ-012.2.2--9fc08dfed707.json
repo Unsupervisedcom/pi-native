@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--9fc08dfed707",
+  "requirementId": "REQ-012.2.2",
+  "hash": "9fc08dfed707",
+  "verdict": "pass",
+  "summary": "Four real XCUITest UI tests (no-project, initial-loading via deterministic FIFO gate, clean-working-tree, git-failure) each assert their unique state-specific text and explicitly assert absence of the 'Files' stat label that only appears in the populated-summary rendering (confirmed by the sibling populated-state test), genuinely rejecting the counterexample of any state leaking into a populated status summary; loading state is gated by a FIFO rather than a timing hack, avoiding flakiness.",
+  "timestamp": "2026-08-31T23:16:24.409Z"
+}

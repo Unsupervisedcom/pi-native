@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.4.3--351584658816",
+  "requirementId": "REQ-007.4.3",
+  "hash": "351584658816",
+  "verdict": "pass",
+  "summary": "ModelSettingsUITests opens the production composer popover and verifies Select Favorites exists as a labeled button below both favorite model rows.",
+  "timestamp": "2026-08-10T17:56:44.538Z"
+}

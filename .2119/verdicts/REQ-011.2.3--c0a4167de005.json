@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.2.3--c0a4167de005",
+  "requirementId": "REQ-011.2.3",
+  "hash": "c0a4167de005",
+  "verdict": "pass",
+  "summary": "testRealHealthResultsPreserveAttentionThenClearAfterHealthyStateResponse drives PiHealthChecker.check against a real fake-pi subprocess RPC exchange (not a mock), first observing an attention response set piHealthIssue, then a genuine successful get_state response with no attention event clears it to nil; sibling tests confirm failure/timeout/exit paths never produce .healthy, so AppModel's unconditional clear-on-.healthy branch cannot spuriously fire on those inputs.",
+  "timestamp": "2026-08-19T19:56:45.961Z"
+}

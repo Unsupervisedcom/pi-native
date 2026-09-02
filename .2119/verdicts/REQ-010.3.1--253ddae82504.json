@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.3.1--253ddae82504",
+  "requirementId": "REQ-010.3.1",
+  "hash": "253ddae82504",
+  "verdict": "pass",
+  "summary": "Load-bearing tests (testSubmittedPromptReportsNoPromptContent, testDiagnosticEventsRejectSensitiveRawErrorText) exercise real production code with hostile content covering all 9 forbidden categories via the only two real injection vectors (prompt flow; raw-error classification); minor non-blocking gaps: one test mistagged (asserts failureKind taxonomy, not properties), attachment leak only indirectly covered, model/provider token generic.",
+  "timestamp": "2026-08-19T21:37:24.545Z"
+}

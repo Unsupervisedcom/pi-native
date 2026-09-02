@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.4.2--7693f80af00d",
+  "requirementId": "REQ-010.4.2",
+  "hash": "7693f80af00d",
+  "verdict": "pass",
+  "summary": "Exact equality checks enforce 'only' constraint; allCases verification ensures failure kinds match enumerated list; both project/standalone derivation tested",
+  "timestamp": "2026-08-18T03:56:09.935Z"
+}

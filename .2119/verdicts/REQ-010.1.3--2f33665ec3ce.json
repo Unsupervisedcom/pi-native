@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.3--2f33665ec3ce",
+  "requirementId": "REQ-010.1.3",
+  "hash": "2f33665ec3ce",
+  "verdict": "pass",
+  "summary": "Both annotated tests exercise real production wiring (AppModel.sendNewChatPrompt for new chats, PiConversationModel.sendDraft via the installed onPromptSubmitted callback for existing chats) through the real AnalyticsService gating logic with only the PostHog client mocked; exact-array equality catches missing/duplicate events and confirms empty properties, and the enabled/disabled conjunct is exercised directly in the new-chat test and consistently elsewhere for the shared gate.",
+  "timestamp": "2026-08-19T21:51:11.850Z"
+}

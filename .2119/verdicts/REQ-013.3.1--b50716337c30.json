@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.3.1--b50716337c30",
+  "requirementId": "REQ-013.3.1",
+  "hash": "b50716337c30",
+  "verdict": "pass",
+  "summary": "Both archive and restore directions assert real equality on all 5 conjuncts (id-based lookup for identity, array-membership checks for project/Quick association, filePath equality, cachedTranscript equality, isPinned equality covering both true/false), against real Session structs with no mocking; each is a genuine counterexample-rejecting check given Session.id is immutable and archive/unarchive mutate the struct in place.",
+  "timestamp": "2026-08-31T22:12:58.958Z"
+}

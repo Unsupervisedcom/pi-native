@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.1--a38bda8bbda1",
+  "requirementId": "REQ-002.1.1",
+  "hash": "a38bda8bbda1",
+  "verdict": "pass",
+  "summary": "The UI test promotes a live projectless chat after editing only the project-name field and rejects failures to create and land in a distinct project-scoped chat; the model test independently confirms the handoff session is newly created and belongs to the promoted project.",
+  "timestamp": "2026-08-05T21:24:13.168Z"
+}

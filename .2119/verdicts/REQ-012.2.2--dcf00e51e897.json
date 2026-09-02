@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.2--dcf00e51e897",
+  "requirementId": "REQ-012.2.2",
+  "hash": "dcf00e51e897",
+  "verdict": "pass",
+  "summary": "All four states (no-project, loading, clean, failure) verified as distinct through both unit state assertions and UI presentation checks; each rejects populated-summary presentation",
+  "timestamp": "2026-08-31T22:12:27.772Z"
+}

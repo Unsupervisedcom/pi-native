@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.1--1ed06da41e5a",
+  "requirementId": "REQ-003.3.1",
+  "hash": "1ed06da41e5a",
+  "verdict": "pass",
+  "summary": "Unit tests reject newer archived/pinned chats and confirm newest visible-unpinned selection by explicit updatedAt (not insertion order) both via in-memory model and real loaded Pi session files; UI test confirms actual chat.title opens correctly while excluding pinned/archived/cross-project traps.",
+  "timestamp": "2026-08-31T20:37:34.771Z"
+}

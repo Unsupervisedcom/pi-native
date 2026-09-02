@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.3.5--46530dbaefd2",
+  "requirementId": "REQ-007.3.5",
+  "hash": "46530dbaefd2",
+  "verdict": "pass",
+  "summary": "Unit and UI tests preserve a stale favorite when the loaded catalog omits it, then assert its Models row and Unavailable badge are visible.",
+  "timestamp": "2026-08-10T17:55:42.168Z"
+}

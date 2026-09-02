@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.2.2--2a3559484847",
+  "requirementId": "REQ-013.2.2",
+  "hash": "2a3559484847",
+  "verdict": "pass",
+  "summary": "Test asserts model.selectedSessionID unchanged after unarchiveSession, with a distinct pre-set selected session and real (unmocked) AppModel state — genuine, non-tautological coverage of the MUST NOT criterion.",
+  "timestamp": "2026-08-31T21:56:30.260Z"
+}

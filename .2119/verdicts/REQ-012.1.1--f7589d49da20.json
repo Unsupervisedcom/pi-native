@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--f7589d49da20",
+  "requirementId": "REQ-012.1.1",
+  "hash": "f7589d49da20",
+  "verdict": "pass",
+  "summary": "UI test (ProjectUITests.testProjectDiffPillOpensGitDiffPane) opens Pending Changes via a project-row diff pill and asserts real rendered branch/file/added/deleted content, then switches to a second project's pill and confirms the prior project's file no longer appears -- a genuine rejection of the nearest violation (stale/wrong-project summary); the paired unit test confirms the model routes reviewProjectID to the clicked (non-selected) project rather than the currently selected one. No tautology, unrelated assertions, or excessive mocking found; requirement is a testable observable outcome.",
+  "timestamp": "2026-08-31T23:16:59.099Z"
+}

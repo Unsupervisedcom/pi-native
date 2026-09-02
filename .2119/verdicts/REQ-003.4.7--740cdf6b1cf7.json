@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.7--740cdf6b1cf7",
+  "requirementId": "REQ-003.4.7",
+  "hash": "740cdf6b1cf7",
+  "verdict": "pass",
+  "summary": "Covered by tests that select a different chat while one chat has queued prompt work and another has pending startup work, and assert selection still changes.",
+  "timestamp": "2026-08-04T21:55:37.796Z"
+}

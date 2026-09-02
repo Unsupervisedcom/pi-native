@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.4.7--7c8e097ef827",
+  "requirementId": "REQ-007.4.7",
+  "hash": "7c8e097ef827",
+  "verdict": "pass",
+  "summary": "PiConversationModel.sendDraft and UI send/Return tests reject typed prompts when the active conversation has nil currentModel, preserving draft/transcript state instead of appending or running.",
+  "timestamp": "2026-08-10T17:58:13.834Z"
+}

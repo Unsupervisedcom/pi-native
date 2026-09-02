@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.1.4--9613650b8621",
+  "requirementId": "REQ-002.1.4",
+  "hash": "9613650b8621",
+  "verdict": "fail",
+  "summary": "Missing counterexample: tests don't verify that when a persisted default DOES exist, ~/Projects is not used; test 1 doesn't verify folder creation obligation",
+  "timestamp": "2026-08-11T04:54:49.558Z"
+}

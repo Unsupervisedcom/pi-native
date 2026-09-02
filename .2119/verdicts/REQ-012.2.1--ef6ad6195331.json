@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.1--ef6ad6195331",
+  "requirementId": "REQ-012.2.1",
+  "hash": "ef6ad6195331",
+  "verdict": "pass",
+  "summary": "testDiffModelParsesPendingGitWorkAndRefreshReplacesResult uses a real git repo with staged (staged.txt), unstaged (tracked.txt), and untracked (new.txt) changes and asserts branchLine, per-file status/additions/deletions for each, plus aggregate changedFileCount/additions/deletions summing across all three categories — genuinely fails if branch context, any per-path status, or any category is dropped from the aggregate.",
+  "timestamp": "2026-08-31T21:55:22.793Z"
+}

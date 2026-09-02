@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.3--fb1733dade18",
+  "requirementId": "REQ-003.5.3",
+  "hash": "fb1733dade18",
+  "verdict": "pass",
+  "summary": "UI test stops an active delayed turn, verifies composer accepts later typed text, and confirms Send posts that later prompt.",
+  "timestamp": "2026-08-10T18:19:30.095Z"
+}

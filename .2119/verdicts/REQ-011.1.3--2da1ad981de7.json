@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.1.3--2da1ad981de7",
+  "requirementId": "REQ-011.1.3",
+  "hash": "2da1ad981de7",
+  "verdict": "pass",
+  "summary": "testOfficialInstallerFallbacksResolveUserLocalAndStandaloneNodeInstalls genuinely exercises real PiExecutableResolver.resolve() with a nil login-shell closure (the 'does not resolve it' premise) and real executable files at both documented installer layouts (~/.local/bin/pi and ~/.local/share/pi-node/current/bin/pi), asserting exact executable/PATH equality; breaking the installer fallback would fail the test. Minor untested edge: a non-nil-but-non-executable shell resolution (stale 'which pi') isn't separately exercised, but the core precondition/outcome is genuinely verified.",
+  "timestamp": "2026-08-19T19:54:09.949Z"
+}

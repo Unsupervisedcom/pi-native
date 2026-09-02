@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--706cbc137cbb",
+  "requirementId": "REQ-012.1.1",
+  "hash": "706cbc137cbb",
+  "verdict": "pass",
+  "summary": "UI test (diffPill) verifies real git-computed branch/file content is displayed, and AppModel test verifies the review targets the clicked project (not the selected one); together genuinely cover 'display Git status summary for that project'.",
+  "timestamp": "2026-08-31T22:08:29.011Z"
+}

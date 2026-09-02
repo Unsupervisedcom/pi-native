@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.2.2--46c89c11b0b1",
+  "requirementId": "REQ-007.2.2",
+  "hash": "46c89c11b0b1",
+  "verdict": "pass",
+  "summary": "Search filtering is exercised for provider ID, model ID, and display name with case-insensitive substring queries, so a violation would fail these assertions.",
+  "timestamp": "2026-08-05T19:59:31.764Z"
+}

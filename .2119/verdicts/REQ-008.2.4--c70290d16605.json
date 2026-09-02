@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.2.4--c70290d16605",
+  "requirementId": "REQ-008.2.4",
+  "hash": "c70290d16605",
+  "verdict": "pass",
+  "summary": "Test genuinely verifies that accepted semantic titles persist to UserDefaults and survive app relaunch via fresh AppModel instantiation reading restored session name and automaticTitleState.",
+  "timestamp": "2026-08-11T01:17:35.028Z"
+}

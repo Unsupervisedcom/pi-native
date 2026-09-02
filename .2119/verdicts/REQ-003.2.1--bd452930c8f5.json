@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.2.1--bd452930c8f5",
+  "requirementId": "REQ-003.2.1",
+  "hash": "bd452930c8f5",
+  "verdict": "pass",
+  "summary": "Project row UI test clicks production project.row samples outside visible trailing controls and observes chat.title selecting the project chat.",
+  "timestamp": "2026-08-10T17:31:22.278Z"
+}

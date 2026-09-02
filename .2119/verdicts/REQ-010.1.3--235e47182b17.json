@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.3--235e47182b17",
+  "requirementId": "REQ-010.1.3",
+  "hash": "235e47182b17",
+  "verdict": "pass",
+  "summary": "Test genuinely verifies prompt_submitted event is reported when analytics are enabled and a prompt is submitted; includes negative boundary test for disabled state; not tautological or over-mocked",
+  "timestamp": "2026-08-18T03:55:44.575Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.2.2--abb9ddd8b72c",
+  "requirementId": "REQ-008.2.2",
+  "hash": "abb9ddd8b72c",
+  "verdict": "pass",
+  "summary": "Tests verify first exchange content is included and later exchanges are excluded via RPC arguments and snapshot inspection",
+  "timestamp": "2026-08-11T19:45:29.574Z"
+}

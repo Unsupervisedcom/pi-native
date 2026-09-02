@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.5--d08d3b491895",
+  "requirementId": "REQ-010.1.5",
+  "hash": "d08d3b491895",
+  "verdict": "fail",
+  "summary": "Test does not verify that right_pane_opened events are NOT reported when analytics are disabled; no openRightPane/selectRightPaneMode calls after setEnabled(false)",
+  "timestamp": "2026-08-18T03:42:37.611Z"
+}

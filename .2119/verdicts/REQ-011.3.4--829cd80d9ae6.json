@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-011.3.4--829cd80d9ae6",
+  "requirementId": "REQ-011.3.4",
+  "hash": "829cd80d9ae6",
+  "verdict": "pass",
+  "summary": "Three tests cover all without-successful-invocation cases (never invoked, failed, wrong revision); assertions verify issue remains visible and no recheck occurs; REQ-011.3.3 proves inverse behavior.",
+  "timestamp": "2026-09-01T20:11:15.339Z"
+}

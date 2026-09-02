@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.3--4ae6db78a733",
+  "requirementId": "REQ-010.5.3",
+  "hash": "4ae6db78a733",
+  "verdict": "fail",
+  "summary": "No rejected counterexample for 'only' boundary: tests don't verify that handled_exception cannot produce process_lifecycle or launch_failed failure kinds",
+  "timestamp": "2026-08-18T03:58:41.689Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-002.3.3--1e0af3f907da",
+  "requirementId": "REQ-002.3.3",
+  "hash": "1e0af3f907da",
+  "verdict": "fail",
+  "summary": "Registration conjunct not tested in retry context; only tests completePromotion idempotency separately. Marker file preservation not verified.",
+  "timestamp": "2026-08-11T04:57:57.998Z"
+}

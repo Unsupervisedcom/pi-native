@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.1.5--d32ba63b7cfb",
+  "requirementId": "REQ-010.1.5",
+  "hash": "d32ba63b7cfb",
+  "verdict": "pass",
+  "summary": "Genuine: exercises real openRightPane/selectRightPaneMode actions, verifies event name/pane property, covers enabled/disabled states, exact assertion prevents spurious events",
+  "timestamp": "2026-08-18T03:46:44.293Z"
+}

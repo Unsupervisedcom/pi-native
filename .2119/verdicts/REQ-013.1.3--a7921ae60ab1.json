@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.1.3--a7921ae60ab1",
+  "requirementId": "REQ-013.1.3",
+  "hash": "a7921ae60ab1",
+  "verdict": "pass",
+  "summary": "testArchivedChatsListAndRestorePreserveSelectionAndMetadata sets selectedSessionID via select() before calling openRightPane(.archivedChats), which only sets isRightPaneOpen/rightPaneMode (verified in AppModel.swift openRightPane/selectRightPaneMode has no selection-mutating code), then asserts selectedSessionID is unchanged -- a genuine, non-tautological rejection test that would fail if opening the pane cleared or reassigned the selection.",
+  "timestamp": "2026-08-31T21:56:11.980Z"
+}

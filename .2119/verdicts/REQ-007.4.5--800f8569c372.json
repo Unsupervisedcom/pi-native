@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.4.5--800f8569c372",
+  "requirementId": "REQ-007.4.5",
+  "hash": "800f8569c372",
+  "verdict": "pass",
+  "summary": "Selecting an available favorite row drives selectModel and changes the active model from a different initial model to that favorite.",
+  "timestamp": "2026-08-10T17:58:28.852Z"
+}

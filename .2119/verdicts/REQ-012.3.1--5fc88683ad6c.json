@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.3.1--5fc88683ad6c",
+  "requirementId": "REQ-012.3.1",
+  "hash": "5fc88683ad6c",
+  "verdict": "fail",
+  "summary": "Test only re-reads the same 3 changed paths with updated stats; it never covers a file dropping out of the changed set between refreshes, so a merge/upsert-by-path regression (instead of a true replace of the displayed result) would still pass.",
+  "timestamp": "2026-08-31T21:51:12.164Z"
+}

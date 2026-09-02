@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-007.5.3--cbc101660556",
+  "requirementId": "REQ-007.5.3",
+  "hash": "cbc101660556",
+  "verdict": "pass",
+  "summary": "UI test selects an effort row and verifies both the current picker value and fake Pi RPC set_thinking_level state switch.",
+  "timestamp": "2026-08-10T18:03:29.005Z"
+}

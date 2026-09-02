@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.4--a5e7834beb87",
+  "requirementId": "REQ-003.5.4",
+  "hash": "a5e7834beb87",
+  "verdict": "pass",
+  "summary": "Selected-chat stop is exercised directly and the test asserts the other in-flight chat keeps running while only the selected chat stops.",
+  "timestamp": "2026-08-04T21:55:58.738Z"
+}

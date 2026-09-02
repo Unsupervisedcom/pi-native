@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.3.3--94c4063f2eb4",
+  "requirementId": "REQ-001.3.3",
+  "hash": "94c4063f2eb4",
+  "verdict": "pass",
+  "summary": "Empty/whitespace attachment-only drafts are unwrapped as prepared prompts for file, image, and mixed attachments.",
+  "timestamp": "2026-07-22T18:42:59.793Z"
+}

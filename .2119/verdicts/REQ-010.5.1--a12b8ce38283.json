@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-010.5.1--a12b8ce38283",
+  "requirementId": "REQ-010.5.1",
+  "hash": "a12b8ce38283",
+  "verdict": "pass",
+  "summary": "testMissingOrInvalidProjectKeyDisablesAnalyticsWithoutPreventingAppActions covers both nil and non-phc_-prefixed keys, asserts zero events reach the injected client while a contrasting configured key does emit one, and proves continued operation via post-track state mutations (rightPaneMode); testFailedPromptReportsHandledExceptionOnlyWhenAnalyticsAreConfigured strengthens the 'continue to operate' conjunct with a real subprocess Pi RPC session that completes its full start/prompt/failure lifecycle under a nil key. Not tautological or over-mocked: isConfigured gating is real production code, and a buggy gate or a halted/crashed action path would fail these tests.",
+  "timestamp": "2026-08-19T22:26:37.779Z"
+}

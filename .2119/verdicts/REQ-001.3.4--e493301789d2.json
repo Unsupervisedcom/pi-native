@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.3.4--e493301789d2",
+  "requirementId": "REQ-001.3.4",
+  "hash": "e493301789d2",
+  "verdict": "pass",
+  "summary": "Empty and whitespace-only drafts with no attachments are asserted to prepare nil, the sendability gate.",
+  "timestamp": "2026-07-22T18:31:42.070Z"
+}
