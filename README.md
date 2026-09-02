@@ -1,5 +1,9 @@
 # PiNative
 
+[![CI](https://github.com/Unsupervisedcom/pi-native/actions/workflows/ci.yml/badge.svg)](https://github.com/Unsupervisedcom/pi-native/actions/workflows/ci.yml)
+[![UI Tests](https://github.com/Unsupervisedcom/pi-native/actions/workflows/ui-tests.yml/badge.svg)](https://github.com/Unsupervisedcom/pi-native/actions/workflows/ui-tests.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
 PiNative is a native macOS GUI for [Pi](https://pi.dev), the terminal coding-agent harness. It keeps Pi as the agent runtime and process engine, then replaces the terminal interface with a polished SwiftUI shell: project sidebar, persistent chat sessions, native transcript rendering, model selection, pending-change review, and a compose experience designed to feel at home on macOS.
 
 This repository includes the app, its observable requirements, and implementation documentation for the current architecture.
@@ -23,6 +27,7 @@ That means:
 - **Projects and Quick Chats** — organize chats under local project folders or start projectless, planning-only conversations from the Quick Chats section.
 - **Parallel chat runtimes** — keep multiple conversations working independently, each with its own Pi process, transcript, draft, loading state, and scoped Stop control.
 - **Durable sessions** — restore project/chat metadata and cached transcripts immediately across launches, then reconcile them with Pi's canonical session history.
+- **Pi health and recovery** — discover Pi across shell and package-manager installations, validate startup readiness, and offer an actionable Terminal recovery flow when installation, setup, or authentication needs attention.
 - **Rich native composer** — send text, pasted or dropped images, and file references; choose the active model and effort level without leaving the chat.
 - **Promote to Project** — turn a Quick Chat into a guarded project folder with generated context and provenance, then continue in a new project-scoped handoff chat.
 - **Fast native navigation** — use project and chat rows, pinning, archiving/restoration, command-number shortcuts, and responsive hover controls designed for macOS.
@@ -40,6 +45,9 @@ node scripts/serve-code-architecture-walkthrough.mjs
 ```
 
 ## Installation
+
+> [!NOTE]
+> PiNative is under active development and does not yet have a packaged public release. Build it from source using the steps below.
 
 ### Requirements
 
@@ -86,7 +94,11 @@ In practice, install Pi normally and confirm `pi --mode rpc` works in Terminal b
 
 ### Build from the command line
 
+Clone the public repository, then build the app:
+
 ```sh
+git clone https://github.com/Unsupervisedcom/pi-native.git
+cd pi-native
 xcodebuild -project PiNative.xcodeproj -scheme PiNative \
   -configuration Debug -destination 'platform=macOS' build
 ```
@@ -135,6 +147,12 @@ scripts/test-ui-related.sh
 ```
 
 For the full requirements workflow, CI behavior, UI-suite differences, and live-Pi smoke-test notes, see [Requirements and Testing](docs/requirements-and-testing.md).
+
+## Privacy and analytics
+
+Official builds can include optional product analytics and sanitized failure diagnostics. Analytics events use an explicit allowlist and do not include prompts, responses, file paths, session IDs, project names, attachments, provider/model selections, account details, or raw error messages. Automatic exception and crash capture is disabled.
+
+You can turn off **Product analytics** at any time in **Settings → General**. Builds without a configured PostHog project token do not send analytics.
 
 ## Documentation
 
