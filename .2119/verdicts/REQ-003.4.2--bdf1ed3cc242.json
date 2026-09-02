@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.2--bdf1ed3cc242",
+  "requirementId": "REQ-003.4.2",
+  "hash": "bdf1ed3cc242",
+  "verdict": "pass",
+  "summary": "Test starts a running chat in project A, selects a chat in project B, and asserts the selection actually switches (selectedProjectID/selectedSessionID) while project A's conversation remains running — a real behavioral check since select(projectID:) has no running-state guard that could make this pass vacuously.",
+  "timestamp": "2026-09-02T22:28:30.392Z"
+}

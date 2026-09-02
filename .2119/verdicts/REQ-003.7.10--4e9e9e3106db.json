@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.10--4e9e9e3106db",
+  "requirementId": "REQ-003.7.10",
+  "hash": "4e9e9e3106db",
+  "verdict": "pass",
+  "summary": "Tests assert pendingSteering non-empty before and empty only after the matching user-message event arrives, and reject premature clearing by an unrelated user event (original prompt) — genuine, non-tautological coverage of the leave-pending requirement.",
+  "timestamp": "2026-09-02T22:22:35.786Z"
+}

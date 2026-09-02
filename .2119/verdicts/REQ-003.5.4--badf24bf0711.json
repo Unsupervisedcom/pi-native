@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.4--badf24bf0711",
+  "requirementId": "REQ-003.5.4",
+  "hash": "badf24bf0711",
+  "verdict": "pass",
+  "summary": "testTwoChatsCanRunIndependentlyAndStopOnlySelectedChat exercises real stopActiveTurn()/isConversationRunning on two concurrently-running conversations and asserts the non-active chat stays running while only the active one stops — a genuine counterexample check, not mocked or tautological.",
+  "timestamp": "2026-09-02T22:28:54.157Z"
+}

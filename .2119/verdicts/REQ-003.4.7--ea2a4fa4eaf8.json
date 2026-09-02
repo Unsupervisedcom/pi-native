@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.7--ea2a4fa4eaf8",
+  "requirementId": "REQ-003.4.7",
+  "hash": "ea2a4fa4eaf8",
+  "verdict": "pass",
+  "summary": "Test verifies selection actually switches to another chat (selectedSessionID/selectedProjectID change) while a queued-prompt chat and a pending-startup chat both remain in working state; covers both boundary terms (queued prompt, pending startup) with real AppModel state, not mocked-away.",
+  "timestamp": "2026-09-02T22:28:31.084Z"
+}

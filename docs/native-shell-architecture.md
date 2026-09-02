@@ -103,6 +103,13 @@ switching right-pane modes away and back.
 `PiConversationModel.items: [TranscriptItem]` — `.user`, `.assistantText`,
 `.activity(ActivityGroup)`, `.notice`.
 
+`PiConversationModel.pendingSteering: [SteeringMessage]` is ordered, transient
+runtime state for active-turn input. It retains the prepared RPC payload and
+composer/display attachment metadata, but is not persisted as delivered
+history. Pi `message_start` promotes the oldest queued entry into one `.user`
+item. Stop preserves this queue while replacing the selected runtime, uses the
+first entry as the new prompt, and sends the remainder back through `steer`.
+
 ```swift
 struct ActivityGroup: Identifiable, Hashable {
     var id: UUID

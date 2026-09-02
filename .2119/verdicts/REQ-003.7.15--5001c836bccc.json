@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.15--5001c836bccc",
+  "requirementId": "REQ-003.7.15",
+  "hash": "5001c836bccc",
+  "verdict": "pass",
+  "summary": "testStopReplaysFirstSteeringAndRetainsRemainingOrder verifies Stop while steering pending sets isRunning=false and triggers exactly one abort RPC call, with genuine non-tautological assertions against mock RPC call counters.",
+  "timestamp": "2026-09-02T22:23:21.778Z"
+}

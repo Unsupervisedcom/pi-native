@@ -2,7 +2,7 @@
 
 ## Overview
 
-PiNative conversation navigation must feel stable and native even while Pi work is active. Users should be able to move between projects and chats predictably, return to existing transcripts without blank states or unexpected scroll resets, and interrupt active work when needed.
+PiNative conversation navigation must feel stable and native even while Pi work is active. Users should be able to move between projects and chats predictably, return to existing transcripts without blank states or unexpected scroll resets, steer active work without losing messages, and interrupt active work when needed.
 
 This spec captures the next testing focus for the shell and conversation lifecycle. It intentionally states observable outcomes rather than prescribing whether the implementation uses one conversation model, per-chat models, process isolation, cached transcripts, or another mechanism.
 
@@ -54,6 +54,32 @@ This spec captures the next testing focus for the shell and conversation lifecyc
 5. In-flight work in a Quick Chat MUST NOT prevent selecting or starting work in a project chat.
 6. Output produced by in-flight work in a Quick Chat MUST append only to that Quick Chat's transcript.
 
+### REQ-003.7: Steering active work
+
+1. When the selected chat has an active turn, submitting composer content that would be valid for a new turn MUST create a pending steering message for that chat.
+2. Submitting a pending steering message MUST leave the current turn active.
+3. A pending steering message MUST appear inline after the latest delivered conversation item. [manual]
+4. A pending steering message MUST be visually distinguishable from a delivered user message. [manual]
+5. A pending steering message MUST display the prepared user text without further modification. [manual]
+6. A pending steering message with attachments MUST display the same attachment metadata shown for newly submitted user input. [manual]
+7. An attachment-only composer submission during an active turn MUST create a pending steering message.
+8. Empty composer content without attachments MUST NOT create a pending steering message.
+9. Accepted steering messages for the same active turn MUST appear in the originating conversation history in user-submission order.
+10. After Pi accepts a steering message into conversation history as user input, that message MUST leave the pending presentation.
+11. Each accepted steering submission MUST produce exactly one delivered user-message entry in its originating conversation history.
+12. When Pi rejects a steering request, PiNative MUST restore its text to the originating chat's composer.
+13. When Pi rejects a steering request, PiNative MUST restore its attachments to the originating chat's composer.
+14. Restoring a rejected steering request MUST preserve content entered in the composer after that request was submitted.
+15. Pressing Stop while steering messages are pending MUST abort the active turn.
+16. After that stop completes, accepted but undelivered steering messages MUST appear as new user input in a subsequent turn.
+17. Steering messages resubmitted after Stop MUST retain their original user-submission order.
+18. If Stop is pressed before a steering request is acknowledged, its pending presentation MUST remain until the message is delivered, resubmitted, or retained for retry.
+19. A late steering acknowledgement after Stop MUST NOT cause duplicate submission or delivery.
+20. A pending steering message MUST be displayed only in its originating chat.
+21. Steering delivery events for one chat MUST NOT modify another chat's transcript or pending steering state.
+22. If post-stop delivery fails, the complete undelivered steering entry MUST remain visible in its originating chat for retry. [manual]
+23. Returning to a chat after navigation MUST display that chat's currently undelivered steering messages in their original order. [manual]
+
 ## Manual acceptance criteria
 
 - The selected chat row should use the send-button accent color while remaining readable.
@@ -61,6 +87,7 @@ This spec captures the next testing focus for the shell and conversation lifecyc
 - Project and chat row hover controls should not create dead click zones when hidden.
 - Diff pills and project action icons should align visually.
 - Nested project chat guide lines should align with project folder icons and leave horizontal breathing room before chat rows.
+- Pending steering should follow Pi's presentation: subdued gray inline `Steering:` rows at the bottom of chat history, without a delivered-user bubble.
 
 ## Implementation notes
 
@@ -68,6 +95,7 @@ This spec captures the next testing focus for the shell and conversation lifecyc
 - Tests for hidden controls should verify the hidden archive, diff, and new-chat affordances do not intercept row selection.
 - Tests for active work navigation should start work in one chat, switch to another chat, then verify both the target chat selection and the original chat working indicator.
 - Tests for Stop should cover late output suppression after the stop action, not only immediate local state changes.
+- Tests for steering should cover multiple queued messages, attachment payloads, RPC rejection, delivery events, Stop races, runtime replacement, and cross-chat isolation.
 
 ## Non-goals
 

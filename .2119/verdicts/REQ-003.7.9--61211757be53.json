@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.9--61211757be53",
+  "requirementId": "REQ-003.7.9",
+  "hash": "61211757be53",
+  "verdict": "pass",
+  "summary": "testAcceptedSteeringAppearsInConversationHistoryInUserOrder submits two steering messages then delivers their acks out of order with distinct unmatched text, confirming items[] preserves submission order (FIFO) independent of ack arrival order — a genuine, non-tautological behavioral check.",
+  "timestamp": "2026-09-02T22:28:31.304Z"
+}

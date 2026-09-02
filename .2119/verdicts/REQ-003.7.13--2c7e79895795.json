@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.13--2c7e79895795",
+  "requirementId": "REQ-003.7.13",
+  "hash": "2c7e79895795",
+  "verdict": "pass",
+  "summary": "testRejectedSteeringRestoresAttachments exercises real rejection path (client.steer throws processNotRunning) and asserts attachments cleared by sendDraft are restored to the originating chat's draftAttachments while an unrelated chat's attachments remain untouched, satisfying scoping and restoration criteria.",
+  "timestamp": "2026-09-02T22:23:09.222Z"
+}

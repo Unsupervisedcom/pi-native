@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.16--4120f452f81e",
+  "requirementId": "REQ-003.7.16",
+  "hash": "4120f452f81e",
+  "verdict": "pass",
+  "summary": "Tests verify ordering (stop-completed precedes replay-submitted), positive replay-as-new-user-turn, and the undelivered-vs-already-delivered boundary via real and mock RPC fixtures; genuine, non-tautological coverage.",
+  "timestamp": "2026-09-02T22:28:52.659Z"
+}

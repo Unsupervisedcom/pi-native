@@ -3,6 +3,342 @@ import XCTest
 
 @MainActor
 final class StopButtonTests: XCTestCase {
+    func testActiveTurnSubmissionCreatesPendingSteeringInsteadOfUserHistory() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let model = steeringReadyModel()
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        model.draft = "  MiXeD  spacing\nnext café 👩🏽‍💻  "
+
+        // 2119: REQ-003.7.1
+        // 2119: REQ-003.7.2
+        // 2119: REQ-003.7.3
+        // 2119: REQ-003.7.5
+        model.sendDraft()
+
+        XCTAssertTrue(model.isRunning)
+        XCTAssertEqual(model.pendingSteering.map(\.prepared.summaryText), ["MiXeD  spacing\nnext café 👩🏽‍💻"])
+        XCTAssertEqual(model.pendingSteering.first?.state, .accepted)
+        XCTAssertFalse(model.items.contains { item in
+            if case .user(_, let payload) = item { return payload.text == "MiXeD  spacing\nnext café 👩🏽‍💻" }
+            return false
+        })
+    }
+
+    func testAttachmentOnlySteeringPreservesDisplayMetadataAndRPCPayload() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let model = steeringReadyModel()
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        let image = ComposerAttachment(kind: .image(ImageAttachment(
+            data: Data([1, 2, 3]), mimeType: "image/png", displayName: "direction.png",
+            sourceURL: nil, pixelWidth: 1, pixelHeight: 1
+        )))
+        model.addDraftAttachments([image])
+
+        // 2119: REQ-003.7.6
+        // 2119: REQ-003.7.7
+        model.sendDraft()
+
+        let pending = try XCTUnwrap(model.pendingSteering.first)
+        XCTAssertEqual(pending.prepared.displayAttachments, [image])
+        XCTAssertEqual(
+            pending.prepared.displayAttachments,
+            UserMessagePayload(text: pending.prepared.summaryText, attachments: [image]).attachments
+        )
+        XCTAssertEqual(pending.prepared.images.first?.data, Data([1, 2, 3]).base64EncodedString())
+        XCTAssertTrue(model.draftAttachments.isEmpty)
+
+        let fields = PiRPCClient.steerFields(message: pending.prepared.message, images: pending.prepared.images)
+        XCTAssertEqual(fields["message"]?.stringValue, pending.prepared.message)
+        XCTAssertEqual(fields["images"]?.arrayValue?.count, 1)
+    }
+
+    func testEmptyActiveTurnSubmissionDoesNotCreateSteering() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let model = steeringReadyModel()
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        model.sendDraft()
+        XCTAssertTrue(model.pendingSteering.isEmpty)
+        model.draft = "  \n"
+
+        // 2119: REQ-003.7.8
+        model.sendDraft()
+
+        XCTAssertTrue(model.pendingSteering.isEmpty)
+    }
+
+    func testAcceptedSteeringAppearsInConversationHistoryInUserOrder() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let model = steeringReadyModel()
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        model.draft = "first distinct direction"
+        model.sendDraft()
+        model.draft = "second distinct direction"
+        model.sendDraft()
+
+        // 2119: REQ-003.7.9
+        model.handleEventForTesting(try Self.userMessageStart("second server acknowledgement arrives first"))
+        model.handleEventForTesting(try Self.userMessageStart("first server acknowledgement arrives second"))
+
+        let deliveredUserMessages = model.items.compactMap { item -> String? in
+            guard case .user(_, let payload) = item else { return nil }
+            return payload.text
+        }
+        XCTAssertEqual(deliveredUserMessages, ["first distinct direction", "second distinct direction"])
+    }
+
+    func testPiUserEventPromotesOldestSteeringExactlyOnce() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let model = steeringReadyModel()
+        let otherModel = steeringReadyModel()
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        model.draft = "first duplicate"
+        model.sendDraft()
+        model.draft = "first duplicate"
+        model.sendDraft()
+
+        let delivery = try Self.userMessageStart("expanded server-side text")
+        // 2119: REQ-003.7.10
+        // 2119: REQ-003.7.11
+        model.handleEventForTesting(delivery)
+
+        XCTAssertEqual(model.pendingSteering.count, 1)
+        XCTAssertEqual(model.pendingSteering.first?.prepared.summaryText, "first duplicate")
+        XCTAssertEqual(model.items.filter { item in
+            if case .user(_, let payload) = item { return payload.text == "first duplicate" }
+            return false
+        }.count, 1)
+
+        model.handleEventForTesting(try Self.event(type: "message_end"))
+        model.handleEventForTesting(delivery)
+        model.handleEventForTesting(try Self.event(type: "message_end"))
+        XCTAssertTrue(model.pendingSteering.isEmpty)
+        XCTAssertEqual(model.items.filter { if case .user = $0 { return true }; return false }.count, 2)
+        XCTAssertEqual(model.items.filter { item in
+            if case .user(_, let payload) = item { return payload.text == "first duplicate" }
+            return false
+        }.count, 2)
+        XCTAssertFalse(otherModel.items.contains { if case .user = $0 { return true }; return false })
+    }
+
+    func testOriginalPromptUserEventCannotPrematurelyDeliverQueuedSteering() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let model = steeringReadyModel()
+        model.draft = "original prompt"
+        model.sendDraft()
+        model.draft = "steer after original"
+        model.sendDraft()
+
+        // The original prompt's user event may arrive after steering was
+        // accepted; it is not the steering-delivery boundary.
+        // 2119: REQ-003.7.10
+        // 2119: REQ-003.7.11
+        model.handleEventForTesting(try Self.userMessageStart("original prompt"))
+        XCTAssertEqual(model.pendingSteering.map(\.prepared.summaryText), ["steer after original"])
+        XCTAssertEqual(model.items.filter { item in
+            if case .user(_, let payload) = item { return payload.text == "steer after original" }
+            return false
+        }.count, 0)
+
+        model.handleEventForTesting(try Self.userMessageStart("steer after original"))
+        XCTAssertTrue(model.pendingSteering.isEmpty)
+        XCTAssertEqual(model.items.filter { item in
+            if case .user(_, let payload) = item { return payload.text == "steer after original" }
+            return false
+        }.count, 1)
+    }
+
+    func testRejectedSteeringRestoresOriginalContentWithoutOverwritingNewDraft() async throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "bootstrap", 1)
+        let model = steeringReadyModel()
+        let otherModel = steeringReadyModel()
+        otherModel.draft = "other chat draft"
+        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        model.draft = "rejected direction"
+        model.sendDraft()
+        model.draft = "newer draft"
+
+        // 2119: REQ-003.7.12
+        // 2119: REQ-003.7.14
+        try await Task.sleep(nanoseconds: 80_000_000)
+
+        XCTAssertTrue(model.pendingSteering.isEmpty)
+        XCTAssertEqual(model.draft, "rejected direction\n\nnewer draft")
+        XCTAssertEqual(otherModel.draft, "other chat draft")
+    }
+
+    func testRejectedSteeringRestoresAttachments() async throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "bootstrap", 1)
+        let model = steeringReadyModel()
+        let otherModel = steeringReadyModel()
+        let otherAttachment = ComposerAttachment(kind: .fileReference(FileReferenceAttachment(
+            url: URL(fileURLWithPath: "/tmp/other.txt"), displayName: "other.txt", fileSize: 12
+        )))
+        otherModel.addDraftAttachments([otherAttachment])
+        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        let file = ComposerAttachment(kind: .fileReference(FileReferenceAttachment(
+            url: URL(fileURLWithPath: "/tmp/rejected.txt"),
+            displayName: "rejected.txt",
+            fileSize: nil
+        )))
+        let secondFile = ComposerAttachment(kind: .fileReference(FileReferenceAttachment(
+            url: URL(fileURLWithPath: "/tmp/rejected-two.txt"),
+            displayName: "rejected-two.txt",
+            fileSize: 42
+        )))
+        model.addDraftAttachments([file, secondFile])
+        model.sendDraft()
+
+        // 2119: REQ-003.7.13
+        try await Task.sleep(nanoseconds: 80_000_000)
+
+        XCTAssertTrue(model.pendingSteering.isEmpty)
+        XCTAssertEqual(model.draftAttachments, [file, secondFile])
+        XCTAssertEqual(otherModel.draftAttachments, [otherAttachment])
+    }
+
+    func testStopReplaysFirstSteeringAndRetainsRemainingOrder() async throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "old stopped response", 1)
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE_DELAY_MS", "200", 1)
+        defer {
+            unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+            unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE_DELAY_MS")
+        }
+        let model = steeringReadyModel()
+        model.draft = "active request"
+        model.sendDraft()
+        XCTAssertTrue(model.isRunning)
+        model.draft = "first after stop"
+        model.sendDraft()
+        model.draft = "second after stop"
+        model.sendDraft()
+        var replayOrder: [String] = []
+        var abortCount = 0
+        model.onPromptRPCForTesting = { replayOrder.append("prompt:\($0)") }
+        model.onSteeringRPCForTesting = { replayOrder.append("steer:\($0)") }
+        model.onAbortRPCForTesting = { abortCount += 1 }
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "replacement response", 1)
+
+        // 2119: REQ-003.7.15
+        // 2119: REQ-003.7.16
+        // 2119: REQ-003.7.17
+        model.stopActiveTurn()
+        XCTAssertFalse(model.isRunning)
+        try await Task.sleep(nanoseconds: 40_000_000)
+
+        XCTAssertEqual(abortCount, 1)
+        XCTAssertEqual(replayOrder, ["prompt:first after stop", "steer:second after stop"])
+        XCTAssertTrue(model.items.contains { item in
+            if case .user(_, let payload) = item { return payload.text == "first after stop" }
+            return false
+        })
+        XCTAssertEqual(model.pendingSteering.map(\.prepared.summaryText), ["second after stop"])
+        try await Task.sleep(nanoseconds: 220_000_000)
+        XCTAssertFalse(model.items.contains { item in
+            if case .assistantText(_, let text) = item { return text.contains("old stopped response") }
+            return false
+        })
+    }
+
+    func testStopKeepsUnacknowledgedSteeringUntilExactlyOnceReplayDisposition() async throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "bootstrap", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let model = steeringReadyModel()
+        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        model.draft = "acknowledgement race"
+        model.sendDraft()
+        var replayedPrompts: [String] = []
+        model.onPromptRPCForTesting = { replayedPrompts.append($0) }
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "replacement response", 1)
+
+        // 2119: REQ-003.7.18
+        // 2119: REQ-003.7.19
+        model.stopActiveTurn()
+        model.handleEventForTesting(try Self.userMessageStart("late old-process delivery"))
+
+        XCTAssertEqual(model.pendingSteering.map(\.prepared.summaryText), ["acknowledgement race"])
+        XCTAssertFalse(model.items.contains { item in
+            if case .user(_, let payload) = item { return payload.text.contains("acknowledgement race") }
+            return false
+        })
+
+        try await Task.sleep(nanoseconds: 60_000_000)
+        XCTAssertTrue(model.pendingSteering.isEmpty)
+        XCTAssertEqual(replayedPrompts, ["acknowledgement race"])
+        XCTAssertEqual(model.items.filter { item in
+            if case .user(_, let payload) = item { return payload.text == "acknowledgement race" }
+            return false
+        }.count, 1)
+
+        model.handleEventForTesting(try Self.userMessageStart("late acceptance after replay"))
+        XCTAssertEqual(replayedPrompts, ["acknowledgement race"])
+        XCTAssertEqual(model.items.filter { item in
+            if case .user(_, let payload) = item { return payload.text == "acknowledgement race" }
+            return false
+        }.count, 1)
+    }
+
+    func testSteeringQueuesRemainIsolatedPerConversation() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let first = steeringReadyModel()
+        let second = steeringReadyModel()
+        first.handleEventForTesting(try Self.event(type: "agent_start"))
+        second.handleEventForTesting(try Self.event(type: "agent_start"))
+        first.draft = "only first"
+        let firstItemsBefore = first.items
+        let secondItemsBefore = second.items
+
+        // 2119: REQ-003.7.20
+        // 2119: REQ-003.7.21
+        first.sendDraft()
+
+        XCTAssertEqual(first.pendingSteering.map(\.prepared.summaryText), ["only first"])
+        XCTAssertTrue(second.pendingSteering.isEmpty)
+        second.handleEventForTesting(try Self.userMessageStart("unrelated"))
+        XCTAssertEqual(first.pendingSteering.map(\.prepared.summaryText), ["only first"])
+        XCTAssertEqual(first.items, firstItemsBefore)
+        XCTAssertEqual(second.items, secondItemsBefore)
+    }
+
+    func testFailedSteeringEntryRemainsCompleteAndRetryable() async throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "bootstrap", 1)
+        let model = steeringReadyModel()
+        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+        model.handleEventForTesting(try Self.event(type: "agent_start"))
+        model.draft = "retain me"
+        let attachment = ComposerAttachment(kind: .fileReference(FileReferenceAttachment(
+            url: URL(fileURLWithPath: "/tmp/retain-me.txt"), displayName: "retain-me.txt", fileSize: 99
+        )))
+        model.addDraftAttachments([attachment])
+        model.sendDraft()
+        model.stopActiveTurn()
+
+        // 2119: REQ-003.7.22
+        try await Task.sleep(nanoseconds: 40_000_000)
+        let retained = try XCTUnwrap(model.pendingSteering.first)
+        XCTAssertEqual(retained.state, .failed)
+        XCTAssertEqual(retained.prepared.summaryText, "retain me")
+        XCTAssertEqual(retained.composerText, "retain me")
+        XCTAssertEqual(retained.composerAttachments, [attachment])
+        XCTAssertEqual(retained.prepared.displayAttachments, [attachment])
+
+        model.retrySteering(retained.id)
+        try await Task.sleep(nanoseconds: 20_000_000)
+        let retainedAfterRetry = try XCTUnwrap(model.pendingSteering.first)
+        XCTAssertEqual(retainedAfterRetry.id, retained.id)
+        XCTAssertEqual(retainedAfterRetry.state, .failed)
+        XCTAssertEqual(retainedAfterRetry.composerAttachments, [attachment])
+    }
+
     func testSendingWhileSessionLoadsShowsUserMessageImmediately() throws {
         let model = PiConversationModel()
         model.currentModel = PiModelOption(provider: "test", id: "selected", name: "Selected")
@@ -199,6 +535,27 @@ final class StopButtonTests: XCTestCase {
         XCTAssertFalse(model.isRunning)
     }
 
+    private func steeringReadyModel() -> PiConversationModel {
+        let model = PiConversationModel()
+        model.currentModel = PiModelOption(provider: "test", id: "selected", name: "Selected")
+        model.currentThinkingLevel = .medium
+        model.start(workingDirectory: nil, sessionPath: nil)
+        return model
+    }
+
+    private static func event(type: String) throws -> RPCEnvelope {
+        try RPCEnvelope.testEnvelope(["type": .string(type)])
+    }
+
+    private static func userMessageStart(_ text: String) throws -> RPCEnvelope {
+        try RPCEnvelope.testEnvelope([
+            "type": .string("message_start"),
+            "message": .object([
+                "role": .string("user"),
+                "content": .array([.object(["type": .string("text"), "text": .string(text)])])
+            ])
+        ])
+    }
     // 2119: REQ-003.5.2
     func testRealRPCProcessLateStoppedOutputIsSuppressedAfterLaterTurnStarts() async throws {
         unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")

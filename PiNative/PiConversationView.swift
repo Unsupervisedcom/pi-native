@@ -125,7 +125,13 @@ struct PiConversationView: View {
                                     .id(item.id)
                             }
 
-                            if !model.items.isEmpty {
+                            ForEach(model.pendingSteering) { message in
+                                PendingSteeringRow(message: message, onRetry: { model.retrySteering(message.id) })
+                                    .id(message.id)
+                                    .transition(.opacity.combined(with: .move(edge: .bottom)))
+                            }
+
+                            if !model.items.isEmpty || !model.pendingSteering.isEmpty {
                                 PiNativeTranscriptEndMark(isRunning: model.isRunning, startedAt: model.runningStartedAt)
                             }
                         }
@@ -148,7 +154,7 @@ struct PiConversationView: View {
                     scrollToBottom(proxy, animated: false)
                 }
                 .onChange(of: transcriptContentID) { _, _ in
-                    guard !model.items.isEmpty else { return }
+                    guard !model.items.isEmpty || !model.pendingSteering.isEmpty else { return }
                     scrollToBottom(proxy, animated: true)
                 }
             }
@@ -165,7 +171,8 @@ struct PiConversationView: View {
 
     private var transcriptContentID: String {
         let itemFingerprint = model.items.map { "\($0.id.uuidString):\($0.hashValue)" }.joined(separator: ",")
-        return "\(itemFingerprint)|running:\(model.isRunning)|loading:\(model.isLoadingSession)|notice:\(model.sessionLoadNotice ?? "")"
+        let steeringFingerprint = model.pendingSteering.map { "\($0.id.uuidString):\($0.hashValue)" }.joined(separator: ",")
+        return "\(itemFingerprint)|steering:\(steeringFingerprint)|running:\(model.isRunning)|loading:\(model.isLoadingSession)|notice:\(model.sessionLoadNotice ?? "")"
     }
 
     @ViewBuilder
@@ -809,6 +816,55 @@ private struct ComposerSendButton: View {
         .accessibilityLabel(isRunning ? "Stop" : "Send")
         .accessibilityIdentifier(isRunning ? "composer.stopButton" : "composer.sendButton")
         .help(isRunning ? "Stop the running turn" : "Send")
+    }
+}
+
+private struct PendingSteeringRow: View {
+    let message: SteeringMessage
+    let onRetry: () -> Void
+
+    private var stateLabel: String {
+        switch message.state {
+        case .submitting: "Queueing"
+        case .accepted: "Steering"
+        case .replaying: "Sending after Stop"
+        case .failed: "Steering failed"
+        }
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 5) {
+            HStack(alignment: .firstTextBaseline, spacing: 6) {
+                Text("\(stateLabel):")
+                    .font(ChatTypography.caption(weight: .semibold))
+                Text(message.prepared.summaryText)
+                    .font(ChatTypography.caption())
+                    .lineLimit(2)
+                    .truncationMode(.tail)
+            }
+
+            if !message.prepared.displayAttachments.isEmpty {
+                HStack(spacing: 8) {
+                    ForEach(message.prepared.displayAttachments) { attachment in
+                        Label(attachment.displayName, systemImage: "paperclip")
+                            .lineLimit(1)
+                    }
+                }
+                .font(ChatTypography.micro())
+            }
+
+            if message.state == .failed {
+                Button("Retry", action: onRetry)
+                    .buttonStyle(.plain)
+                    .font(ChatTypography.caption(weight: .semibold))
+                    .foregroundStyle(Color.primary.opacity(0.72))
+            }
+        }
+        .foregroundStyle(Color.secondary.opacity(0.82))
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .accessibilityElement(children: .contain)
+        .accessibilityLabel("\(stateLabel): \(message.prepared.summaryText)")
+        .accessibilityIdentifier("transcript.pendingSteering")
     }
 }
 
