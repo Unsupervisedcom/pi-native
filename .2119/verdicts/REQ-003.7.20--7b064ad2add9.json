@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.20--7b064ad2add9",
+  "requirementId": "REQ-003.7.20",
+  "hash": "7b064ad2add9",
+  "verdict": "pass",
+  "summary": "testSteeringQueuesRemainIsolatedPerConversation sends steering draft on 'first' model and asserts 'second' model's pendingSteering stays empty (and vice versa unaffected), a genuine counterexample check for cross-chat leakage.",
+  "timestamp": "2026-09-02T22:22:54.882Z"
+}

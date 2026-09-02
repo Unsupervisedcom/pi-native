@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.8--e7eb0b484688",
+  "requirementId": "REQ-003.4.8",
+  "hash": "e7eb0b484688",
+  "verdict": "pass",
+  "summary": "Test opens new-chat surface and creates+sends a new chat while another session is actively running (isConversationRunning true throughout), verifying via non-mocked AppModel state that neither startNewChat() nor sendNewChatPrompt() are blocked or altered by in-flight work; assertions would fail if a guard were added to gate these on running state.",
+  "timestamp": "2026-09-02T22:28:51.080Z"
+}

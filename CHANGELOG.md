@@ -3,6 +3,10 @@
 ## 2026-09-02
 
 
+### Added
+
+- Added inline steering for active conversations, including ordered per-chat pending messages, attachment support, rejection recovery, and retryable replay after Stop without duplicate delivery.
+
 ### Changed
 
 - Scoped official release credentials to a dedicated GitHub environment and replaced the stored temporary-keychain password with a fresh per-run value.

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.5--77bc109ed8ea",
+  "requirementId": "REQ-003.4.5",
+  "hash": "77bc109ed8ea",
+  "verdict": "pass",
+  "summary": "testRuntimeCallbacksRouteOutputToOwningChatAfterSelectionChanges routes a real event through AppModel/ConversationModel while a different chat is selected, asserts the delta appends only as the final item of the owning chat's cachedTranscript (order preserved via dropLast equality) and is absent from the other chat's transcript — genuine, non-mocked coverage of the append-only-to-owning-chat requirement.",
+  "timestamp": "2026-09-02T22:28:27.839Z"
+}

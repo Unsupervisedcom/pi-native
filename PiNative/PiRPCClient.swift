@@ -291,6 +291,16 @@ actor PiRPCClient {
         try await send(command: "prompt", fields: Self.promptFields(message: message, images: images), timeoutSeconds: timeoutSeconds)
     }
 
+    /// Queue input for the next model turn while the agent is active. The
+    /// response acknowledges queueing; Pi owns the actual delivery boundary.
+    func steer(_ message: String, images: [RPCImageContent] = [], timeoutSeconds: TimeInterval = 15) async throws -> RPCEnvelope {
+        try await send(command: "steer", fields: Self.steerFields(message: message, images: images), timeoutSeconds: timeoutSeconds)
+    }
+
+    static func steerFields(message: String, images: [RPCImageContent] = []) -> [String: JSONValue] {
+        promptFields(message: message, images: images)
+    }
+
     static func promptFields(message: String, images: [RPCImageContent] = []) -> [String: JSONValue] {
         var fields: [String: JSONValue] = ["message": .string(message)]
         if !images.isEmpty {

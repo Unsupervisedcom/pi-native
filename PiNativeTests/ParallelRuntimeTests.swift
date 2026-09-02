@@ -1,8 +1,38 @@
+import Combine
+import Darwin
 import XCTest
 @testable import PiNative
 
 @MainActor
 final class ParallelRuntimeTests: XCTestCase {
+    func testPendingSteeringRemainsWithChatAcrossNavigation() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later response", 1)
+        defer { unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE") }
+        let appModel = testAppModel()
+        let projectID = appModel.projects[0].id
+        let first = appModel.projects[0].sessions[0]
+        let second = appModel.projects[0].sessions[1]
+        appModel.select(sessionID: first.id, in: projectID)
+        let firstModel = try XCTUnwrap(appModel.activeConversationModel)
+        firstModel.currentModel = PiModelOption(provider: "test", id: "selected", name: "Selected")
+        firstModel.currentThinkingLevel = .medium
+        firstModel.start(workingDirectory: nil, sessionPath: nil)
+        firstModel.handleEventForTesting(try Self.event(type: "agent_start"))
+        firstModel.draft = "stay with first chat"
+        firstModel.sendDraft()
+        firstModel.draft = "stay second"
+        firstModel.sendDraft()
+        firstModel.draft = "stay third"
+        firstModel.sendDraft()
+
+        appModel.select(sessionID: second.id, in: projectID)
+        firstModel.handleEventForTesting(try Self.userMessageStart("stay with first chat"))
+        appModel.select(sessionID: first.id, in: projectID)
+
+        // 2119: REQ-003.7.23
+        XCTAssertEqual(appModel.activeConversationModel?.pendingSteering.map(\.prepared.summaryText), ["stay second", "stay third"])
+    }
+
     func testRunningChatDoesNotBlockSelectingAnotherChatOrNewChatSurface() throws {
         let appModel = testAppModel()
         let first = appModel.projects[0].sessions[0]
@@ -37,6 +67,8 @@ final class ParallelRuntimeTests: XCTestCase {
 
         appModel.select(sessionID: first.id, in: projectID)
         let firstModel = try XCTUnwrap(appModel.activeConversationModel)
+        firstModel.handleEventForTesting(try Self.event(type: "agent_start"))
+        let firstTranscriptBeforeOutput = firstModel.items
         appModel.select(sessionID: second.id, in: projectID)
 
         // 2119: REQ-003.4.5
@@ -44,10 +76,12 @@ final class ParallelRuntimeTests: XCTestCase {
 
         let updatedFirst = try XCTUnwrap(appModel.projects[0].sessions.first { $0.id == first.id })
         let updatedSecond = try XCTUnwrap(appModel.projects[0].sessions.first { $0.id == second.id })
-        XCTAssertTrue(updatedFirst.cachedTranscript.contains { item in
-            if case .assistantText(_, let text) = item { return text.contains("output for first only") }
-            return false
-        })
+        XCTAssertEqual(updatedFirst.cachedTranscript.count, firstTranscriptBeforeOutput.count + 1)
+        XCTAssertEqual(Array(updatedFirst.cachedTranscript.dropLast()), firstTranscriptBeforeOutput)
+        guard case .assistantText(_, let appendedText) = updatedFirst.cachedTranscript.last else {
+            return XCTFail("Expected in-flight output to append as the final owning-chat item")
+        }
+        XCTAssertEqual(appendedText, "output for first only")
         XCTAssertFalse(updatedSecond.cachedTranscript.contains { item in
             if case .assistantText(_, let text) = item { return text.contains("output for first only") }
             return false
@@ -143,14 +177,20 @@ final class ParallelRuntimeTests: XCTestCase {
         XCTAssertTrue(appModel.isConversationRunning(sessionID: second.id, projectID: projectID))
 
         // 2119: REQ-003.5.4
-        secondModel.stopActiveTurn()
+        XCTAssertTrue(appModel.activeConversationModel === secondModel)
+        appModel.activeConversationModel?.stopActiveTurn()
         XCTAssertTrue(appModel.isConversationRunning(sessionID: first.id, projectID: projectID))
         XCTAssertFalse(appModel.isConversationRunning(sessionID: second.id, projectID: projectID))
     }
 
     func testQuickChatCreationNavigationDraftsAndOutputAreIsolatedFromProjectChats() throws {
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "parallel response", 1)
+        setenv("PI_NATIVE_MOCK_RPC_RESPONSE_DELAY_MS", "2500", 1)
+        defer {
+            unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+            unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE_DELAY_MS")
+        }
         let appModel = testAppModel()
-        appModel.automaticallyStartsPendingRuntimes = false
         let projectID = appModel.projects[0].id
         let projectChat = appModel.projects[0].sessions[0]
 
@@ -167,12 +207,16 @@ final class ParallelRuntimeTests: XCTestCase {
 
         appModel.select(sessionID: projectChat.id, in: projectID)
         let projectModel = try XCTUnwrap(appModel.activeConversationModel)
+        // 2119: REQ-003.6.4
+        XCTAssertEqual(projectModel.draft, "")
         projectModel.draft = "project-only draft"
 
         appModel.startNewChat()
         appModel.sendNewChatPrompt(PreparedPrompt(message: "second quick plan", images: [], displayAttachments: []))
         let secondQuickChat = try XCTUnwrap(appModel.standaloneSessions.first { $0.id != quickChat.id })
         let secondQuickModel = try XCTUnwrap(appModel.activeConversationModel)
+        // 2119: REQ-003.6.4
+        XCTAssertEqual(secondQuickModel.draft, "")
         secondQuickModel.draft = "second-quick-only draft"
 
         appModel.select(sessionID: quickChat.id, in: nil)
@@ -208,14 +252,17 @@ final class ParallelRuntimeTests: XCTestCase {
         XCTAssertTrue(appModel.isConversationRunning(sessionID: quickChat.id, projectID: nil))
 
         // 2119: REQ-003.6.6
+        let quickTranscriptBeforeOutput = quickModel.items
         quickModel.handleEventForTesting(try Self.textDelta("quick output only"))
         let updatedQuick = try XCTUnwrap(appModel.standaloneSessions.first { $0.id == quickChat.id })
         let updatedSecondQuick = try XCTUnwrap(appModel.standaloneSessions.first { $0.id == secondQuickChat.id })
         let updatedProject = try XCTUnwrap(appModel.projects[0].sessions.first { $0.id == projectChat.id })
-        XCTAssertTrue(updatedQuick.cachedTranscript.contains { item in
-            if case .assistantText(_, let text) = item { return text.contains("quick output only") }
-            return false
-        })
+        XCTAssertEqual(updatedQuick.cachedTranscript.count, quickTranscriptBeforeOutput.count + 1)
+        XCTAssertEqual(Array(updatedQuick.cachedTranscript.dropLast()), quickTranscriptBeforeOutput)
+        guard case .assistantText(_, let appendedText) = updatedQuick.cachedTranscript.last else {
+            return XCTFail("Expected Quick Chat output to append as the final transcript item")
+        }
+        XCTAssertEqual(appendedText, "quick output only")
         XCTAssertFalse(updatedSecondQuick.cachedTranscript.contains { item in
             if case .assistantText(_, let text) = item { return text.contains("quick output only") }
             return false
@@ -224,6 +271,70 @@ final class ParallelRuntimeTests: XCTestCase {
             if case .assistantText(_, let text) = item { return text.contains("quick output only") }
             return false
         })
+    }
+
+    func testQuickChatRPCOutputPersistsOnlyToQuickChatAfterNavigation() async throws {
+        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+        let fixture = try QuickChatOutputRPCFixture()
+        defer { fixture.cleanup() }
+        let appModel = testAppModel { modelSettings in
+            let model = PiConversationModel(
+                piCommand: PiCommand(executable: fixture.executable.path, arguments: []),
+                modelSettings: modelSettings
+            )
+            model.shouldStallRPCOverrideForTesting = false
+            return model
+        }
+        defer { appModel.stopAllRuntimes() }
+        let projectID = appModel.projects[0].id
+        let projectChat = appModel.projects[0].sessions[0]
+
+        appModel.startNewChat()
+        appModel.sendNewChatPrompt(PreparedPrompt(message: "quick RPC output", images: [], displayAttachments: []))
+        let quickChat = try XCTUnwrap(appModel.standaloneSessions.first)
+        let quickModel = try XCTUnwrap(appModel.activeConversationModel)
+
+        var cancellables: Set<AnyCancellable> = []
+        if !quickModel.isRunning {
+            let running = expectation(description: "Quick Chat RPC turn starts")
+            quickModel.$isRunning
+                .filter { $0 }
+                .prefix(1)
+                .sink { _ in running.fulfill() }
+                .store(in: &cancellables)
+            await fulfillment(of: [running], timeout: 3)
+            guard quickModel.isRunning else { return }
+        }
+
+        appModel.select(sessionID: projectChat.id, in: projectID)
+        XCTAssertEqual(appModel.selectedSessionID, projectChat.id)
+        let outputPersisted = expectation(description: "Quick Chat RPC output is persisted")
+        appModel.$standaloneSessions
+            .filter { sessions in
+                sessions.first(where: { $0.id == quickChat.id })?.cachedTranscript.contains { item in
+                    if case .assistantText(_, let text) = item { return text.contains("quick output only") }
+                    return false
+                } == true
+            }
+            .prefix(1)
+            .sink { _ in outputPersisted.fulfill() }
+            .store(in: &cancellables)
+
+        try fixture.releaseOutput()
+        await fulfillment(of: [outputPersisted], timeout: 3)
+
+        // 2119: REQ-003.6.6
+        let updatedQuick = try XCTUnwrap(appModel.standaloneSessions.first { $0.id == quickChat.id })
+        let updatedProject = try XCTUnwrap(appModel.projects[0].sessions.first { $0.id == projectChat.id })
+        XCTAssertTrue(updatedQuick.cachedTranscript.contains { item in
+            if case .assistantText(_, let text) = item { return text.contains("quick output only") }
+            return false
+        })
+        XCTAssertFalse(updatedProject.cachedTranscript.contains { item in
+            if case .assistantText(_, let text) = item { return text.contains("quick output only") }
+            return false
+        })
+        XCTAssertTrue(appModel.activeConversationModel !== quickModel)
     }
 
     func testPromotingQuickChatArchivesSourceAndCleansRuntime() throws {
@@ -291,8 +402,12 @@ final class ParallelRuntimeTests: XCTestCase {
         XCTAssertFalse(appModel.activeConversationIsRunning)
     }
 
-    private func testAppModel(projectCount: Int = 1, firstCachedTranscript: [TranscriptItem] = [.user(UserMessagePayload(text: "first seed"))]) -> AppModel {
-        let appModel = AppModel()
+    private func testAppModel(
+        projectCount: Int = 1,
+        firstCachedTranscript: [TranscriptItem] = [.user(UserMessagePayload(text: "first seed"))],
+        conversationModelFactory: ((ModelSettingsModel) -> PiConversationModel)? = nil
+    ) -> AppModel {
+        let appModel = AppModel(conversationModelFactory: conversationModelFactory)
         let first = Session(
             name: "first chat",
             status: .idle,
@@ -340,8 +455,79 @@ final class ParallelRuntimeTests: XCTestCase {
         ])
     }
 
+    private static func userMessageStart(_ text: String) throws -> RPCEnvelope {
+        try envelope([
+            "type": .string("message_start"),
+            "message": .object([
+                "role": .string("user"),
+                "content": .array([.object(["type": .string("text"), "text": .string(text)])])
+            ])
+        ])
+    }
+
     private static func envelope(_ raw: [String: JSONValue]) throws -> RPCEnvelope {
         let data = try JSONEncoder().encode(JSONValue.object(raw))
         return try JSONDecoder().decode(RPCEnvelope.self, from: data)
+    }
+}
+
+private struct QuickChatOutputRPCFixture {
+    let directory: URL
+    let executable: URL
+    let outputGate: URL
+
+    init() throws {
+        directory = FileManager.default.temporaryDirectory
+            .appendingPathComponent("PiNativeQuickChatOutput-\(UUID().uuidString)", isDirectory: true)
+        executable = directory.appendingPathComponent("fake-pi-rpc.sh")
+        outputGate = directory.appendingPathComponent("output-gate")
+        try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+        guard mkfifo(outputGate.path, 0o600) == 0 else {
+            throw NSError(domain: NSPOSIXErrorDomain, code: Int(errno))
+        }
+        try Self.script(outputGate: outputGate).write(to: executable, atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: executable.path)
+    }
+
+    func releaseOutput() throws {
+        let handle = try FileHandle(forWritingTo: outputGate)
+        try handle.write(contentsOf: Data("release\n".utf8))
+        try handle.close()
+    }
+
+    func cleanup() {
+        try? FileManager.default.removeItem(at: directory)
+    }
+
+    private static func script(outputGate: URL) -> String {
+        """
+        #!/bin/sh
+        output_gate='\(outputGate.path)'
+        while IFS= read -r line; do
+          id=$(printf '%s' "$line" | sed -E 's/.*"id":([0-9]+).*/\\1/')
+          case "$line" in
+            *'"type":"prompt"'*)
+              exec 3<> "$output_gate"
+              printf '%s\n' '{"type":"agent_start"}'
+              printf '{"id":%s,"type":"response","success":true,"data":{}}\n' "$id"
+              IFS= read -r _ <&3
+              exec 3>&-
+              printf '%s\n' '{"type":"message_update","assistantMessageEvent":{"type":"text_delta","delta":"quick output only"}}'
+              ;;
+            *'"type":"get_state"'*)
+              printf '{"id":%s,"type":"response","success":true,"data":{"model":{"provider":"test","id":"selected","name":"Selected"},"thinkingLevel":"medium"}}\n' "$id"
+              ;;
+            *'"type":"get_available_models"'*)
+              printf '{"id":%s,"type":"response","success":true,"data":{"models":[{"provider":"test","id":"selected","name":"Selected"}]}}\n' "$id"
+              ;;
+            *'"type":"get_available_thinking_levels"'*)
+              printf '{"id":%s,"type":"response","success":true,"data":{"levels":["low","medium","high"]}}\n' "$id"
+              ;;
+            *)
+              printf '{"id":%s,"type":"response","success":true,"data":{}}\n' "$id"
+              ;;
+          esac
+        done
+        """
     }
 }

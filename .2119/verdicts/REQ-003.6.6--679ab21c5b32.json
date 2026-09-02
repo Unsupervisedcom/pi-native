@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.6.6--679ab21c5b32",
+  "requirementId": "REQ-003.6.6",
+  "hash": "679ab21c5b32",
+  "verdict": "pass",
+  "summary": "Tests verify quick chat output appends only to its own transcript with real event handling, rejecting leakage into a sibling quick chat and into a project chat, plus persistence across navigation via a real RPC fixture.",
+  "timestamp": "2026-09-02T22:43:52.626Z"
+}
