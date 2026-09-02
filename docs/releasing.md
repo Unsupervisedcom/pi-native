@@ -41,6 +41,11 @@ when access is no longer required.
 
 ## GitHub Actions configuration
 
+Create a GitHub Actions environment named `release`. The official release job
+declares this environment so signing and notarization credentials are unavailable
+to pull-request and routine CI jobs. Restrict the environment to protected release
+tags matching `v*`; optionally require maintainer approval before deployment.
+
 Add the following **Actions repository variable**. It identifies the signing
 team and is not confidential, but keeping it out of the repository lets a fork
 or new maintainer configure its own release identity.
@@ -49,18 +54,20 @@ or new maintainer configure its own release identity.
 | --- | --- |
 | `APPLE_TEAM_ID` | Apple Team ID that owns the Developer ID certificate. |
 
-Add the following **Actions secrets** to the repository. Never add their values
-to tracked files, workflow logs, issue comments, or release notes.
+Add the following **environment secrets** to the `release` environment. Never add
+their values to tracked files, workflow logs, issue comments, or release notes.
 
 | Secret | Value |
 | --- | --- |
 | `APPLE_DEVELOPER_ID_CERTIFICATE_P12_BASE64` | Base64 encoding of the Developer ID `.p12` file. |
 | `APPLE_DEVELOPER_ID_CERTIFICATE_PASSWORD` | Password used when exporting that `.p12`. |
-| `APPLE_KEYCHAIN_PASSWORD` | Newly generated, high-entropy temporary-keychain password. |
 | `APPLE_NOTARY_API_KEY_ID` | App Store Connect API Key ID. |
 | `APPLE_NOTARY_API_ISSUER_ID` | App Store Connect API Issuer ID. |
 | `APPLE_NOTARY_API_KEY_P8_BASE64` | Base64 encoding of the downloaded `.p8` private key. |
 | `POSTHOG_PROJECT_API_KEY` | PostHog `phc_` project token used by official builds for opt-in product analytics. |
+
+The workflow generates a fresh high-entropy password for its temporary keychain
+during every run; no keychain-password secret is stored.
 
 On macOS, copy a file’s Base64 value without saving another credential file:
 
