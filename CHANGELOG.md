@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-08
+
+
+### Fixed
+
+- Made steering recovery after Stop deterministic by clearing queued server input before abort, waiting for the old Pi process to terminate before restart, and safely falling back to termination when `clear_queue` is unavailable.
+
 ## 2026-09-02
 
 

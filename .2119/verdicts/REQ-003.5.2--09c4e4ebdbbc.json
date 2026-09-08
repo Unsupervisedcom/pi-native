@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--09c4e4ebdbbc",
+  "requirementId": "REQ-003.5.2",
+  "hash": "09c4e4ebdbbc",
+  "verdict": "pass",
+  "summary": "Genuine coverage: mocked and real-RPC-process tests confirm late/delayed turn output after Stop (and after a subsequent new turn starts) never appends to transcript, both at model and UI level.",
+  "timestamp": "2026-09-08T20:42:56.451Z"
+}

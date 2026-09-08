@@ -110,6 +110,30 @@ final class SteeringReplayBoundaryTests: XCTestCase {
         XCTAssertTrue(model.sessionLoadNotice?.contains("Failed to start pi") == true)
     }
 
+    func testUnsupportedClearQueueFallsBackToTerminationAndRestartsPendingPrompt() async throws {
+        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
+        let fixture = try ReplayRPCFixture(rejectsClearQueue: true)
+        defer { fixture.cleanup() }
+        let model = fixture.makeModel()
+        model.start(workingDirectory: fixture.directory.path, sessionPath: nil)
+        model.draft = "first prompt"
+        model.sendDraft()
+        try await waitForSteeringCondition { model.isRunning }
+
+        model.stopActiveTurn()
+        model.draft = "prompt held during stop"
+        model.sendDraft()
+        try await waitForSteeringCondition {
+            let log = try? String(contentsOf: fixture.commandLogFile, encoding: .utf8)
+            return log?.contains("\"message\":\"prompt held during stop\"") == true
+        }
+
+        let commandLog = try String(contentsOf: fixture.commandLogFile, encoding: .utf8)
+        XCTAssertTrue(commandLog.contains("\"type\":\"clear_queue\""), commandLog)
+        XCTAssertFalse(commandLog.contains("\"type\":\"abort\""), commandLog)
+        XCTAssertEqual(try String(contentsOf: fixture.launchCountFile, encoding: .utf8), "2")
+    }
+
     func testReplacementSessionFailureMakesReplayingSteeringRetryable() async throws {
         unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
         let fixture = try ReplayRPCFixture()
@@ -162,15 +186,22 @@ private struct ReplayRPCFixture {
     let executable: URL
     let launchCountFile: URL
     let failReplacementMarker: URL
+    let commandLogFile: URL
 
-    init() throws {
+    init(rejectsClearQueue: Bool = false) throws {
         directory = FileManager.default.temporaryDirectory
             .appendingPathComponent("PiNativeSteeringReplay-\(UUID().uuidString)", isDirectory: true)
         executable = directory.appendingPathComponent("fake-pi-rpc.sh")
         launchCountFile = directory.appendingPathComponent("launch-count.txt")
         failReplacementMarker = directory.appendingPathComponent("fail-replacements")
+        commandLogFile = directory.appendingPathComponent("commands.log")
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
-        try Self.script(launchCountFile: launchCountFile, failReplacementMarker: failReplacementMarker)
+        try Self.script(
+            launchCountFile: launchCountFile,
+            failReplacementMarker: failReplacementMarker,
+            commandLogFile: commandLogFile,
+            rejectsClearQueue: rejectsClearQueue
+        )
             .write(to: executable, atomically: true, encoding: .utf8)
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: executable.path)
     }
@@ -188,11 +219,18 @@ private struct ReplayRPCFixture {
         try? FileManager.default.removeItem(at: directory)
     }
 
-    private static func script(launchCountFile: URL, failReplacementMarker: URL) -> String {
+    private static func script(
+        launchCountFile: URL,
+        failReplacementMarker: URL,
+        commandLogFile: URL,
+        rejectsClearQueue: Bool
+    ) -> String {
         """
         #!/bin/sh
         count_file='\(launchCountFile.path)'
         fail_marker='\(failReplacementMarker.path)'
+        log_file='\(commandLogFile.path)'
+        reject_clear_queue='\(rejectsClearQueue ? "1" : "0")'
         launch_count=0
         [ -f "$count_file" ] && launch_count=$(cat "$count_file")
         launch_count=$((launch_count + 1))
@@ -202,8 +240,16 @@ private struct ReplayRPCFixture {
           exit 17
         fi
         while IFS= read -r line; do
+          printf '%s\n' "$line" >> "$log_file"
           id=$(printf '%s' "$line" | sed -E 's/.*"id":([0-9]+).*/\\1/')
           case "$line" in
+            *'"type":"clear_queue"'*)
+              if [ "$reject_clear_queue" = "1" ]; then
+                printf '{"id":%s,"type":"response","success":false,"error":"Unknown command: clear_queue"}\n' "$id"
+              else
+                printf '{"id":%s,"type":"response","success":true,"data":{"steering":[],"followUp":[]}}\n' "$id"
+              fi
+              ;;
             *'"type":"prompt"'*)
               printf '%s\n' '{"type":"agent_start"}'
               printf '{"id":%s,"type":"response","success":true,"data":{}}\n' "$id"

@@ -76,6 +76,9 @@ final class PiConversationModel: ObservableObject {
     private var steeringSubmissionTask: Task<Void, Never>?
     private var steeringOperationGeneration = 0
     private var shouldReplaySteeringAfterStop = false
+    /// Holds process startup while Stop clears server-side queued input,
+    /// aborts the turn, and fully terminates the old RPC process.
+    private var isRestartingAfterStop = false
 #if DEBUG
     var shouldStallRPCOverrideForTesting: Bool?
     var mockResponseOverrideForTesting: String?
@@ -150,6 +153,7 @@ final class PiConversationModel: ObservableObject {
     }
 
     func startProcessIfNeeded() {
+        guard !isRestartingAfterStop else { return }
         guard client == nil || mockResponse != nil else {
             flushPendingPromptIfNeeded()
             return
@@ -311,6 +315,7 @@ final class PiConversationModel: ObservableObject {
         lastStartKey = nil
         pendingPrompt = nil
         isRunning = false
+        isRestartingAfterStop = false
         // Capture the client into a local before clearing the property —
         // `client?.stop()` inside the Task would otherwise always read `nil`,
         // since the synchronous assignment above runs before the Task body
@@ -412,6 +417,7 @@ final class PiConversationModel: ObservableObject {
         if mockResponse == nil {
             client = nil
             isSessionReady = false
+            isRestartingAfterStop = clientToAbort != nil
             processGeneration += 1
             lastStartKey = nil
         }
@@ -421,8 +427,19 @@ final class PiConversationModel: ObservableObject {
         let cachedItems = items
         let planningMode = isPlanningMode
         Task {
-            _ = try? await clientToAbort?.abort(timeoutSeconds: 1.25)
+            if let clientToAbort {
+                // Pi continues accepted queue entries after abort unless they
+                // are cleared first. Keep the local queue as the replay source
+                // of truth, then wait for full process termination before a
+                // replacement can start.
+                let queueWasCleared = (try? await clientToAbort.clearQueue(timeoutSeconds: 1.25)) != nil
+                if queueWasCleared {
+                    _ = try? await clientToAbort.abort(timeoutSeconds: 1.25)
+                }
+                await clientToAbort.stop()
+            }
             await MainActor.run {
+                self.isRestartingAfterStop = false
 #if DEBUG
                 self.onStopCompletionForTesting?()
 #endif

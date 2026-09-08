@@ -335,6 +335,18 @@ actor PiRPCClient {
         try await send(command: "new_session", fields: [:], timeoutSeconds: timeoutSeconds)
     }
 
+    /// Remove queued steering and follow-up input before aborting. Pi otherwise
+    /// continues accepted queue entries after `abort`, which would race the
+    /// client's post-stop replay and risk duplicate delivery.
+    func clearQueue(timeoutSeconds: TimeInterval = 15) async throws -> RPCEnvelope {
+        let response = try await send(command: "clear_queue", fields: [:], timeoutSeconds: timeoutSeconds)
+        guard response.success != false else {
+            log("clear_queue rejected; caller must fall back to process termination")
+            throw ClientError.invalidResponse(response.error?.stringValue ?? "Pi rejected clear_queue.")
+        }
+        return response
+    }
+
     /// Genuine server-side turn cancellation (`session.abort()` in pi's RPC
     /// mode) — not a client-side give-up. See implementation plan §G.
     func abort(timeoutSeconds: TimeInterval = 15) async throws -> RPCEnvelope {

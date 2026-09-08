@@ -646,7 +646,11 @@ final class StopButtonTests: XCTestCase {
 
         let commandLog = (try? String(contentsOf: commandLogFile, encoding: .utf8)) ?? "<missing command log>"
         let transcript = String(describing: model.items)
-        XCTAssertTrue(commandLog.contains("\"message\":\"second prompt\""), commandLog)
+        let clearQueuePosition = try XCTUnwrap(commandLog.range(of: "\"type\":\"clear_queue\""))
+        let abortPosition = try XCTUnwrap(commandLog.range(of: "\"type\":\"abort\""))
+        let secondPromptPosition = try XCTUnwrap(commandLog.range(of: "\"message\":\"second prompt\""))
+        XCTAssertLessThan(clearQueuePosition.lowerBound, abortPosition.lowerBound, commandLog)
+        XCTAssertLessThan(abortPosition.lowerBound, secondPromptPosition.lowerBound, commandLog)
         XCTAssertTrue(transcript.contains("fresh second-turn output"), "Commands:\n\(commandLog)\nTranscript:\n\(transcript)")
 
         try await Task.sleep(nanoseconds: 450_000_000)
