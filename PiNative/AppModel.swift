@@ -170,6 +170,7 @@ final class AppModel: ObservableObject {
     private var globalModifierMonitor: Any?
     private let modelCatalogLoaderOverride: (() async throws -> [PiModelOption])?
     private let chatTitleGenerator: any ChatTitleGenerating
+    private let conversationModelFactory: (ModelSettingsModel) -> PiConversationModel
     private let piHealthCheckOperation: () async -> PiHealthCheckResult
     private let piTerminalRecoveryOperation: (PiCommand?) async throws -> Void
     private var hasCompletedPiHealthCheck = false
@@ -261,7 +262,8 @@ final class AppModel: ObservableObject {
         chatTitleGenerator: (any ChatTitleGenerating)? = nil,
         analytics: any AnalyticsControlling = AppAnalytics.shared,
         piHealthCheck: (() async -> PiHealthCheckResult)? = nil,
-        piTerminalRecovery: ((PiCommand?) async throws -> Void)? = nil
+        piTerminalRecovery: ((PiCommand?) async throws -> Void)? = nil,
+        conversationModelFactory: ((ModelSettingsModel) -> PiConversationModel)? = nil
     ) {
         self.analytics = analytics
         self.analyticsEnabled = analytics.isEnabled
@@ -278,6 +280,7 @@ final class AppModel: ObservableObject {
             storage: storage,
             configuredDefaultModel: ModelSettingsModel.configuredDefaultModel(environment: environment)
         )
+        self.conversationModelFactory = conversationModelFactory ?? { PiConversationModel(modelSettings: $0) }
         let isResettingForUITests = environment["PI_NATIVE_RESET_PROJECTS"] == "1"
         self.isLeftPaneVisible = isResettingForUITests ? true : (defaults.object(forKey: Self.leftPaneVisibleKey) as? Bool ?? true)
         let defaultCodeFolder = environment["PI_NATIVE_TEST_PROMOTE_CODE_FOLDER"] ?? defaults.string(forKey: Self.promoteDefaultCodeFolderKey) ?? Self.defaultProjectFolderPath
@@ -1087,7 +1090,7 @@ final class AppModel: ObservableObject {
             return runtime
         }
 
-        let model = PiConversationModel(modelSettings: modelSettings)
+        let model = conversationModelFactory(modelSettings)
         let runtime = ConversationRuntime(key: key, model: model)
         conversationRuntimes[key] = runtime
         conversationRuntimeStates[key] = ConversationRuntimeState()

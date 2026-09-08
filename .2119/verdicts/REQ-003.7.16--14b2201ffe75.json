@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.16--14b2201ffe75",
+  "requirementId": "REQ-003.7.16",
+  "hash": "14b2201ffe75",
+  "verdict": "pass",
+  "summary": "Tests verify ordering (stop-completed before replay-submitted), replay as new prompt RPC producing a .user item with matching text, first-in-first-out ordering across multiple pending steering messages, exclusion of already-delivered steering (negative-space boundary), and a real-process (non-mocked) variant confirming replay occurs as a new turn while running.",
+  "timestamp": "2026-09-08T22:20:32.109Z"
+}

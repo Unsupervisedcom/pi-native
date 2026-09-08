@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--0419965f8453",
+  "requirementId": "REQ-003.5.2",
+  "hash": "0419965f8453",
+  "verdict": "pass",
+  "summary": "Tests exercise real RPC race conditions (delayed late deltas/tool starts from stopped and superseded turns, incl. real subprocess) and assert absence of late output in transcript/UI; covers both stop-only and stop-then-new-turn boundary cases genuinely.",
+  "timestamp": "2026-09-02T22:23:05.454Z"
+}

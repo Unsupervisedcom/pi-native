@@ -95,6 +95,12 @@ stdin command #42 ─────► Pi
 - Streaming text arrives through `message_update` events and mutates one stable assistant transcript item incrementally.
 - Tools can interleave with text and trigger additional provider turns before the final `agent_end`.
 
+## Steering an active turn
+
+When Enter is pressed while `isRunning` is true, `sendDraft()` retains the full prepared payload in the conversation's ordered `pendingSteering` queue and sends Pi's `steer` RPC command instead of appending a delivered user transcript item. The view renders those entries inline after delivered chat content as subdued gray `Steering:` rows. Pi decides the next model-turn boundary and configured one-at-a-time/all delivery behavior.
+
+When Pi emits `message_start` for the queued user input, the model removes the oldest pending entry and appends exactly one normal user transcript item using the locally retained display payload. Steering RPC calls are serialized, and generation checks prevent an acknowledgement from an obsolete process from changing a replacement runtime's queue.
+
 ## First message and restored-chat variations
 
 - **Brand-new chat:** `AppModel` creates a local `Session` with `pendingInitialPrompt`; the model starts Pi, sends `new_session`, asks `get_state` for the resolved session file, then flushes the prompt.
@@ -108,4 +114,5 @@ stdin command #42 ─────► Pi
 - Process-exited/not-running failures get one client restart plus session rehydrate attempt.
 - Catastrophic startup/session failure becomes visible chat status and disables the composer; transient notices are not persisted.
 - Stop clears selected-chat UI state immediately, sends Pi's real `abort` command, suppresses late events from that turn, and restarts the client after a short abort window.
+- If steering is pending, Stop retains it across replacement: the first entry becomes the replacement prompt and the remaining entries are re-enqueued with `steer` in original order. Failed replay remains visible and retryable rather than silently losing input.
 - Because every chat has its own model/client/process, stopping one chat does not interrupt another.

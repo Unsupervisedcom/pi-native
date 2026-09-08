@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.2--0b1b5de4319b",
+  "requirementId": "REQ-003.7.2",
+  "hash": "0b1b5de4319b",
+  "verdict": "pass",
+  "summary": "testActiveTurnSubmissionCreatesPendingSteeringInsteadOfUserHistory asserts model.isRunning stays true after sendDraft() creates pending steering while agent_start already set it true, genuinely rejecting an implementation that would end the turn.",
+  "timestamp": "2026-09-02T22:23:01.207Z"
+}

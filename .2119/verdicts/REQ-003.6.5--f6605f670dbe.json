@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.6.5--f6605f670dbe",
+  "requirementId": "REQ-003.6.5",
+  "hash": "f6605f670dbe",
+  "verdict": "pass",
+  "summary": "Test starts Quick Chat running (agent_start), then selects and sends a real prompt in a project chat, asserting selection succeeds, project work actually starts (pendingPrompt/isRunning/isLoadingSession + transcript item), and Quick Chat remains running—directly verifying both conjuncts (selecting and starting work) aren't blocked.",
+  "timestamp": "2026-09-02T22:28:25.893Z"
+}

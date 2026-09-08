@@ -9,6 +9,8 @@
 - `activity(ActivityGroup)` — one or more correlated tool calls.
 - `notice` — loading, failure, compaction, Stop, and extension feedback.
 
+Pending steering is intentionally not a fifth persisted `TranscriptItem`: it is transient per-conversation runtime state until Pi represents it as delivered user input. It is nevertheless rendered inline at the bottom of the chronological chat flow, matching Pi's gray `Steering:` treatment rather than a delivered user bubble.
+
 ## Live and historical reconstruction
 
 - Live `text_delta` events append to the current assistant buffer.
@@ -25,3 +27,4 @@
 - Recalled prompts copy both text and ordered attachments into the draft. A user edit ends history browsing, and changing the selected chat resets the browsing position so navigation state cannot cross chat boundaries.
 - Model and effort are loaded and changed with real Pi RPC commands.
 - The composer remains editable while session hydration is pending; only catastrophic Pi startup/session failure disables it.
+- Enter during active work queues text and attachments as steering while the Stop control remains available. Rejected steering is restored ahead of any newer draft content, and pending entries remain owned by their chat across navigation.

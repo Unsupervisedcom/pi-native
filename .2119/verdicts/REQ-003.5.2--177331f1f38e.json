@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--177331f1f38e",
+  "requirementId": "REQ-003.5.2",
+  "hash": "177331f1f38e",
+  "verdict": "pass",
+  "summary": "Tests genuinely assert stale output from a stopped turn is excluded from transcript items after stop, both immediately and after a later turn starts, using mocked and real (non-mocked) RPC subprocess paths; negative assertions would fail under the violation.",
+  "timestamp": "2026-09-08T22:04:05.193Z"
+}
