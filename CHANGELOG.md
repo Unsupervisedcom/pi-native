@@ -2,6 +2,9 @@
 
 ## 2026-09-08
 
+### Added
+
+- Added private vulnerability-reporting guidance, project-specific contribution instructions, weekly GitHub Actions dependency updates, and public-repository hygiene guidance.
 
 ### Changed
 
