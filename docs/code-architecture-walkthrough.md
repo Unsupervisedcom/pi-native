@@ -5,6 +5,8 @@ This is the maintenance entry point for the Markdown-backed architecture present
 - Rendered presentation: [`code-architecture-walkthrough.html`](code-architecture-walkthrough.html)
 - Slide sources: [`code-architecture-walkthrough/`](code-architecture-walkthrough/)
 
+The rendered HTML is intentionally tracked as durable, browsable project documentation even though it is generated from the slide sources. Update and review the sources and HTML together; other generated reports remain temporary artifacts outside the repository.
+
 The presentation is intentionally organized as a small set of high-level tabs rather than one long architecture document. Each slide should remain concise enough to walk through with a new developer while sharing a screen.
 
 ## Instructions for an agent refreshing the walkthrough
