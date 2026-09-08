@@ -13,6 +13,7 @@
 
 ### Fixed
 
+- Made real-process steering and Stop lifecycle tests shut down their RPC subprocesses deterministically, preventing leaked readers from starving later tests on constrained CI runners.
 - Held prompts until replacement Pi sessions finish loading after Stop, preventing prompts from being sent before session initialization and making restart ordering reliable on slower systems.
 - Made steering recovery after Stop deterministic by clearing queued server input before abort, waiting for the old Pi process to terminate before restart, and safely falling back to termination when `clear_queue` is unavailable.
 

@@ -58,8 +58,11 @@ final class SteeringReplayBoundaryTests: XCTestCase {
     func testRealProcessReplayIsRunningBeforePromptSubmission() async throws {
         unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
         let fixture = try ReplayRPCFixture()
-        defer { fixture.cleanup() }
         let model = fixture.makeModel()
+        addTeardownBlock { @MainActor in
+            await model.stopAndWaitForTesting()
+            fixture.cleanup()
+        }
         model.start(workingDirectory: fixture.directory.path, sessionPath: nil)
         model.draft = "original real-process turn"
         model.sendDraft()
@@ -86,8 +89,11 @@ final class SteeringReplayBoundaryTests: XCTestCase {
     func testReplacementProcessSpawnFailureMakesReplayingSteeringRetryable() async throws {
         unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
         let fixture = try ReplayRPCFixture()
-        defer { fixture.cleanup() }
         let model = fixture.makeModel()
+        addTeardownBlock { @MainActor in
+            await model.stopAndWaitForTesting()
+            fixture.cleanup()
+        }
         model.start(workingDirectory: fixture.directory.path, sessionPath: nil)
         model.draft = "original real-process turn"
         model.sendDraft()
@@ -113,8 +119,11 @@ final class SteeringReplayBoundaryTests: XCTestCase {
     func testUnsupportedClearQueueFallsBackToTerminationAndRestartsPendingPrompt() async throws {
         unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
         let fixture = try ReplayRPCFixture(rejectsClearQueue: true)
-        defer { fixture.cleanup() }
         let model = fixture.makeModel()
+        addTeardownBlock { @MainActor in
+            await model.stopAndWaitForTesting()
+            fixture.cleanup()
+        }
         model.start(workingDirectory: fixture.directory.path, sessionPath: nil)
         model.draft = "first prompt"
         model.sendDraft()
@@ -137,8 +146,11 @@ final class SteeringReplayBoundaryTests: XCTestCase {
     func testReplacementSessionFailureMakesReplayingSteeringRetryable() async throws {
         unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
         let fixture = try ReplayRPCFixture()
-        defer { fixture.cleanup() }
         let model = fixture.makeModel()
+        addTeardownBlock { @MainActor in
+            await model.stopAndWaitForTesting()
+            fixture.cleanup()
+        }
         model.start(workingDirectory: fixture.directory.path, sessionPath: nil)
         model.draft = "original real-process turn"
         model.sendDraft()

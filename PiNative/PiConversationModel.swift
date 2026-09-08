@@ -320,6 +320,15 @@ final class PiConversationModel: ObservableObject {
     }
 
     func stop() {
+        let oldClient = detachClientForStop()
+        // Capture the client into a local before clearing the property —
+        // `client?.stop()` inside the Task would otherwise always read `nil`,
+        // since the synchronous assignment above runs before the Task body
+        // gets a chance to execute.
+        Task { await oldClient?.stop() }
+    }
+
+    private func detachClientForStop() -> PiRPCClient? {
         steeringOperationGeneration += 1
         steeringSubmissionTask?.cancel()
         steeringSubmissionTask = nil
@@ -330,12 +339,15 @@ final class PiConversationModel: ObservableObject {
         pendingPrompt = nil
         isRunning = false
         isRestartingAfterStop = false
-        // Capture the client into a local before clearing the property —
-        // `client?.stop()` inside the Task would otherwise always read `nil`,
-        // since the synchronous assignment above runs before the Task body
-        // gets a chance to execute.
-        Task { await oldClient?.stop() }
+        return oldClient
     }
+
+#if DEBUG
+    func stopAndWaitForTesting() async {
+        let oldClient = detachClientForStop()
+        await oldClient?.stop()
+    }
+#endif
 
     private var canSubmitWithSelection: Bool { currentModel != nil && currentThinkingLevel != nil }
 

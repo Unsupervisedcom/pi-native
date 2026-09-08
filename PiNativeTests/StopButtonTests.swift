@@ -487,7 +487,6 @@ final class StopButtonTests: XCTestCase {
         let sandbox = FileManager.default.temporaryDirectory
             .appendingPathComponent("PiNativeStopRPC-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: sandbox, withIntermediateDirectories: true)
-        defer { try? FileManager.default.removeItem(at: sandbox) }
         let script = sandbox.appendingPathComponent("fake-pi-rpc.sh")
         try """
         #!/bin/sh
@@ -511,6 +510,10 @@ final class StopButtonTests: XCTestCase {
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: script.path)
 
         let model = PiConversationModel(piCommand: PiCommand(executable: script.path, arguments: []))
+        addTeardownBlock { @MainActor in
+            await model.stopAndWaitForTesting()
+            try? FileManager.default.removeItem(at: sandbox)
+        }
         model.usesMockResponseEnvironmentForTesting = false
         model.shouldStallRPCOverrideForTesting = false
         model.shouldFailRPCOverrideForTesting = false
@@ -573,7 +576,6 @@ final class StopButtonTests: XCTestCase {
         let sandbox = FileManager.default.temporaryDirectory
             .appendingPathComponent("PiNativeStopThenRestartRPC-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: sandbox, withIntermediateDirectories: true)
-        defer { try? FileManager.default.removeItem(at: sandbox) }
         let promptCountFile = sandbox.appendingPathComponent("prompt-count.txt")
         let commandLogFile = sandbox.appendingPathComponent("commands.log")
         let script = sandbox.appendingPathComponent("fake-pi-rpc.sh")
@@ -618,6 +620,10 @@ final class StopButtonTests: XCTestCase {
         """.write(to: script, atomically: true, encoding: .utf8)
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: script.path)
         let model = PiConversationModel(piCommand: PiCommand(executable: script.path, arguments: []))
+        addTeardownBlock { @MainActor in
+            await model.stopAndWaitForTesting()
+            try? FileManager.default.removeItem(at: sandbox)
+        }
         model.usesMockResponseEnvironmentForTesting = false
         model.shouldStallRPCOverrideForTesting = false
         model.shouldFailRPCOverrideForTesting = false
