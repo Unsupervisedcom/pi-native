@@ -8,6 +8,7 @@
 
 ### Changed
 
+- Isolated real-process Stop lifecycle tests from process-wide mock, stall, and failure settings used by concurrently running tests.
 - Made Stop/restart lifecycle validation event-driven, removing polling and fixed-delay assumptions from real Pi process tests.
 
 ### Fixed

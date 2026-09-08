@@ -484,7 +484,6 @@ final class StopButtonTests: XCTestCase {
 
     // 2119: REQ-003.5.2
     func testRealRPCProcessLateOutputIsSuppressedAfterStop() async throws {
-        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
         let sandbox = FileManager.default.temporaryDirectory
             .appendingPathComponent("PiNativeStopRPC-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: sandbox, withIntermediateDirectories: true)
@@ -512,6 +511,9 @@ final class StopButtonTests: XCTestCase {
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: script.path)
 
         let model = PiConversationModel(piCommand: PiCommand(executable: script.path, arguments: []))
+        model.usesMockResponseEnvironmentForTesting = false
+        model.shouldStallRPCOverrideForTesting = false
+        model.shouldFailRPCOverrideForTesting = false
         let agentStarted = expectation(description: "Real RPC turn started")
         let staleEventReceived = expectation(description: "Stopped process emitted post-Stop output")
         let stopCompleted = expectation(description: "Stop teardown completed")
@@ -568,7 +570,6 @@ final class StopButtonTests: XCTestCase {
     }
     // 2119: REQ-003.5.2
     func testRealRPCProcessLateStoppedOutputIsSuppressedAfterLaterTurnStarts() async throws {
-        unsetenv("PI_NATIVE_MOCK_RPC_RESPONSE")
         let sandbox = FileManager.default.temporaryDirectory
             .appendingPathComponent("PiNativeStopThenRestartRPC-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: sandbox, withIntermediateDirectories: true)
@@ -617,6 +618,9 @@ final class StopButtonTests: XCTestCase {
         """.write(to: script, atomically: true, encoding: .utf8)
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: script.path)
         let model = PiConversationModel(piCommand: PiCommand(executable: script.path, arguments: []))
+        model.usesMockResponseEnvironmentForTesting = false
+        model.shouldStallRPCOverrideForTesting = false
+        model.shouldFailRPCOverrideForTesting = false
         let firstTurnStarted = expectation(description: "First real RPC turn started")
         let staleFirstTurnEventReceived = expectation(description: "First process emitted stale output")
         let freshSecondTurnEventReceived = expectation(description: "Replacement process emitted fresh output")

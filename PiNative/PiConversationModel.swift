@@ -56,7 +56,11 @@ final class PiConversationModel: ObservableObject {
     /// flip the composer back into running state.
     private var isSuppressingStoppedTurnEvents = false
     private var mockResponse: String? {
-        mockResponseOverrideForTesting ?? ProcessInfo.processInfo.environment["PI_NATIVE_MOCK_RPC_RESPONSE"]
+#if DEBUG
+        if let mockResponseOverrideForTesting { return mockResponseOverrideForTesting }
+        if !usesMockResponseEnvironmentForTesting { return nil }
+#endif
+        return ProcessInfo.processInfo.environment["PI_NATIVE_MOCK_RPC_RESPONSE"]
     }
     private var mockResponseDelayNanoseconds: UInt64 {
         let milliseconds = UInt64(ProcessInfo.processInfo.environment["PI_NATIVE_MOCK_RPC_RESPONSE_DELAY_MS"] ?? "300") ?? 300
@@ -65,7 +69,12 @@ final class PiConversationModel: ObservableObject {
     private var shouldStallRPCForTesting: Bool {
         shouldStallRPCOverrideForTesting ?? (ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_STALL"] == "1")
     }
-    private var shouldFailRPCForTesting: Bool { ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_CATASTROPHIC_FAILURE"] == "1" }
+    private var shouldFailRPCForTesting: Bool {
+#if DEBUG
+        if let shouldFailRPCOverrideForTesting { return shouldFailRPCOverrideForTesting }
+#endif
+        return ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_CATASTROPHIC_FAILURE"] == "1"
+    }
     private let piCommandOverride: PiCommand?
     private let modelSettings: ModelSettingsModel?
     private var pendingModelSelection: PiModelOption?
@@ -81,7 +90,9 @@ final class PiConversationModel: ObservableObject {
     private var isRestartingAfterStop = false
 #if DEBUG
     var shouldStallRPCOverrideForTesting: Bool?
+    var shouldFailRPCOverrideForTesting: Bool?
     var mockResponseOverrideForTesting: String?
+    var usesMockResponseEnvironmentForTesting = true
     var onSteeringRPCForTesting: ((String) -> Void)?
     var onPromptRPCForTesting: ((String) -> Void)?
     var onAbortRPCForTesting: (() -> Void)?
