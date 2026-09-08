@@ -155,7 +155,9 @@ final class PiConversationModel: ObservableObject {
     func startProcessIfNeeded() {
         guard !isRestartingAfterStop else { return }
         guard client == nil || mockResponse != nil else {
-            flushPendingPromptIfNeeded()
+            if isSessionReady {
+                flushPendingPromptIfNeeded()
+            }
             return
         }
         start(

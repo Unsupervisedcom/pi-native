@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--06c255642356",
+  "requirementId": "REQ-003.5.2",
+  "hash": "06c255642356",
+  "verdict": "pass",
+  "summary": "Genuine coverage: unit tests use real timing races and a real fake-RPC subprocess to confirm late/stopped-turn output never appends while distinct later-turn output does append; UI test confirms no assistant transcript node after Stop before new send.",
+  "timestamp": "2026-09-08T21:25:03.765Z"
+}

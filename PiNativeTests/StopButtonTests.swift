@@ -628,7 +628,10 @@ final class StopButtonTests: XCTestCase {
             (try? String(contentsOf: promptCountFile, encoding: .utf8)) == "1"
         }
         XCTAssertTrue(model.isRunning)
+        let stopCompleted = expectation(description: "Stop teardown completed")
+        model.onStopCompletionForTesting = { stopCompleted.fulfill() }
         model.stopActiveTurn()
+        await fulfillment(of: [stopCompleted], timeout: 6)
 
         model.draft = "second prompt"
         model.sendDraft()
@@ -648,9 +651,15 @@ final class StopButtonTests: XCTestCase {
         let transcript = String(describing: model.items)
         let clearQueuePosition = try XCTUnwrap(commandLog.range(of: "\"type\":\"clear_queue\""))
         let abortPosition = try XCTUnwrap(commandLog.range(of: "\"type\":\"abort\""))
+        let firstNewSessionPosition = try XCTUnwrap(commandLog.range(of: "\"type\":\"new_session\""))
+        let replacementNewSessionPosition = try XCTUnwrap(commandLog.range(
+            of: "\"type\":\"new_session\"",
+            range: firstNewSessionPosition.upperBound..<commandLog.endIndex
+        ))
         let secondPromptPosition = try XCTUnwrap(commandLog.range(of: "\"message\":\"second prompt\""))
         XCTAssertLessThan(clearQueuePosition.lowerBound, abortPosition.lowerBound, commandLog)
-        XCTAssertLessThan(abortPosition.lowerBound, secondPromptPosition.lowerBound, commandLog)
+        XCTAssertLessThan(abortPosition.lowerBound, replacementNewSessionPosition.lowerBound, commandLog)
+        XCTAssertLessThan(replacementNewSessionPosition.lowerBound, secondPromptPosition.lowerBound, commandLog)
         XCTAssertTrue(transcript.contains("fresh second-turn output"), "Commands:\n\(commandLog)\nTranscript:\n\(transcript)")
 
         try await Task.sleep(nanoseconds: 450_000_000)
