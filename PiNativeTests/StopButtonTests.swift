@@ -498,13 +498,9 @@ final class StopButtonTests: XCTestCase {
             *'"type":"prompt"'*)
               printf '%s\\n' '{"type":"agent_start"}'
               printf '{"id":%s,"type":"response","success":true,"data":{}}\\n' "$id"
-              (
-                sleep 0.20
-                printf '%s\\n' '{"type":"message_update","assistantMessageEvent":{"type":"text_delta","delta":"late output from real rpc process"}}'
-              ) &
               ;;
             *'"type":"abort"'*)
-              sleep 0.45
+              printf '%s\\n' '{"type":"message_update","assistantMessageEvent":{"type":"text_delta","delta":"late output from real rpc process"}}'
               printf '{"id":%s,"type":"response","success":true,"data":{}}\\n' "$id"
               ;;
             *)
@@ -516,16 +512,30 @@ final class StopButtonTests: XCTestCase {
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: script.path)
 
         let model = PiConversationModel(piCommand: PiCommand(executable: script.path, arguments: []))
+        let agentStarted = expectation(description: "Real RPC turn started")
+        let staleEventReceived = expectation(description: "Stopped process emitted post-Stop output")
+        let stopCompleted = expectation(description: "Stop teardown completed")
+        model.onRPCEventReceivedForTesting = { event, belongsToCurrentProcess in
+            if event.type == "agent_start", belongsToCurrentProcess {
+                agentStarted.fulfill()
+            }
+            if event["assistantMessageEvent"]?.objectValue?["delta"]?.stringValue == "late output from real rpc process" {
+                XCTAssertFalse(belongsToCurrentProcess)
+                staleEventReceived.fulfill()
+            }
+        }
+        model.onStopCompletionForTesting = { stopCompleted.fulfill() }
         model.currentModel = PiModelOption(provider: "test", id: "selected", name: "Selected")
         model.currentThinkingLevel = .medium
         model.start(workingDirectory: sandbox.path, sessionPath: nil)
 
         model.draft = "start a turn through the real rpc process"
         model.sendDraft()
-        try await waitUntil(timeout: 1) { model.isRunning }
+        await fulfillment(of: [agentStarted], timeout: 6)
+        XCTAssertTrue(model.isRunning)
         model.stopActiveTurn()
+        await fulfillment(of: [staleEventReceived, stopCompleted], timeout: 6)
 
-        try await Task.sleep(nanoseconds: 350_000_000)
         XCTAssertFalse(model.items.contains { item in
             if case .assistantText(_, let text) = item {
                 return text.contains("late output from real rpc process")
@@ -568,8 +578,8 @@ final class StopButtonTests: XCTestCase {
         let script = sandbox.appendingPathComponent("fake-pi-rpc.sh")
         try """
         #!/bin/sh
-        count_file="$PI_NATIVE_TEST_PROMPT_COUNT_FILE"
-        log_file="$PI_NATIVE_TEST_COMMAND_LOG_FILE"
+        count_file="\(promptCountFile.path)"
+        log_file="\(commandLogFile.path)"
         while IFS= read -r line; do
           printf '%s\n' "$line" >> "$log_file"
           id=$(printf '%s' "$line" | sed -E 's/.*"id":([0-9]+).*/\\1/')
@@ -581,17 +591,13 @@ final class StopButtonTests: XCTestCase {
               printf '%s' "$count" > "$count_file"
               printf '%s\\n' '{"type":"agent_start"}'
               printf '{"id":%s,"type":"response","success":true,"data":{}}\\n' "$id"
-              if [ "$count" -eq 1 ]; then
-                (
-                  sleep 0.35
-                  printf '%s\\n' '{"type":"message_update","assistantMessageEvent":{"type":"text_delta","delta":"stale first-turn output after second start"}}'
-                ) &
-              else
+              if [ "$count" -ne 1 ]; then
                 printf '%s\\n' '{"type":"message_update","assistantMessageEvent":{"type":"text_delta","delta":"fresh second-turn output"}}'
                 printf '%s\\n' '{"type":"agent_end"}'
               fi
               ;;
             *'"type":"abort"'*)
+              printf '%s\\n' '{"type":"message_update","assistantMessageEvent":{"type":"text_delta","delta":"stale first-turn output after second start"}}'
               printf '{"id":%s,"type":"response","success":true,"data":{}}\\n' "$id"
               ;;
             *'"type":"get_state"'*)
@@ -610,42 +616,41 @@ final class StopButtonTests: XCTestCase {
         done
         """.write(to: script, atomically: true, encoding: .utf8)
         try FileManager.default.setAttributes([.posixPermissions: 0o755], ofItemAtPath: script.path)
-        setenv("PI_NATIVE_TEST_PROMPT_COUNT_FILE", promptCountFile.path, 1)
-        setenv("PI_NATIVE_TEST_COMMAND_LOG_FILE", commandLogFile.path, 1)
-        defer {
-            unsetenv("PI_NATIVE_TEST_PROMPT_COUNT_FILE")
-            unsetenv("PI_NATIVE_TEST_COMMAND_LOG_FILE")
-        }
-
         let model = PiConversationModel(piCommand: PiCommand(executable: script.path, arguments: []))
+        let firstTurnStarted = expectation(description: "First real RPC turn started")
+        let staleFirstTurnEventReceived = expectation(description: "First process emitted stale output")
+        let freshSecondTurnEventReceived = expectation(description: "Replacement process emitted fresh output")
+        var didObserveFirstTurnStart = false
+        model.onRPCEventReceivedForTesting = { event, belongsToCurrentProcess in
+            if event.type == "agent_start", belongsToCurrentProcess, !didObserveFirstTurnStart {
+                didObserveFirstTurnStart = true
+                firstTurnStarted.fulfill()
+            }
+            let delta = event["assistantMessageEvent"]?.objectValue?["delta"]?.stringValue
+            if delta == "stale first-turn output after second start" {
+                XCTAssertFalse(belongsToCurrentProcess)
+                staleFirstTurnEventReceived.fulfill()
+            } else if delta == "fresh second-turn output" {
+                XCTAssertTrue(belongsToCurrentProcess)
+                freshSecondTurnEventReceived.fulfill()
+            }
+        }
         model.currentModel = PiModelOption(provider: "test", id: "selected", name: "Selected")
         model.currentThinkingLevel = .medium
         model.start(workingDirectory: sandbox.path, sessionPath: nil)
 
         model.draft = "first prompt"
         model.sendDraft()
-        try await waitUntil(timeout: 1) {
-            (try? String(contentsOf: promptCountFile, encoding: .utf8)) == "1"
-        }
+        await fulfillment(of: [firstTurnStarted], timeout: 6)
         XCTAssertTrue(model.isRunning)
         let stopCompleted = expectation(description: "Stop teardown completed")
         model.onStopCompletionForTesting = { stopCompleted.fulfill() }
         model.stopActiveTurn()
-        await fulfillment(of: [stopCompleted], timeout: 6)
+        await fulfillment(of: [staleFirstTurnEventReceived, stopCompleted], timeout: 6)
 
         model.draft = "second prompt"
         model.sendDraft()
-        try await waitUntil(timeout: 3) {
-            (try? String(contentsOf: promptCountFile, encoding: .utf8)) == "2"
-        }
-        try await waitUntil(timeout: 3) {
-            model.items.contains { item in
-                if case .assistantText(_, let text) = item {
-                    return text.contains("fresh second-turn output")
-                }
-                return false
-            }
-        }
+        await fulfillment(of: [freshSecondTurnEventReceived], timeout: 6)
 
         let commandLog = (try? String(contentsOf: commandLogFile, encoding: .utf8)) ?? "<missing command log>"
         let transcript = String(describing: model.items)
@@ -662,7 +667,6 @@ final class StopButtonTests: XCTestCase {
         XCTAssertLessThan(replacementNewSessionPosition.lowerBound, secondPromptPosition.lowerBound, commandLog)
         XCTAssertTrue(transcript.contains("fresh second-turn output"), "Commands:\n\(commandLog)\nTranscript:\n\(transcript)")
 
-        try await Task.sleep(nanoseconds: 450_000_000)
         XCTAssertFalse(model.items.contains { item in
             if case .assistantText(_, let text) = item {
                 return text.contains("stale first-turn output after second start")
@@ -670,16 +674,6 @@ final class StopButtonTests: XCTestCase {
             return false
         })
     }
-}
-
-@MainActor
-private func waitUntil(timeout: TimeInterval, condition: @escaping @MainActor () -> Bool) async throws {
-    let deadline = Date().addingTimeInterval(timeout)
-    while Date() < deadline {
-        if condition() { return }
-        try await Task.sleep(nanoseconds: 20_000_000)
-    }
-    XCTFail("Timed out waiting for condition")
 }
 
 private extension RPCEnvelope {

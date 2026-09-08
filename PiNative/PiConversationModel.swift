@@ -86,6 +86,7 @@ final class PiConversationModel: ObservableObject {
     var onPromptRPCForTesting: ((String) -> Void)?
     var onAbortRPCForTesting: (() -> Void)?
     var onStopCompletionForTesting: (() -> Void)?
+    var onRPCEventReceivedForTesting: ((RPCEnvelope, Bool) -> Void)?
 #endif
     private static let defaultThinkingLevels: [PiThinkingLevel] = [.low, .medium, .high]
 
@@ -1048,7 +1049,11 @@ final class PiConversationModel: ObservableObject {
 #endif
 
     private func handle(_ event: RPCEnvelope, processGeneration: Int? = nil) {
-        if let processGeneration, processGeneration != self.processGeneration { return }
+        let belongsToCurrentProcess = processGeneration.map { $0 == self.processGeneration } ?? true
+#if DEBUG
+        onRPCEventReceivedForTesting?(event, belongsToCurrentProcess)
+#endif
+        guard belongsToCurrentProcess else { return }
         guard let type = event.type else { return }
         if type == "extension_ui_request" {
             handleExtensionUIRequest(event)

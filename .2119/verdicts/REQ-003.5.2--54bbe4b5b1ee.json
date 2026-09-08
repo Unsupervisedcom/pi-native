@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--54bbe4b5b1ee",
+  "requirementId": "REQ-003.5.2",
+  "hash": "54bbe4b5b1ee",
+  "verdict": "pass",
+  "summary": "Unit tests use real RPC subprocesses to distinguish stale vs fresh turn output by process identity and assert the stale text never appears in the transcript while fresh output does; UI test waits after Stop to confirm no assistant message renders from delayed late output. Genuine negative-space coverage, not tautological.",
+  "timestamp": "2026-09-08T21:46:08.378Z"
+}

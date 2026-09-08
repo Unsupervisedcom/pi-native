@@ -3,6 +3,10 @@
 ## 2026-09-08
 
 
+### Changed
+
+- Made Stop/restart lifecycle validation event-driven, removing polling and fixed-delay assumptions from real Pi process tests.
+
 ### Fixed
 
 - Held prompts until replacement Pi sessions finish loading after Stop, preventing prompts from being sent before session initialization and making restart ordering reliable on slower systems.
