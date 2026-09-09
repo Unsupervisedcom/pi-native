@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-09
+
+### Fixed
+
+- Unified Stop and Escape interruption so active work stops through one lifecycle, late output stays suppressed, and a persistent bold interruption status survives chat refreshes, navigation, and relaunch. Refined red feedback with a darker light-theme treatment.
+
 ## 2026-09-08
 
 ### Added

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-001.3.1--23b0c6ee18b7",
+  "requirementId": "REQ-001.3.1",
+  "hash": "23b0c6ee18b7",
+  "verdict": "pass",
+  "summary": "Tests exercise the real PromptAttachmentAssembler.prepare and PiRPCClient.promptFields, asserting mimeType and base64EncodedString() data for two distinct image types plus RPC field wiring; a raw-bytes or missing-mimeType violation would fail these assertions.",
+  "timestamp": "2026-09-09T18:54:31.582Z"
+}

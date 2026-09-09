@@ -38,12 +38,13 @@ This spec captures the next testing focus for the shell and conversation lifecyc
 7. Pending startup or queued prompt work in one chat MUST NOT prevent selecting another chat.
 8. In-flight work in one chat MUST NOT prevent opening the new-chat surface or creating a new chat.
 
-### REQ-003.5: Stop behavior
+### REQ-003.5: Interruption behavior
 
-1. Pressing Stop for the selected chat's active turn MUST replace its visible Stop control with the Send control within one second.
-2. Pressing Stop during an active turn MUST prevent later output from that stopped turn from appending to the transcript.
-3. Pressing Stop during an active turn MUST leave the composer usable for a later prompt.
-4. Pressing Stop in the selected chat MUST NOT stop in-flight work in another chat.
+1. While the selected chat has interruptible work, pressing Stop or Escape MUST produce the same prompt-ready interrupted state within one second.
+2. Interrupting an active turn MUST prevent later output from that interrupted turn from appending to the transcript.
+3. The selected chat's visible interruption indication MUST remain present through transcript synchronization or hydration, navigation away and back, subsequent rendering updates, and app relaunch.
+4. Interrupting the selected chat MUST NOT change another chat's work or transcript.
+5. Pressing Escape while the selected chat has no interruptible work MUST NOT change transcript or runtime state.
 
 ### REQ-003.6: Quick Chat creation and navigation
 
@@ -94,8 +95,8 @@ This spec captures the next testing focus for the shell and conversation lifecyc
 - Tests for row hit targets should click representative left, center, and trailing non-control points.
 - Tests for hidden controls should verify the hidden archive, diff, and new-chat affordances do not intercept row selection.
 - Tests for active work navigation should start work in one chat, switch to another chat, then verify both the target chat selection and the original chat working indicator.
-- Tests for Stop should cover late output suppression after the stop action, not only immediate local state changes.
-- Tests for steering should cover multiple queued messages, attachment payloads, RPC rejection, delivery events, Stop races, runtime replacement, and cross-chat isolation.
+- Interruption tests should cover both Stop and Escape entry points, late-output suppression, persistent interruption history, and cross-chat isolation.
+- Tests for steering should cover multiple queued messages, attachment payloads, RPC rejection, delivery events, interruption races, runtime replacement, and cross-chat isolation.
 
 ## Non-goals
 

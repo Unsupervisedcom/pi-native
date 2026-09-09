@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-009.3.3--01f6497894f2",
+  "requirementId": "REQ-009.3.3",
+  "hash": "01f6497894f2",
+  "verdict": "pass",
+  "summary": "Tests genuinely verify: after chat switch, first navigateOlder call returns the newly focused chat's most recent user message (not the prior chat's, not an older one), and correctly returns empty when the destination chat has no user messages; uses real PiConversationModel/ComposerPromptHistoryNavigator without mocking the constrained behavior.",
+  "timestamp": "2026-09-09T18:56:50.713Z"
+}

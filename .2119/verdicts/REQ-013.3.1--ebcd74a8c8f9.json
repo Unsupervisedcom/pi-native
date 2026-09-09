@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.3.1--ebcd74a8c8f9",
+  "requirementId": "REQ-013.3.1",
+  "hash": "ebcd74a8c8f9",
+  "verdict": "pass",
+  "summary": "Tests verify identity (id lookup), project/quick association (session moved between projects.sessions and standaloneSessions), filePath, cachedTranscript, and isPinned are all preserved across both archive and restore directions with real state checks, not tautologies.",
+  "timestamp": "2026-09-09T19:05:14.123Z"
+}

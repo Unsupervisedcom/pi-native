@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.5--cc8c912774cd",
+  "requirementId": "REQ-003.5.5",
+  "hash": "cc8c912774cd",
+  "verdict": "pass",
+  "summary": "Idle-escape assertions (items/composerFocusRequest/isRunning unchanged after second Escape) genuinely reject a spurious no-op interrupt causing extra Stopped. notice or focus churn; test is not tautological.",
+  "timestamp": "2026-09-09T19:08:37.515Z"
+}

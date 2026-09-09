@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.2--b4d0a25be6ad",
+  "requirementId": "REQ-003.3.2",
+  "hash": "b4d0a25be6ad",
+  "verdict": "pass",
+  "summary": "Unit tests verify archived-only/mixed project rows never select archived session (nil or newestVisible), and UI test performs real clicks across row offsets confirming archived chat title never becomes selected; genuine behavioral coverage of the MUST NOT.",
+  "timestamp": "2026-09-09T18:54:35.665Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.1--3a45b40c2919",
+  "requirementId": "REQ-003.5.1",
+  "hash": "3a45b40c2919",
+  "verdict": "pass",
+  "summary": "Stop (StopButtonTests + ActiveWorkUITests) and mounted Escape (ComposerPromptHistoryMountedTests) both assert isRunning=false, a single 'Stopped.' notice, focus-request change, and real elapsed-time <1s from trigger; idle Escape no-op is tested as negative space, so the requirement's same-state and 1s conjuncts are genuinely covered.",
+  "timestamp": "2026-09-09T19:08:32.528Z"
+}

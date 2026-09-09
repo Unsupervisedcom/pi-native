@@ -560,7 +560,7 @@ struct PromoteToProjectModal: View {
             if let message = workflow.validationMessage {
                 Text(message)
                     .font(.caption)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(AppTheme.dangerText)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("promoteToProject.errorMessage")
             }
@@ -731,7 +731,7 @@ private struct PromoteStatusGlyph: View {
                 .accessibilityIdentifier("\(identifierBase).skipped")
         case .failed:
             Image(systemName: "exclamationmark.circle.fill")
-                .foregroundStyle(.red)
+                .foregroundStyle(AppTheme.dangerText)
                 .accessibilityIdentifier("\(identifierBase).error")
         }
     }

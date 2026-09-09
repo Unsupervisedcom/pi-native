@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.4--2914c78ad137",
+  "requirementId": "REQ-003.5.4",
+  "hash": "2914c78ad137",
+  "verdict": "pass",
+  "summary": "Test starts two chats running, interrupts the selected one, and asserts the non-selected chat's running state and transcript items remain unchanged (with a follow-up event proving it still functions) — genuinely rejects the plausible cross-chat interruption bug; not mocked, not tautological.",
+  "timestamp": "2026-09-09T18:56:50.713Z"
+}

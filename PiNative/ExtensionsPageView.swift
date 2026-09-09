@@ -72,7 +72,7 @@ struct ExtensionsPageView: View {
             VStack(alignment: .leading, spacing: 8) {
                 Label("Failed to load", systemImage: "exclamationmark.triangle")
                     .font(.headline)
-                    .foregroundStyle(.red)
+                    .foregroundStyle(AppTheme.dangerText)
                 Text(message)
                     .textSelection(.enabled)
                     .foregroundStyle(.secondary)

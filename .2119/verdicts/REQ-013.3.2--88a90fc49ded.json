@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.3.2--88a90fc49ded",
+  "requirementId": "REQ-013.3.2",
+  "hash": "88a90fc49ded",
+  "verdict": "pass",
+  "summary": "testArchivedAndRestoredChatsPersistAcrossRelaunch genuinely reloads via fresh AppModel() instances backed by real UserDefaults/disk persistence, verifying both archive and restore survive a simulated relaunch for standalone and project sessions.",
+  "timestamp": "2026-09-09T19:05:11.557Z"
+}

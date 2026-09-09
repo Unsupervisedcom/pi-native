@@ -263,6 +263,35 @@ final class AttachmentSupportTests: XCTestCase {
         XCTAssertEqual(object["data"]?.stringValue, "abc123")
     }
 
+    @MainActor
+    func testEscapePreservesNativeMarkedTextCancellationBeforeInterrupting() throws {
+        let textView = PasteInterceptingTextView()
+        var didInterrupt = false
+        textView.onEscape = { didInterrupt = true }
+        textView.setMarkedText(
+            "候補",
+            selectedRange: NSRange(location: 0, length: 2),
+            replacementRange: NSRange(location: NSNotFound, length: 0)
+        )
+        XCTAssertTrue(textView.hasMarkedText())
+        let escape = try XCTUnwrap(NSEvent.keyEvent(
+            with: .keyDown,
+            location: .zero,
+            modifierFlags: [],
+            timestamp: 0,
+            windowNumber: 0,
+            context: nil,
+            characters: "\u{1b}",
+            charactersIgnoringModifiers: "\u{1b}",
+            isARepeat: false,
+            keyCode: 53
+        ))
+
+        textView.keyDown(with: escape)
+
+        XCTAssertFalse(didInterrupt)
+    }
+
     private func temporaryURL(extension pathExtension: String) -> URL {
         FileManager.default.temporaryDirectory
             .appendingPathComponent("pinative-attachment-test-\(UUID().uuidString)")

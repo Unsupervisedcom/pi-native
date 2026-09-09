@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.7--903eb8ce6425",
+  "requirementId": "REQ-003.4.7",
+  "hash": "903eb8ce6425",
+  "verdict": "pass",
+  "summary": "Tests select() away from a chat with pending-startup and queued-prompt work, asserting selectedProjectID/selectedSessionID actually change and the busy chat's working state persists — a genuine, non-tautological check that pending work does not block selecting another chat.",
+  "timestamp": "2026-09-09T19:38:56.168Z"
+}

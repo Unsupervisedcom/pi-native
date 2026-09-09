@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.1--6b150fe4d08a",
+  "requirementId": "REQ-003.3.1",
+  "hash": "6b150fe4d08a",
+  "verdict": "pass",
+  "summary": "Unit tests (archived-newer, pinned-only, loaded-from-disk) and UI test (multi-project, pinned/archived/older exclusions via XCTAssertNotEqual) both verify each conjunct: newest, visible (not archived), unpinned, and scoped to the selected project; no tautologies or over-mocking found.",
+  "timestamp": "2026-09-09T18:54:32.783Z"
+}
