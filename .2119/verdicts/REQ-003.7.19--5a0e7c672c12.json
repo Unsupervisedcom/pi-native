@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.19--5a0e7c672c12",
+  "requirementId": "REQ-003.7.19",
+  "hash": "5a0e7c672c12",
+  "verdict": "pass",
+  "summary": "Tests in SteeringDeliveryDeduplicationTests.testLateAcknowledgementsCannotCreateAnyDuplicateSubmissionOrDelivery and StopButtonTests.testStopKeepsUnacknowledgedSteeringUntilExactlyOnceReplayDisposition genuinely exercise late post-Stop acknowledgement events and assert single (not duplicated) submission counts and delivered user items, covering the MUST NOT negative space.",
+  "timestamp": "2026-09-02T22:22:43.139Z"
+}

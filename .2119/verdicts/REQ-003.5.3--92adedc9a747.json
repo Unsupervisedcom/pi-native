@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.3--92adedc9a747",
+  "requirementId": "REQ-003.5.3",
+  "hash": "92adedc9a747",
+  "verdict": "pass",
+  "summary": "Genuine coverage: real persistence-backed relaunch, navigation, repeated hydration, and later-turn rendering all confirmed to preserve the Stopped. indicator, with late-output rejection as negative space; no mocking bypasses the fence logic.",
+  "timestamp": "2026-09-09T19:39:38.014Z"
+}

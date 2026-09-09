@@ -291,6 +291,16 @@ actor PiRPCClient {
         try await send(command: "prompt", fields: Self.promptFields(message: message, images: images), timeoutSeconds: timeoutSeconds)
     }
 
+    /// Queue input for the next model turn while the agent is active. The
+    /// response acknowledges queueing; Pi owns the actual delivery boundary.
+    func steer(_ message: String, images: [RPCImageContent] = [], timeoutSeconds: TimeInterval = 15) async throws -> RPCEnvelope {
+        try await send(command: "steer", fields: Self.steerFields(message: message, images: images), timeoutSeconds: timeoutSeconds)
+    }
+
+    static func steerFields(message: String, images: [RPCImageContent] = []) -> [String: JSONValue] {
+        promptFields(message: message, images: images)
+    }
+
     static func promptFields(message: String, images: [RPCImageContent] = []) -> [String: JSONValue] {
         var fields: [String: JSONValue] = ["message": .string(message)]
         if !images.isEmpty {
@@ -323,6 +333,18 @@ actor PiRPCClient {
 
     func newSession(timeoutSeconds: TimeInterval = 15) async throws -> RPCEnvelope {
         try await send(command: "new_session", fields: [:], timeoutSeconds: timeoutSeconds)
+    }
+
+    /// Remove queued steering and follow-up input before aborting. Pi otherwise
+    /// continues accepted queue entries after `abort`, which would race the
+    /// client's post-stop replay and risk duplicate delivery.
+    func clearQueue(timeoutSeconds: TimeInterval = 15) async throws -> RPCEnvelope {
+        let response = try await send(command: "clear_queue", fields: [:], timeoutSeconds: timeoutSeconds)
+        guard response.success != false else {
+            log("clear_queue rejected; caller must fall back to process termination")
+            throw ClientError.invalidResponse(response.error?.stringValue ?? "Pi rejected clear_queue.")
+        }
+        return response
     }
 
     /// Genuine server-side turn cancellation (`session.abort()` in pi's RPC

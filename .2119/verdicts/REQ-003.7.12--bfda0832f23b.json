@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.12--bfda0832f23b",
+  "requirementId": "REQ-003.7.12",
+  "hash": "bfda0832f23b",
+  "verdict": "pass",
+  "summary": "Test triggers a genuine RPC rejection (client-nil steer failure hits production rejectSteering catch path) and asserts draft is restored into the originating model's composer while a sibling chat's draft is untouched, satisfying the requirement's conjuncts.",
+  "timestamp": "2026-09-02T22:23:00.445Z"
+}

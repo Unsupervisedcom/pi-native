@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--f3ec9082cc29",
+  "requirementId": "REQ-003.5.2",
+  "hash": "f3ec9082cc29",
+  "verdict": "pass",
+  "summary": "Tests genuinely verify suppression of interrupted-turn output: delayed mock deltas, real RPC subprocess late output, and hydration replay of pre-interruption content are all asserted absent while later legitimate turn output is asserted present; non-tautological, no over-mocking of the assertion path.",
+  "timestamp": "2026-09-09T19:38:53.453Z"
+}

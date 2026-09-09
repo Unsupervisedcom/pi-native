@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.17--0214d6f3ddb3",
+  "requirementId": "REQ-003.7.17",
+  "hash": "0214d6f3ddb3",
+  "verdict": "pass",
+  "summary": "testStopReplaysFirstSteeringAndRetainsRemainingOrder asserts exact replay order (prompt:first, steer:second) via real RPC callback recording, which would fail if resubmission reordered the originally-submitted messages; genuine coverage of the ordering requirement.",
+  "timestamp": "2026-09-02T22:23:01.035Z"
+}

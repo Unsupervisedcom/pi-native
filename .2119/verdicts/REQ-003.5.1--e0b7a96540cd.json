@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.1--e0b7a96540cd",
+  "requirementId": "REQ-003.5.1",
+  "hash": "e0b7a96540cd",
+  "verdict": "pass",
+  "summary": "Stop (UI test, mocked RPC) and Escape (mounted composer unit test) both invoke the shared synchronous interruptActiveTurn(), and each test asserts identical criteria (isRunning false, focus-request change, 'Stopped.' notice, elapsed <1s) plus post-interrupt composer usability; since the underlying mutation is synchronous, the <1s assertions are not coincidental passes.",
+  "timestamp": "2026-09-09T19:39:18.245Z"
+}

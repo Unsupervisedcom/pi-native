@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.6.4--1fded447f0b8",
+  "requirementId": "REQ-003.6.4",
+  "hash": "1fded447f0b8",
+  "verdict": "pass",
+  "summary": "Test switches activeConversationModel across quick/project/second-quick sessions via real select() navigation and asserts each retains its own draft (quick-only, project-only, second-quick-only) with explicit non-equality checks — genuinely fails if draft state leaked between sessions.",
+  "timestamp": "2026-09-02T22:28:20.538Z"
+}

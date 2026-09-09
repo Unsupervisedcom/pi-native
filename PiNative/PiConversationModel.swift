@@ -20,6 +20,7 @@ final class PiConversationModel: ObservableObject {
     @Published var availableModels: [PiModelOption] = []
     @Published var currentThinkingLevel: PiThinkingLevel?
     @Published var availableThinkingLevels: [PiThinkingLevel] = []
+    @Published private(set) var pendingSteering: [SteeringMessage] = []
 
     var onSessionPathResolved: ((String) -> Void)?
     var onUserMessageSent: ((String) -> Void)?
@@ -48,18 +49,32 @@ final class PiConversationModel: ObservableObject {
     private var interactiveAttentionNotice: String?
     private var isPlanningMode = false
     private var activeLocalTurnID: UUID?
+    private var isAwaitingInitialPromptUserEvent = false
     /// True after the user presses Stop until the next prompt starts. Pi may
     /// still emit a few late events while abort/termination races the active
     /// turn; suppress those so a stopped turn cannot keep appending output or
     /// flip the composer back into running state.
     private var isSuppressingStoppedTurnEvents = false
-    private var mockResponse: String? { ProcessInfo.processInfo.environment["PI_NATIVE_MOCK_RPC_RESPONSE"] }
+    private var mockResponse: String? {
+#if DEBUG
+        if let mockResponseOverrideForTesting { return mockResponseOverrideForTesting }
+        if !usesMockResponseEnvironmentForTesting { return nil }
+#endif
+        return ProcessInfo.processInfo.environment["PI_NATIVE_MOCK_RPC_RESPONSE"]
+    }
     private var mockResponseDelayNanoseconds: UInt64 {
         let milliseconds = UInt64(ProcessInfo.processInfo.environment["PI_NATIVE_MOCK_RPC_RESPONSE_DELAY_MS"] ?? "300") ?? 300
         return milliseconds * 1_000_000
     }
-    private var shouldStallRPCForTesting: Bool { ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_STALL"] == "1" }
-    private var shouldFailRPCForTesting: Bool { ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_CATASTROPHIC_FAILURE"] == "1" }
+    private var shouldStallRPCForTesting: Bool {
+        shouldStallRPCOverrideForTesting ?? (ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_STALL"] == "1")
+    }
+    private var shouldFailRPCForTesting: Bool {
+#if DEBUG
+        if let shouldFailRPCOverrideForTesting { return shouldFailRPCOverrideForTesting }
+#endif
+        return ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_CATASTROPHIC_FAILURE"] == "1"
+    }
     private let piCommandOverride: PiCommand?
     private let modelSettings: ModelSettingsModel?
     private var pendingModelSelection: PiModelOption?
@@ -67,6 +82,23 @@ final class PiConversationModel: ObservableObject {
     private var pendingThinkingLevelSelection: PiThinkingLevel?
     private var thinkingLevelBeforePendingSelection: PiThinkingLevel?
     private var selectionMutationTask: Task<Void, Never>?
+    private var steeringSubmissionTask: Task<Void, Never>?
+    private var steeringOperationGeneration = 0
+    private var shouldReplaySteeringAfterStop = false
+    /// Holds process startup while Stop clears server-side queued input,
+    /// aborts the turn, and fully terminates the old RPC process.
+    private var isRestartingAfterStop = false
+#if DEBUG
+    var shouldStallRPCOverrideForTesting: Bool?
+    var shouldFailRPCOverrideForTesting: Bool?
+    var mockResponseOverrideForTesting: String?
+    var usesMockResponseEnvironmentForTesting = true
+    var onSteeringRPCForTesting: ((String) -> Void)?
+    var onPromptRPCForTesting: ((String) -> Void)?
+    var onAbortRPCForTesting: (() -> Void)?
+    var onStopCompletionForTesting: (() -> Void)?
+    var onRPCEventReceivedForTesting: ((RPCEnvelope, Bool) -> Void)?
+#endif
     private static let defaultThinkingLevels: [PiThinkingLevel] = [.low, .medium, .high]
 
     init(piCommand: PiCommand? = nil, modelSettings: ModelSettingsModel? = nil) {
@@ -133,8 +165,11 @@ final class PiConversationModel: ObservableObject {
     }
 
     func startProcessIfNeeded() {
+        guard !isRestartingAfterStop else { return }
         guard client == nil || mockResponse != nil else {
-            flushPendingPromptIfNeeded()
+            if isSessionReady {
+                flushPendingPromptIfNeeded()
+            }
             return
         }
         start(
@@ -261,6 +296,7 @@ final class PiConversationModel: ObservableObject {
                 self.errorMessage = error.localizedDescription
                 self.reportPiLoadFailure(stage: .processStart, error: error)
                 let notice = self.rpcFailureNotice("Failed to start pi", error: error)
+                self.failReplayingSteeringIfNeeded(notice)
                 self.sessionLoadNotice = notice
                 self.rpcStatusMessage = notice
                 self.isCatastrophicRPCFailure = true
@@ -284,12 +320,7 @@ final class PiConversationModel: ObservableObject {
     }
 
     func stop() {
-        let oldClient = client
-        client = nil
-        processGeneration += 1
-        lastStartKey = nil
-        pendingPrompt = nil
-        isRunning = false
+        let oldClient = detachClientForStop()
         // Capture the client into a local before clearing the property —
         // `client?.stop()` inside the Task would otherwise always read `nil`,
         // since the synchronous assignment above runs before the Task body
@@ -297,14 +328,41 @@ final class PiConversationModel: ObservableObject {
         Task { await oldClient?.stop() }
     }
 
+    private func detachClientForStop() -> PiRPCClient? {
+        steeringOperationGeneration += 1
+        steeringSubmissionTask?.cancel()
+        steeringSubmissionTask = nil
+        let oldClient = client
+        client = nil
+        processGeneration += 1
+        lastStartKey = nil
+        pendingPrompt = nil
+        isRunning = false
+        isRestartingAfterStop = false
+        return oldClient
+    }
+
+#if DEBUG
+    func stopAndWaitForTesting() async {
+        let oldClient = detachClientForStop()
+        await oldClient?.stop()
+    }
+#endif
+
     private var canSubmitWithSelection: Bool { currentModel != nil && currentThinkingLevel != nil }
 
     func sendDraft() {
         guard canSubmitWithSelection else { return }
         guard let prepared = PromptAttachmentAssembler.prepare(draft: draft, attachments: draftAttachments) else { return }
+        let submittedDraft = draft
+        let submittedAttachments = draftAttachments
         draft = ""
         draftAttachments = []
         onPromptSubmitted?()
+        if isRunning {
+            queueSteering(prepared, composerText: submittedDraft, composerAttachments: submittedAttachments)
+            return
+        }
         guard isSessionReady, client != nil || mockResponse != nil else {
             pendingPrompt = PendingPrompt(prepared: prepared, shouldAppendUserMessage: false)
             appendUserMessage(for: prepared)
@@ -336,15 +394,43 @@ final class PiConversationModel: ObservableObject {
         draftAttachments.removeAll { $0.id == id }
     }
 
+    func retrySteering(_ id: UUID) {
+        guard let index = pendingSteering.firstIndex(where: { $0.id == id }),
+              pendingSteering[index].state == .failed
+        else { return }
+        if isRunning {
+            pendingSteering[index].state = .submitting
+            scheduleSteeringSubmission()
+        } else {
+            pendingSteering[index].state = .replaying
+            shouldReplaySteeringAfterStop = true
+            if !isSessionReady, client == nil, mockResponse == nil {
+                shouldReplaySteeringAfterStop = false
+                failPendingSteeringReplay("Couldn’t resume steering after Stop: pi is not running.")
+                return
+            }
+            replaySteeringAfterStopIfNeeded()
+        }
+    }
+
     /// Interrupts the active turn from the user's perspective immediately,
-    /// then performs server-side abort and process recovery. Stop and Escape
-    /// both enter through this method so their lifecycle cannot diverge.
+    /// then clears queued server input, aborts the turn, and performs process
+    /// recovery. Stop and Escape both enter through this method so their
+    /// lifecycle cannot diverge.
     @discardableResult
     func interruptActiveTurn() -> Bool {
         guard isRunning || pendingPrompt != nil else { return false }
+        steeringOperationGeneration += 1
+        steeringSubmissionTask?.cancel()
+        steeringSubmissionTask = nil
+        shouldReplaySteeringAfterStop = !pendingSteering.isEmpty
+        for index in pendingSteering.indices {
+            pendingSteering[index].state = .replaying
+        }
         pendingPrompt = nil
         isRunning = false
         activeLocalTurnID = nil
+        isAwaitingInitialPromptUserEvent = false
         isSuppressingStoppedTurnEvents = true
         onAgentRunAbandoned?()
         assistantBufferID = nil
@@ -353,19 +439,48 @@ final class PiConversationModel: ObservableObject {
         composerFocusRequest = UUID()
 
         let clientToAbort = client
-        client = nil
-        isSessionReady = false
-        processGeneration += 1
-        lastStartKey = nil
+#if DEBUG
+        onAbortRPCForTesting?()
+#endif
+
+        if mockResponse == nil {
+            client = nil
+            isSessionReady = false
+            isRestartingAfterStop = clientToAbort != nil
+            processGeneration += 1
+            lastStartKey = nil
+        }
         let interruptedGeneration = processGeneration
         let workingDirectory = currentWorkingDirectory
         let sessionPath = currentSessionPath
         let cachedItems = items
         let planningMode = isPlanningMode
         Task {
-            _ = try? await clientToAbort?.abort(timeoutSeconds: 1.25)
-            await clientToAbort?.stop()
+            if let clientToAbort {
+                // Pi continues accepted queue entries after interruption unless
+                // they are cleared first. Keep the local queue as the replay
+                // source of truth, then wait for full process termination before
+                // a replacement can start.
+                let queueWasCleared = (try? await clientToAbort.clearQueue(timeoutSeconds: 1.25)) != nil
+                if queueWasCleared {
+                    _ = try? await clientToAbort.abort(timeoutSeconds: 1.25)
+                }
+                await clientToAbort.stop()
+            }
             await MainActor.run {
+                self.isRestartingAfterStop = false
+#if DEBUG
+                self.onStopCompletionForTesting?()
+#endif
+                if self.mockResponse != nil {
+                    self.isSuppressingStoppedTurnEvents = false
+                    self.replaySteeringAfterStopIfNeeded()
+                    return
+                }
+                guard clientToAbort != nil else {
+                    self.failReplayingSteeringIfNeeded("Couldn’t resume steering after Stop: pi is not running.")
+                    return
+                }
                 guard self.processGeneration == interruptedGeneration, self.client == nil else { return }
                 self.start(
                     workingDirectory: workingDirectory,
@@ -373,9 +488,16 @@ final class PiConversationModel: ObservableObject {
                     cachedItems: cachedItems,
                     planningMode: planningMode
                 )
+                self.replaySteeringAfterStopIfNeeded()
             }
         }
         return true
+    }
+
+    /// Compatibility entry point for existing lifecycle tests. Product Stop
+    /// and Escape actions use `interruptActiveTurn()` directly.
+    func stopActiveTurn() {
+        _ = interruptActiveTurn()
     }
 
     /// Copies the given assistant message text to the clipboard. Wired for
@@ -433,6 +555,7 @@ final class PiConversationModel: ObservableObject {
             restoreInteractiveAttentionNoticeIfNeeded()
             isCatastrophicRPCFailure = false
             flushPendingPromptIfNeeded()
+            replaySteeringAfterStopIfNeeded()
         } catch {
             guard generation == sessionGeneration, requestProcessGeneration == processGeneration else { return }
             if !hasRetriedAfterRestart, shouldRestartClient(after: error) {
@@ -446,6 +569,7 @@ final class PiConversationModel: ObservableObject {
             isLoadingSession = false
             reportPiLoadFailure(stage: .sessionLoad, error: error)
             let notice = rpcFailureNotice("Failed to load session", error: error)
+            failReplayingSteeringIfNeeded(notice)
             sessionLoadNotice = notice
             rpcStatusMessage = notice
             isCatastrophicRPCFailure = true
@@ -495,6 +619,7 @@ final class PiConversationModel: ObservableObject {
             isLoadingSession = false
             reportPiLoadFailure(stage: .sessionLoad, error: error)
             let notice = rpcFailureNotice("Failed to load session", error: error)
+            failReplayingSteeringIfNeeded(notice)
             sessionLoadNotice = notice
             rpcStatusMessage = notice
             isCatastrophicRPCFailure = true
@@ -687,6 +812,76 @@ final class PiConversationModel: ObservableObject {
         onUserMessageSent?(prepared.summaryText)
     }
 
+    private func queueSteering(_ prepared: PreparedPrompt, composerText: String, composerAttachments: [ComposerAttachment]) {
+        let message = SteeringMessage(
+            prepared: prepared,
+            composerText: composerText,
+            composerAttachments: composerAttachments,
+            state: .submitting
+        )
+        pendingSteering.append(message)
+
+        if mockResponse != nil {
+            setSteeringState(id: message.id, state: .accepted)
+        } else {
+            scheduleSteeringSubmission()
+        }
+    }
+
+    /// Serializes steer RPC calls so rapid Return presses reach Pi in the same
+    /// order as the visible inline queue.
+    private func scheduleSteeringSubmission() {
+        guard steeringSubmissionTask == nil else { return }
+        let generation = steeringOperationGeneration
+        steeringSubmissionTask = Task { [weak self] in
+            guard let self else { return }
+            while !Task.isCancelled,
+                  generation == self.steeringOperationGeneration,
+                  let next = self.pendingSteering.first(where: { $0.state == .submitting }) {
+                do {
+#if DEBUG
+                    self.onSteeringRPCForTesting?(next.prepared.summaryText)
+#endif
+                    guard let client = self.client else { throw PiRPCClient.ClientError.processNotRunning }
+                    _ = try await client.steer(self.promptMessage(for: next.prepared), images: next.prepared.images)
+                    guard generation == self.steeringOperationGeneration else { break }
+                    self.setSteeringState(id: next.id, state: .accepted)
+                } catch is CancellationError {
+                    break
+                } catch {
+                    guard generation == self.steeringOperationGeneration else { break }
+                    self.rejectSteering(id: next.id, error: error)
+                }
+            }
+            guard generation == self.steeringOperationGeneration else { return }
+            self.steeringSubmissionTask = nil
+        }
+    }
+
+    private func setSteeringState(id: UUID, state: SteeringMessage.State) {
+        guard let index = pendingSteering.firstIndex(where: { $0.id == id }) else { return }
+        pendingSteering[index].state = state
+    }
+
+    private func rejectSteering(id: UUID, error: Error) {
+        guard let index = pendingSteering.firstIndex(where: { $0.id == id }) else { return }
+        let rejected = pendingSteering.remove(at: index)
+        let currentDraft = draft.trimmingCharacters(in: .whitespacesAndNewlines)
+        let rejectedDraft = rejected.composerText.trimmingCharacters(in: .whitespacesAndNewlines)
+        draft = [rejectedDraft, currentDraft].filter { !$0.isEmpty }.joined(separator: "\n\n")
+        addDraftAttachments(rejected.composerAttachments)
+        let notice = rpcFailureNotice("Couldn’t queue steering", error: error)
+        errorMessage = error.localizedDescription
+        items.append(.notice(notice))
+    }
+
+    private func consumeDeliveredSteeringIfPresent() {
+        guard !pendingSteering.isEmpty else { return }
+        let delivered = pendingSteering.removeFirst()
+        closeCurrentActivityGroup()
+        appendUserMessage(for: delivered.prepared)
+    }
+
     private func send(_ prepared: PreparedPrompt?, shouldAppendUserMessage: Bool) {
         guard canSubmitWithSelection, let prepared else { return }
         if client == nil, mockResponse == nil {
@@ -700,6 +895,7 @@ final class PiConversationModel: ObservableObject {
         }
         runningStartedAt = Date()
         isRunning = true
+        isAwaitingInitialPromptUserEvent = true
         let localTurnID = UUID()
         activeLocalTurnID = localTurnID
 
@@ -926,7 +1122,11 @@ final class PiConversationModel: ObservableObject {
 #endif
 
     private func handle(_ event: RPCEnvelope, processGeneration: Int? = nil) {
-        if let processGeneration, processGeneration != self.processGeneration { return }
+        let belongsToCurrentProcess = processGeneration.map { $0 == self.processGeneration } ?? true
+#if DEBUG
+        onRPCEventReceivedForTesting?(event, belongsToCurrentProcess)
+#endif
+        guard belongsToCurrentProcess else { return }
         guard let type = event.type else { return }
         if type == "extension_ui_request" {
             handleExtensionUIRequest(event)
@@ -949,12 +1149,21 @@ final class PiConversationModel: ObservableObject {
         case "agent_settled":
             isRunning = false
             activeLocalTurnID = nil
+            isAwaitingInitialPromptUserEvent = false
             assistantBufferID = nil
             closeCurrentActivityGroup()
             onAgentSettled?(items)
         case "turn_end":
             assistantBufferID = nil
             closeCurrentActivityGroup()
+        case "message_start":
+            if event["message"]?.objectValue?["role"]?.stringValue == "user" {
+                if isAwaitingInitialPromptUserEvent {
+                    isAwaitingInitialPromptUserEvent = false
+                } else {
+                    consumeDeliveredSteeringIfPresent()
+                }
+            }
         case "message_update":
             handleMessageUpdate(event)
         case "message_end":
@@ -978,22 +1187,86 @@ final class PiConversationModel: ObservableObject {
 
     private static func isTurnEvent(_ type: String) -> Bool {
         switch type {
-        case "agent_start", "agent_end", "agent_settled", "turn_end", "message_update", "message_end", "tool_execution_start", "tool_execution_update", "tool_execution_end", "compaction_start", "compaction_end", "extension_ui_request":
+        case "agent_start", "agent_end", "agent_settled", "turn_end", "message_start", "message_end", "message_update", "tool_execution_start", "tool_execution_update", "tool_execution_end", "compaction_start", "compaction_end", "extension_ui_request":
             return true
         default:
             return false
         }
     }
 
-    private func restartClientAfterForcedStop() {
-        guard client != nil else { return }
-        let workingDirectory = currentWorkingDirectory
-        let sessionPath = currentSessionPath
-        let cachedItems = items
-        let planningMode = isPlanningMode
-        stop()
-        isSuppressingStoppedTurnEvents = false
-        start(workingDirectory: workingDirectory, sessionPath: sessionPath, cachedItems: cachedItems, planningMode: planningMode)
+    private func replaySteeringAfterStopIfNeeded() {
+        guard shouldReplaySteeringAfterStop, isSessionReady, !pendingSteering.isEmpty else { return }
+        shouldReplaySteeringAfterStop = false
+        let generation = steeringOperationGeneration
+
+        if mockResponse != nil {
+            let first = pendingSteering.removeFirst()
+#if DEBUG
+            onPromptRPCForTesting?(first.prepared.summaryText)
+#endif
+            send(first.prepared, shouldAppendUserMessage: true)
+            for index in pendingSteering.indices {
+#if DEBUG
+                onSteeringRPCForTesting?(pendingSteering[index].prepared.summaryText)
+#endif
+                pendingSteering[index].state = .accepted
+            }
+            return
+        }
+
+        guard client != nil else {
+            failPendingSteeringReplay("Couldn’t resume steering after Stop: pi is not running.")
+            return
+        }
+
+        runningStartedAt = Date()
+        isRunning = true
+        isAwaitingInitialPromptUserEvent = true
+        activeLocalTurnID = UUID()
+
+        Task { [weak self] in
+            guard let self, let client = self.client, let first = self.pendingSteering.first else { return }
+            do {
+#if DEBUG
+                self.onPromptRPCForTesting?(first.prepared.summaryText)
+#endif
+                _ = try await client.prompt(self.promptMessage(for: first.prepared), images: first.prepared.images)
+                guard generation == self.steeringOperationGeneration else { return }
+                if self.pendingSteering.first?.id == first.id {
+                    self.pendingSteering.removeFirst()
+                    self.appendUserMessage(for: first.prepared)
+                }
+
+                let remainingIDs = self.pendingSteering.map(\.id)
+                for id in remainingIDs {
+                    guard generation == self.steeringOperationGeneration,
+                          let entry = self.pendingSteering.first(where: { $0.id == id })
+                    else { return }
+                    _ = try await client.steer(self.promptMessage(for: entry.prepared), images: entry.prepared.images)
+                    guard generation == self.steeringOperationGeneration else { return }
+                    self.setSteeringState(id: id, state: .accepted)
+                }
+            } catch {
+                guard generation == self.steeringOperationGeneration else { return }
+                self.isRunning = false
+                self.isAwaitingInitialPromptUserEvent = false
+                self.activeLocalTurnID = nil
+                self.failReplayingSteeringIfNeeded(self.rpcFailureNotice("Couldn’t resume steering after Stop", error: error))
+            }
+        }
+    }
+
+    private func failReplayingSteeringIfNeeded(_ notice: String) {
+        guard shouldReplaySteeringAfterStop || pendingSteering.contains(where: { $0.state == .replaying }) else { return }
+        shouldReplaySteeringAfterStop = false
+        failPendingSteeringReplay(notice)
+    }
+
+    private func failPendingSteeringReplay(_ notice: String) {
+        for index in pendingSteering.indices where pendingSteering[index].state == .replaying {
+            pendingSteering[index].state = .failed
+        }
+        items.append(.notice(notice))
     }
 
     private func handleExtensionUIRequest(_ event: RPCEnvelope) {
@@ -1211,6 +1484,21 @@ private struct ConversationStartKey: Equatable {
 private struct PendingPrompt {
     var prepared: PreparedPrompt
     var shouldAppendUserMessage: Bool
+}
+
+struct SteeringMessage: Identifiable, Hashable {
+    enum State: Hashable {
+        case submitting
+        case accepted
+        case replaying
+        case failed
+    }
+
+    var id = UUID()
+    var prepared: PreparedPrompt
+    var composerText: String
+    var composerAttachments: [ComposerAttachment]
+    var state: State
 }
 
 struct UserMessagePayload: Hashable, Codable {

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.1--fdc1dc54680b",
+  "requirementId": "REQ-003.4.1",
+  "hash": "fdc1dc54680b",
+  "verdict": "pass",
+  "summary": "testRunningChatDoesNotBlockSelectingAnotherChatOrNewChatSurface exercises the real select()/startNewChat() code path (no mocking of the gate) and asserts selectedSessionID actually changes while the first chat's isConversationRunning stays true, which would fail if a blocking guard (like the archive-flow's blockedNavigationAlert) were added to select().",
+  "timestamp": "2026-09-02T22:28:30.820Z"
+}

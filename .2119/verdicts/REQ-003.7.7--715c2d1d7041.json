@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.7--715c2d1d7041",
+  "requirementId": "REQ-003.7.7",
+  "hash": "715c2d1d7041",
+  "verdict": "pass",
+  "summary": "testAttachmentOnlySteeringPreservesDisplayMetadataAndRPCPayload submits with an empty draft plus only an image attachment during an active turn and asserts via XCTUnwrap that a pendingSteering entry is created with the attachment preserved, genuinely falsifying the requirement if no pending steering message were created.",
+  "timestamp": "2026-09-02T22:23:06.136Z"
+}

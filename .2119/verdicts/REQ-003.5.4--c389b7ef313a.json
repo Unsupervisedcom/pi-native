@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.4--c389b7ef313a",
+  "requirementId": "REQ-003.5.4",
+  "hash": "c389b7ef313a",
+  "verdict": "pass",
+  "summary": "Test genuinely verifies isolation: interrupting selected (second) chat stops only that runtime while first chat's running state, item transcript, and ability to keep processing later events are all unaffected; interruptSelectedConversation exercises real production runtime code, not mocked.",
+  "timestamp": "2026-09-09T19:39:20.030Z"
+}

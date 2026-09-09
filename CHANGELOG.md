@@ -2,13 +2,33 @@
 
 ## 2026-09-09
 
-
 ### Fixed
 
 - Unified Stop and Escape interruption so active work stops through one lifecycle, late output stays suppressed, and a persistent bold interruption status survives chat refreshes, navigation, and relaunch. Refined red feedback with a darker light-theme treatment.
 
+## 2026-09-08
+
+### Added
+
+- Added private vulnerability-reporting guidance, project-specific contribution instructions, weekly GitHub Actions dependency updates, and public-repository hygiene guidance.
+
+### Changed
+
+- Isolated real-process Stop lifecycle tests from process-wide mock, stall, and failure settings used by concurrently running tests.
+- Made Stop/restart lifecycle validation event-driven, removing polling and fixed-delay assumptions from real Pi process tests.
+
+### Fixed
+
+- Made real-process steering and Stop lifecycle tests shut down their RPC subprocesses deterministically, preventing leaked readers from starving later tests on constrained CI runners.
+- Held prompts until replacement Pi sessions finish loading after Stop, preventing prompts from being sent before session initialization and making restart ordering reliable on slower systems.
+- Made steering recovery after Stop deterministic by clearing queued server input before abort, waiting for the old Pi process to terminate before restart, and safely falling back to termination when `clear_queue` is unavailable.
+
 ## 2026-09-02
 
+
+### Added
+
+- Added inline steering for active conversations, including ordered per-chat pending messages, attachment support, rejection recovery, and retryable replay after Stop without duplicate delivery.
 
 ### Changed
 

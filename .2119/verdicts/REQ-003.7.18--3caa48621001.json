@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.18--3caa48621001",
+  "requirementId": "REQ-003.7.18",
+  "hash": "3caa48621001",
+  "verdict": "pass",
+  "summary": "Test asserts pendingSteering remains populated immediately after Stop (pre-delivery) and only clears once replayed exactly once, with a late duplicate event not re-adding the message — genuinely covers the MUST-remain-until-delivered/retried requirement.",
+  "timestamp": "2026-09-02T22:22:40.150Z"
+}

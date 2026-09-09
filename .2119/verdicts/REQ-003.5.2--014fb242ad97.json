@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.2--014fb242ad97",
+  "requirementId": "REQ-003.5.2",
+  "hash": "014fb242ad97",
+  "verdict": "pass",
+  "summary": "Unit tests (mock delay + real fake-RPC subprocess) and UI test verify late text_delta/tool_execution_start events after Stop and after a later prompt starts do not append to transcript, while new-turn output still appends; negative-space (forbidden late output) and positive-space (allowed new output) both covered without over-mocking.",
+  "timestamp": "2026-09-08T22:20:16.554Z"
+}

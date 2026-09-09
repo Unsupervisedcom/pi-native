@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.7.11--e9ec1d0d542e",
+  "requirementId": "REQ-003.7.11",
+  "hash": "e9ec1d0d542e",
+  "verdict": "pass",
+  "summary": "Tests fire duplicate/replayed delivery events through the real event-handling path and assert exactly one resulting user-history entry per accepted steering, rejecting both zero- and duplicate-delivery counterexamples.",
+  "timestamp": "2026-09-02T22:22:49.505Z"
+}
