@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.2.3--e522e2809320",
+  "requirementId": "REQ-012.2.3",
+  "hash": "e522e2809320",
+  "verdict": "pass",
+  "summary": "Test switches DiffModel to a second real-git project and asserts summary is nil (not the first project's file list) synchronously after refresh() is called, matching the sync clear in DiffModel.refresh; real git repos used, no over-mocking, directly rejects the stale-summary-during-load violation.",
+  "timestamp": "2026-09-09T18:58:48.655Z"
+}

@@ -142,10 +142,21 @@ final class ParallelRuntimeTests: XCTestCase {
         XCTAssertTrue(appModel.isConversationRunning(sessionID: first.id, projectID: projectID))
         XCTAssertTrue(appModel.isConversationRunning(sessionID: second.id, projectID: projectID))
 
+        let firstItemsBeforeInterruption = firstModel.items
+
         // 2119: REQ-003.5.4
-        secondModel.stopActiveTurn()
+        XCTAssertTrue(appModel.interruptSelectedConversation())
         XCTAssertTrue(appModel.isConversationRunning(sessionID: first.id, projectID: projectID))
         XCTAssertFalse(appModel.isConversationRunning(sessionID: second.id, projectID: projectID))
+        XCTAssertEqual(firstModel.items, firstItemsBeforeInterruption)
+
+        firstModel.handleEventForTesting(try Self.textDelta("first chat continues after peer interruption"))
+        XCTAssertTrue(firstModel.items.contains { item in
+            if case .assistantText(_, let text) = item {
+                return text.contains("first chat continues after peer interruption")
+            }
+            return false
+        })
     }
 
     func testQuickChatCreationNavigationDraftsAndOutputAreIsolatedFromProjectChats() throws {

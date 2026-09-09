@@ -410,7 +410,7 @@ private struct DiffStatPill: View {
             }
             if stats.deletions > 0 {
                 Text("-\(stats.deletions)")
-                    .foregroundStyle(.red)
+                    .foregroundStyle(AppTheme.dangerText)
             }
         }
         .font(.system(size: SidebarMetrics.supportingFontSize, weight: .semibold, design: .monospaced))

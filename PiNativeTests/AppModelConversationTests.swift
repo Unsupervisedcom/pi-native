@@ -47,6 +47,49 @@ final class AppModelConversationTests: XCTestCase {
         XCTAssertEqual(model.activeConversationModel?.items, updatedTranscript)
     }
 
+    // 2119: REQ-003.5.3
+    func testInterruptedTranscriptPersistsAcrossNavigationAndAppModelRelaunch() throws {
+        let interruptedSession = Session(
+            name: "interrupted persistence chat",
+            status: .idle,
+            cachedTranscript: [.user(UserMessagePayload(text: "persist interrupted state"))]
+        )
+        let otherSession = Session(
+            name: "navigation peer chat",
+            status: .idle,
+            cachedTranscript: [.user(UserMessagePayload(text: "other chat"))]
+        )
+        let model = AppModel()
+        model.standaloneSessions = [interruptedSession, otherSession]
+        model.select(sessionID: interruptedSession.id, in: nil)
+        let conversation = try XCTUnwrap(model.activeConversationModel)
+        let agentStartData = try JSONEncoder().encode(JSONValue.object(["type": .string("agent_start")]))
+        conversation.handleEventForTesting(try JSONDecoder().decode(RPCEnvelope.self, from: agentStartData))
+
+        XCTAssertTrue(model.interruptSelectedConversation())
+        model.select(sessionID: otherSession.id, in: nil)
+        model.select(sessionID: interruptedSession.id, in: nil)
+
+        XCTAssertTrue(try XCTUnwrap(model.activeConversationModel).items.contains { item in
+            if case .notice(_, "Stopped.") = item { return true }
+            return false
+        })
+        model.stopAllRuntimes()
+
+        let restored = AppModel()
+        let restoredSession = try XCTUnwrap(restored.standaloneSessions.first { $0.id == interruptedSession.id })
+        XCTAssertTrue(restoredSession.cachedTranscript.contains { item in
+            if case .notice(_, "Stopped.") = item { return true }
+            return false
+        })
+        restored.select(sessionID: interruptedSession.id, in: nil)
+        XCTAssertTrue(try XCTUnwrap(restored.activeConversationModel).items.contains { item in
+            if case .notice(_, "Stopped.") = item { return true }
+            return false
+        })
+        restored.stopAllRuntimes()
+    }
+
     func testProjectRowWithOnlyPinnedOrArchivedChatsDoesNotSelectThoseChats() throws {
         let root = try temporaryDirectory(named: "PiNativePinnedOnlyProject")
         defer { try? FileManager.default.removeItem(at: root) }
@@ -154,8 +197,8 @@ final class AppModelConversationTests: XCTestCase {
     func testArchivedChatsListAndRestorePreserveSelectionAndMetadata() throws {
         let root = try temporaryDirectory(named: "PiNativeArchivedChats")
         defer { try? FileManager.default.removeItem(at: root) }
-        let projectChat = Session(name: "Project archive", status: .idle, filePath: root.appendingPathComponent("project.jsonl").path, updatedAt: Date(timeIntervalSince1970: 20), messageCount: 2, isArchived: true, isPinned: true, cachedTranscript: [.user(UserMessagePayload(text: "project"))])
-        let quickChat = Session(name: "Quick archive", status: .idle, filePath: root.appendingPathComponent("quick.jsonl").path, updatedAt: Date(timeIntervalSince1970: 30), messageCount: 3, isArchived: true, cachedTranscript: [.user(UserMessagePayload(text: "quick"))])
+        let projectChat = Session(name: "Project archive", status: .idle, filePath: root.appendingPathComponent("project.jsonl").path, updatedAt: Date(timeIntervalSince1970: 30), messageCount: 2, isArchived: true, isPinned: true, cachedTranscript: [.user(UserMessagePayload(text: "project"))])
+        let quickChat = Session(name: "Quick archive", status: .idle, filePath: root.appendingPathComponent("quick.jsonl").path, updatedAt: Date(timeIntervalSince1970: 20), messageCount: 3, isArchived: true, cachedTranscript: [.user(UserMessagePayload(text: "quick"))])
         let selected = Session(name: "Selected", status: .idle)
         let project = Project(name: "Archive Project", path: root.path, sessions: [projectChat, selected], diffStats: nil)
         let model = AppModel()
@@ -166,15 +209,15 @@ final class AppModelConversationTests: XCTestCase {
         // 2119: REQ-013.1.1
         // 2119: REQ-013.1.3
         model.openRightPane(.archivedChats)
-        XCTAssertEqual(model.archivedChats.map(\.session.id), [quickChat.id, projectChat.id])
-        XCTAssertEqual(model.archivedChats[0].session.name, "Quick archive")
-        XCTAssertNil(model.archivedChats[0].projectID)
-        XCTAssertNil(model.archivedChats[0].projectName)
-        XCTAssertEqual(model.archivedChats[0].session.messageCount, 3)
-        XCTAssertEqual(model.archivedChats[1].session.name, "Project archive")
-        XCTAssertEqual(model.archivedChats[1].projectID, project.id)
-        XCTAssertEqual(model.archivedChats[1].projectName, "Archive Project")
-        XCTAssertEqual(model.archivedChats[1].session.messageCount, 2)
+        XCTAssertEqual(model.archivedChats.map(\.session.id), [projectChat.id, quickChat.id])
+        XCTAssertEqual(model.archivedChats[0].session.name, "Project archive")
+        XCTAssertEqual(model.archivedChats[0].projectID, project.id)
+        XCTAssertEqual(model.archivedChats[0].projectName, "Archive Project")
+        XCTAssertEqual(model.archivedChats[0].session.messageCount, 2)
+        XCTAssertEqual(model.archivedChats[1].session.name, "Quick archive")
+        XCTAssertNil(model.archivedChats[1].projectID)
+        XCTAssertNil(model.archivedChats[1].projectName)
+        XCTAssertEqual(model.archivedChats[1].session.messageCount, 3)
         XCTAssertEqual(model.selectedSessionID, selected.id)
 
         // 2119: REQ-013.2.1

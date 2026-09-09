@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.2--012fcfcd65a6",
+  "requirementId": "REQ-012.1.2",
+  "hash": "012fcfcd65a6",
+  "verdict": "pass",
+  "summary": "Test selects a session in one project, then invokes showPendingChanges on a different project and asserts selectedProjectID/selectedSessionID remain unchanged — a genuine, non-mocked check that would fail if opening pending changes altered the selected conversation.",
+  "timestamp": "2026-09-09T18:58:46.767Z"
+}

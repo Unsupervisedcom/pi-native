@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.4.7--5e70640a7941",
+  "requirementId": "REQ-003.4.7",
+  "hash": "5e70640a7941",
+  "verdict": "pass",
+  "summary": "Tests exercise real select() (no mocking/guards) for both pending-startup and queued-prompt cases, asserting selectedSessionID actually changes to the other chat, which would fail if selection were blocked.",
+  "timestamp": "2026-09-09T18:55:05.405Z"
+}

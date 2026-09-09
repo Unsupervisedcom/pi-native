@@ -255,7 +255,7 @@ private struct DiffTotalsView: View {
         HStack(spacing: 10) {
             StatCard(label: "Files", value: "\(summary.changedFileCount)", color: .secondary)
             StatCard(label: "Added", value: "+\(summary.additions)", color: .green)
-            StatCard(label: "Deleted", value: "-\(summary.deletions)", color: .red)
+            StatCard(label: "Deleted", value: "-\(summary.deletions)", color: AppTheme.dangerText)
         }
     }
 }
@@ -299,7 +299,7 @@ private struct DiffFileRow: View {
                     Text("+\(file.additions)").foregroundStyle(.green)
                 }
                 if file.deletions > 0 {
-                    Text("-\(file.deletions)").foregroundStyle(.red)
+                    Text("-\(file.deletions)").foregroundStyle(AppTheme.dangerText)
                 }
             }
             .font(.caption.monospacedDigit().weight(.semibold))
@@ -311,7 +311,7 @@ private struct DiffFileRow: View {
 
     private var statusColor: Color {
         if file.status.contains("?") || file.status.contains("A") { return .green }
-        if file.status.contains("D") { return .red }
+        if file.status.contains("D") { return AppTheme.dangerText }
         return .orange
     }
 }

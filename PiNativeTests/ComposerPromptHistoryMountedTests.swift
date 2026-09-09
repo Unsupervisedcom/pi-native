@@ -329,6 +329,61 @@ final class ComposerPromptHistoryMountedTests: XCTestCase {
         XCTAssertEqual(harness.history, chatBModel.promptHistory)
     }
 
+    // 2119: REQ-003.5.1
+    // 2119: REQ-003.5.5
+    func testMountedEscapeInterruptsActiveTurnAndIsIdleNoOp() throws {
+        let defaultsName = "ComposerEscapeInterruptionTests-\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: defaultsName))
+        defer { defaults.removePersistentDomain(forName: defaultsName) }
+        let selectedModel = PiModelOption(provider: "test", id: "selected", name: "Selected")
+        let settings = ModelSettingsModel(
+            storage: UserDefaultsModelFavoritesStorage(defaults: defaults),
+            favoritesKey: "favorites",
+            configuredDefaultModel: selectedModel
+        )
+        let conversation = PiConversationModel(modelSettings: settings)
+        conversation.currentModel = selectedModel
+        conversation.currentThinkingLevel = .medium
+        conversation.items = [.user(UserMessagePayload(text: "escape interruption prompt"))]
+        let agentStartData = try JSONEncoder().encode(JSONValue.object(["type": .string("agent_start")]))
+        conversation.handleEventForTesting(try JSONDecoder().decode(RPCEnvelope.self, from: agentStartData))
+        let focusRequestBeforeEscape = conversation.composerFocusRequest
+        let hostingView = NSHostingView(rootView: PiConversationView(
+            model: conversation,
+            modelSettings: settings,
+            onSelectFavorites: {},
+            onInterrupt: { conversation.interruptActiveTurn() }
+        ))
+        hostingView.frame = NSRect(x: 0, y: 0, width: 900, height: 700)
+        let window = testWindow(containing: hostingView)
+        defer { tearDown(window: window) }
+        hostingView.layoutSubtreeIfNeeded()
+        pumpMainRunLoop()
+        let textView = try XCTUnwrap(descendant(of: PasteInterceptingTextView.self, in: hostingView))
+        XCTAssertTrue(window.makeFirstResponder(textView))
+
+        let escapeStartedAt = Date()
+        textView.keyDown(with: try keyEvent(keyCode: 53, characters: "\u{1b}"))
+        pumpMainRunLoop()
+
+        XCTAssertLessThan(Date().timeIntervalSince(escapeStartedAt), 1)
+        XCTAssertFalse(conversation.isRunning)
+        XCTAssertNotEqual(conversation.composerFocusRequest, focusRequestBeforeEscape)
+        XCTAssertEqual(conversation.items.filter { item in
+            if case .notice(_, "Stopped.") = item { return true }
+            return false
+        }.count, 1)
+
+        let idleItems = conversation.items
+        let idleFocusRequest = conversation.composerFocusRequest
+        textView.keyDown(with: try keyEvent(keyCode: 53, characters: "\u{1b}"))
+        pumpMainRunLoop()
+
+        XCTAssertEqual(conversation.items, idleItems)
+        XCTAssertEqual(conversation.composerFocusRequest, idleFocusRequest)
+        XCTAssertFalse(conversation.isRunning)
+    }
+
     private func makeFileAttachment(_ name: String) -> ComposerAttachment {
         ComposerAttachment(kind: .fileReference(FileReferenceAttachment(
             url: URL(fileURLWithPath: "/tmp/\(name)"),

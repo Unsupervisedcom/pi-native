@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-008.1.2--b8e233ae1065",
+  "requirementId": "REQ-008.1.2",
+  "hash": "b8e233ae1065",
+  "verdict": "pass",
+  "summary": "Tests genuinely verify at-most-once generation gated on full settlement: agent_end doesn't trigger (count=0), agent_settled does (count=1), second turns/teardown-recreation/restoration/failure/interruption paths all confirm no re-attempt (count stays 1 or 0); call-count assertions are behavioral, not tautological or over-mocked.",
+  "timestamp": "2026-09-09T18:56:40.668Z"
+}

@@ -10,7 +10,11 @@ enum AppTheme {
         light: NSColor(calibratedRed: 0.20, green: 0.48, blue: 0.78, alpha: 1),
         dark: NSColor(calibratedRed: 0.47, green: 0.72, blue: 1.00, alpha: 1)
     )
-    static let stopAccent = Color(red: 0.48, green: 0.10, blue: 0.16)
+    static let dangerText = dynamicColor(
+        light: NSColor(calibratedRed: 0.47, green: 0.07, blue: 0.11, alpha: 1),
+        dark: NSColor(calibratedRed: 0.94, green: 0.30, blue: 0.32, alpha: 1)
+    )
+    static let stopAccent = dangerText
     static let recoveryAccent = Color(nsColor: .systemOrange)
     static let recoveryBackground = dynamicColor(
         light: NSColor(calibratedRed: 1.0, green: 0.91, blue: 0.72, alpha: 1),
@@ -798,6 +802,12 @@ final class AppModel: ObservableObject {
     func startActiveConversationIfNeeded() {
         guard selectedSessionID != nil, automaticallyStartsPendingRuntimes else { return }
         activeConversationModel?.startProcessIfNeeded()
+    }
+
+    @discardableResult
+    func interruptSelectedConversation() -> Bool {
+        guard selectedSessionID != nil else { return false }
+        return activeConversationModel?.interruptActiveTurn() ?? false
     }
 
     func refreshModelCatalog(force: Bool = false) async {

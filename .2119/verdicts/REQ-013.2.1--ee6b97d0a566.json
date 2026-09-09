@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.2.1--ee6b97d0a566",
+  "requirementId": "REQ-013.2.1",
+  "hash": "ee6b97d0a566",
+  "verdict": "pass",
+  "summary": "Tests exercise real unarchiveSession/pinnedSessions/visibleSessionShortcuts logic, verifying removal from archivedChats and correct section placement across pinned/unpinned x project/standalone combinations; no over-mocking or tautology found.",
+  "timestamp": "2026-09-09T19:04:13.870Z"
+}

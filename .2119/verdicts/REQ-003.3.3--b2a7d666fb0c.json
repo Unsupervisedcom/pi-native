@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.3.3--b2a7d666fb0c",
+  "requirementId": "REQ-003.3.3",
+  "hash": "b2a7d666fb0c",
+  "verdict": "pass",
+  "summary": "Unit test rejects selecting pinned/archived-only project (stays nil) and UI test rejects clicking project row selecting the pinned chat when an unpinned visible chat exists, both meaningful negative-space checks.",
+  "timestamp": "2026-09-09T18:54:26.970Z"
+}

@@ -96,11 +96,24 @@ struct PiConversationView: View {
     @ObservedObject var model: PiConversationModel
     @ObservedObject var modelSettings: ModelSettingsModel
     let onSelectFavorites: () -> Void
+    let onInterrupt: () -> Void
     @State private var expandedGroupIDs: Set<UUID> = []
     @State private var isModelPickerPresented = false
     @State private var isEffortPickerPresented = false
     private let transcriptBottomID = "transcript-bottom"
     private var selectionReady: Bool { model.currentModel != nil && model.currentThinkingLevel != nil }
+
+    init(
+        model: PiConversationModel,
+        modelSettings: ModelSettingsModel,
+        onSelectFavorites: @escaping () -> Void,
+        onInterrupt: @escaping () -> Void = {}
+    ) {
+        self.model = model
+        self.modelSettings = modelSettings
+        self.onSelectFavorites = onSelectFavorites
+        self.onInterrupt = onInterrupt
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -111,7 +124,7 @@ struct PiConversationView: View {
                             if let notice = model.sessionLoadNotice {
                                 Text(notice)
                                     .font(ChatTypography.caption())
-                                    .foregroundStyle(model.isCatastrophicRPCFailure ? .red : .secondary)
+                                    .foregroundStyle(model.isCatastrophicRPCFailure ? AppTheme.dangerText : Color.secondary)
                                     .frame(maxWidth: .infinity, alignment: .center)
                                     .accessibilityIdentifier("chat.rpcStatus")
                             }
@@ -161,6 +174,7 @@ struct PiConversationView: View {
             .background(ChatPalette.canvas)
         }
         .background(ChatPalette.canvas)
+        .onExitCommand(perform: onInterrupt)
     }
 
     private var transcriptContentID: String {
@@ -189,8 +203,8 @@ struct PiConversationView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         case .notice(_, let text):
             Text(text)
-                .font(ChatTypography.caption())
-                .foregroundStyle(.secondary)
+                .font(ChatTypography.caption(weight: item.isInterruptionNotice ? .semibold : .regular))
+                .foregroundStyle(item.isInterruptionNotice ? AppTheme.dangerText : Color.secondary)
                 .frame(maxWidth: .infinity, alignment: .center)
                 .accessibilityLabel(text)
                 .accessibilityIdentifier("chat.notice")
@@ -246,7 +260,8 @@ struct PiConversationView: View {
             onAddAttachments: { model.addDraftAttachments($0) },
             onRemoveAttachment: { model.removeDraftAttachment($0) },
             onSubmit: { model.sendDraft() },
-            onStop: { model.stopActiveTurn() }
+            onStop: onInterrupt,
+            onEscape: onInterrupt
         ) {
             Spacer()
 
@@ -545,6 +560,7 @@ struct AttachmentComposerShell<AccessoryContent: View>: View {
     var onRemoveAttachment: (ComposerAttachment.ID) -> Void
     var onSubmit: () -> Void
     var onStop: () -> Void
+    var onEscape: () -> Void = {}
     var editorHeight: CGFloat = 30
     @ViewBuilder var accessoryContent: () -> AccessoryContent
 
@@ -578,6 +594,7 @@ struct AttachmentComposerShell<AccessoryContent: View>: View {
                     historyNavigator.endBrowsing()
                     onSubmit()
                 },
+                onEscape: onEscape,
                 onHistoryOlder: navigateToOlderPrompt,
                 onHistoryNewer: navigateToNewerPrompt,
                 onUserEdit: { historyNavigator.userDidEdit() },

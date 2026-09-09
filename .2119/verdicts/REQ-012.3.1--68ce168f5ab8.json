@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.3.1--68ce168f5ab8",
+  "requirementId": "REQ-012.3.1",
+  "hash": "68ce168f5ab8",
+  "verdict": "pass",
+  "summary": "Test refreshes same project path twice after mutating repo state and asserts the second summary (staged.txt removed, tracked.txt additions/deletions changed) replaces the first, genuinely covering the replace-with-new-result requirement.",
+  "timestamp": "2026-09-09T19:07:28.459Z"
+}

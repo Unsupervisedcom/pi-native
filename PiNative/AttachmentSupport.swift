@@ -344,6 +344,7 @@ struct PasteAwareTextView: NSViewRepresentable {
     var textUpdateRequest: UUID? = nil
     @Environment(\.isEnabled) private var isEnabled
     var onSubmit: () -> Void
+    var onEscape: () -> Void = {}
     var onHistoryOlder: () -> Bool = { false }
     var onHistoryNewer: () -> Bool = { false }
     var onUserEdit: () -> Void = {}
@@ -357,6 +358,7 @@ struct PasteAwareTextView: NSViewRepresentable {
         scrollView.borderType = .noBorder
         let textView = PasteInterceptingTextView()
         textView.onSubmit = onSubmit
+        textView.onEscape = onEscape
         textView.onHistoryOlder = onHistoryOlder
         textView.onHistoryNewer = onHistoryNewer
         textView.onPasteAttachments = onPasteAttachments
@@ -414,6 +416,7 @@ struct PasteAwareTextView: NSViewRepresentable {
         textView.insertionPointColor = AppTheme.insertionPointNSColor
         textView.isEditable = isEnabled
         textView.onSubmit = onSubmit
+        textView.onEscape = onEscape
         textView.onHistoryOlder = onHistoryOlder
         textView.onHistoryNewer = onHistoryNewer
         textView.onPasteAttachments = onPasteAttachments
@@ -444,6 +447,7 @@ struct PasteAwareTextView: NSViewRepresentable {
 
 final class PasteInterceptingTextView: NSTextView {
     var onSubmit: (() -> Void)?
+    var onEscape: (() -> Void)?
     var onHistoryOlder: (() -> Bool)?
     var onHistoryNewer: (() -> Bool)?
     var onPasteAttachments: (([ComposerAttachment], [AttachmentImportError]) -> Void)?
@@ -533,6 +537,14 @@ final class PasteInterceptingTextView: NSTextView {
     }
 
     override func keyDown(with event: NSEvent) {
+        if event.keyCode == 53 {
+            if hasMarkedText() {
+                super.keyDown(with: event)
+            } else {
+                onEscape?()
+            }
+            return
+        }
         if event.keyCode == 36, !event.modifierFlags.contains(.shift) {
             onSubmit?()
             return

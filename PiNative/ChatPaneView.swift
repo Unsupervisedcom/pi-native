@@ -20,7 +20,8 @@ struct ChatPaneView: View {
                 PiConversationView(
                     model: model,
                     modelSettings: appModel.modelSettings,
-                    onSelectFavorites: { appModel.presentModelSettings() }
+                    onSelectFavorites: { appModel.presentModelSettings() },
+                    onInterrupt: { appModel.interruptSelectedConversation() }
                 )
                 .id(ObjectIdentifier(model))
             } else {

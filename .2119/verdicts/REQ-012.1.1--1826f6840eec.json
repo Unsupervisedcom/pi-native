@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-012.1.1--1826f6840eec",
+  "requirementId": "REQ-012.1.1",
+  "hash": "1826f6840eec",
+  "verdict": "pass",
+  "summary": "UI test (ProjectUITests) genuinely exercises clicking a project-specific diff pill and asserts the rendered Pending Changes pane shows that project's real git status summary (branch, files, added/deleted), and rejects the cross-project violation by confirming switching projects swaps the displayed status rather than retaining stale data; unit test supplements by verifying correct project routing.",
+  "timestamp": "2026-09-09T18:58:42.359Z"
+}

@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.2.2--b788b02f4d51",
+  "requirementId": "REQ-013.2.2",
+  "hash": "b788b02f4d51",
+  "verdict": "pass",
+  "summary": "Test sets selected session distinct from restored chat, asserts selectedSessionID unchanged after unarchiveSession; genuine rejection of the violating case where restore reassigns selection.",
+  "timestamp": "2026-09-09T19:04:33.941Z"
+}

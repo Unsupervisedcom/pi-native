@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-003.5.3--c8d1e2978b8a",
+  "requirementId": "REQ-003.5.3",
+  "hash": "c8d1e2978b8a",
+  "verdict": "pass",
+  "summary": "Tests cover hydration/resync fence dedup, navigation-away-and-back + AppModel relaunch persistence of Stopped. notice, and rendering updates across later turns; genuine behavioral checks, not tautological.",
+  "timestamp": "2026-09-09T18:55:02.786Z"
+}

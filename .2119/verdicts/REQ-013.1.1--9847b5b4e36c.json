@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.1.1--9847b5b4e36c",
+  "requirementId": "REQ-013.1.1",
+  "hash": "9847b5b4e36c",
+  "verdict": "pass",
+  "summary": "testArchivedChatsListAndRestorePreserveSelectionAndMetadata now uses distinct real updatedAt values (30 vs 20) across project/quick sources, and asserts exact merged order plus title/source(projectID+projectName)/messageCount for each — genuinely exercises AppModel.archivedChats' cross-source sort-by-updatedAt, not tautological.",
+  "timestamp": "2026-09-09T19:11:58.437Z"
+}

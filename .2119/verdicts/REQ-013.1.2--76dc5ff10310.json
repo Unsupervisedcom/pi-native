@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-013.1.2--76dc5ff10310",
+  "requirementId": "REQ-013.1.2",
+  "hash": "76dc5ff10310",
+  "verdict": "pass",
+  "summary": "ArchivedChatsRenderingTests renders the real RightPaneView with an empty AppModel and OCRs the composited bitmap for 'No Archived Chats', genuinely exercising the archivedChats.isEmpty branch in RightPaneView.swift; AppModelConversationTests corroborates the underlying empty-data precondition. No mocking of the render path, no keyword-only matching, and the assertion would fail on a broken/blank empty state.",
+  "timestamp": "2026-09-09T19:21:53.780Z"
+}

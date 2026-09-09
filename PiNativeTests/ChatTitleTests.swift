@@ -580,7 +580,7 @@ final class ChatTitleLifecycleTests: XCTestCase {
             .assistantText(text: "Partial response")
         ]
         model.handleEventForTesting(try Self.event(type: "agent_start"))
-        model.stopActiveTurn()
+        model.interruptActiveTurn()
 
         model.items.append(.user(UserMessagePayload(text: "Discuss films instead")))
         model.items.append(.assistantText(text: "Complete film response."))

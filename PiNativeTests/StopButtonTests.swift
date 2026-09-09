@@ -71,7 +71,7 @@ final class StopButtonTests: XCTestCase {
         model.draft = "first prompt to stop"
         model.sendDraft()
         XCTAssertTrue(model.isRunning)
-        model.stopActiveTurn()
+        model.interruptActiveTurn()
         XCTAssertFalse(model.isRunning)
 
         setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "new prompt output", 1)
@@ -93,6 +93,8 @@ final class StopButtonTests: XCTestCase {
         XCTAssertFalse(model.isRunning)
     }
 
+    // 2119: REQ-003.5.1
+    // 2119: REQ-003.5.2
     func testStopImmediatelyLeavesRunningStateAndSuppressesLateTurnOutput() async throws {
         setenv("PI_NATIVE_MOCK_RPC_RESPONSE", "later prompt response", 1)
         setenv("PI_NATIVE_MOCK_RPC_RESPONSE_DELAY_MS", "1", 1)
@@ -107,10 +109,12 @@ final class StopButtonTests: XCTestCase {
         model.items.append(.assistantText(text: "existing assistant text"))
         model.isRunning = true
 
+        let focusRequestBeforeStop = model.composerFocusRequest
         let stopStartedAt = Date()
-        model.stopActiveTurn()
+        model.interruptActiveTurn()
 
         XCTAssertFalse(model.isRunning)
+        XCTAssertNotEqual(model.composerFocusRequest, focusRequestBeforeStop)
         XCTAssertLessThan(Date().timeIntervalSince(stopStartedAt), 1.0)
         XCTAssertTrue(model.items.contains { item in
             if case .notice(_, "Stopped.") = item { return true }
@@ -144,6 +148,110 @@ final class StopButtonTests: XCTestCase {
             return false
         })
         XCTAssertFalse(model.isRunning)
+    }
+
+    // 2119: REQ-003.5.2
+    // 2119: REQ-003.5.3
+    func testInterruptionFenceSurvivesRepeatedHydrationAndRejectsLateOutput() throws {
+        let interruptionID = UUID()
+        let model = PiConversationModel()
+        model.items = [
+            .user(UserMessagePayload(text: "interrupted prompt")),
+            .assistantText(text: "partial output before interruption"),
+            .notice(id: interruptionID, "Stopped.")
+        ]
+        let hydratedMessages: [JSONValue] = [
+            .object([
+                "role": .string("user"),
+                "content": .string("interrupted prompt")
+            ]),
+            .object([
+                "role": .string("assistant"),
+                "content": .array([
+                    .object(["type": .string("text"), "text": .string("late output after interruption")])
+                ])
+            ]),
+            .object([
+                "role": .string("user"),
+                "content": .string("later prompt")
+            ]),
+            .object([
+                "role": .string("assistant"),
+                "content": .array([
+                    .object(["type": .string("text"), "text": .string("later response")])
+                ])
+            ])
+        ]
+        let envelope = try RPCEnvelope.testEnvelope([
+            "data": .object(["messages": .array(hydratedMessages)])
+        ])
+
+        model.hydrateTranscriptForTesting(envelope)
+        model.hydrateTranscriptForTesting(envelope)
+
+        XCTAssertEqual(model.items.filter { item in
+            if case .notice(let id, "Stopped.") = item { return id == interruptionID }
+            return false
+        }.count, 1)
+        XCTAssertTrue(model.items.contains { item in
+            if case .assistantText(_, "partial output before interruption") = item { return true }
+            return false
+        })
+        XCTAssertFalse(model.items.contains { item in
+            if case .assistantText(_, "late output after interruption") = item { return true }
+            return false
+        })
+        XCTAssertTrue(model.items.contains { item in
+            if case .assistantText(_, "later response") = item { return true }
+            return false
+        })
+    }
+
+    // 2119: REQ-003.5.2
+    // 2119: REQ-003.5.3
+    func testLatestInterruptionFencePreservesMultipleStopsAndLaterTurns() throws {
+        let firstInterruptionID = UUID()
+        let secondInterruptionID = UUID()
+        let model = PiConversationModel()
+        model.items = [
+            .user(UserMessagePayload(text: "first interrupted prompt")),
+            .notice(id: firstInterruptionID, "Stopped."),
+            .user(UserMessagePayload(text: "second interrupted prompt")),
+            .assistantText(text: "second partial output"),
+            .notice(id: secondInterruptionID, "Stopped.")
+        ]
+        let hydratedMessages: [JSONValue] = [
+            .object(["role": .string("user"), "content": .string("first interrupted prompt")]),
+            .object([
+                "role": .string("assistant"),
+                "content": .array([.object(["type": .string("text"), "text": .string("first late output")])])
+            ]),
+            .object(["role": .string("user"), "content": .string("second interrupted prompt")]),
+            .object([
+                "role": .string("assistant"),
+                "content": .array([.object(["type": .string("text"), "text": .string("second late output")])])
+            ]),
+            .object(["role": .string("user"), "content": .string("third prompt")]),
+            .object([
+                "role": .string("assistant"),
+                "content": .array([.object(["type": .string("text"), "text": .string("third response")])])
+            ])
+        ]
+        let envelope = try RPCEnvelope.testEnvelope([
+            "data": .object(["messages": .array(hydratedMessages)])
+        ])
+
+        model.hydrateTranscriptForTesting(envelope)
+
+        XCTAssertEqual(model.items.filter { item in
+            if case .notice(_, "Stopped.") = item { return true }
+            return false
+        }.count, 2)
+        XCTAssertTrue(model.items.contains { $0.id == firstInterruptionID })
+        XCTAssertTrue(model.items.contains { $0.id == secondInterruptionID })
+        XCTAssertFalse(String(describing: model.items).contains("first late output"))
+        XCTAssertFalse(String(describing: model.items).contains("second late output"))
+        XCTAssertTrue(String(describing: model.items).contains("third response"))
     }
 
     // 2119: REQ-003.5.2
@@ -187,7 +295,7 @@ final class StopButtonTests: XCTestCase {
         model.draft = "start a turn through the real rpc process"
         model.sendDraft()
         try await waitUntil(timeout: 1) { model.isRunning }
-        model.stopActiveTurn()
+        model.interruptActiveTurn()
 
         try await Task.sleep(nanoseconds: 350_000_000)
         XCTAssertFalse(model.items.contains { item in
@@ -271,7 +379,7 @@ final class StopButtonTests: XCTestCase {
             (try? String(contentsOf: promptCountFile, encoding: .utf8)) == "1"
         }
         XCTAssertTrue(model.isRunning)
-        model.stopActiveTurn()
+        model.interruptActiveTurn()
 
         model.draft = "second prompt"
         model.sendDraft()

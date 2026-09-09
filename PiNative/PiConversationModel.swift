@@ -336,11 +336,12 @@ final class PiConversationModel: ObservableObject {
         draftAttachments.removeAll { $0.id == id }
     }
 
-    /// Stops the active turn from the user's perspective immediately, then
-    /// attempts a server-side abort. If Pi does not acknowledge quickly,
-    /// terminate/restart the RPC process so work is actually interrupted.
-    func stopActiveTurn() {
-        guard isRunning || pendingPrompt != nil else { return }
+    /// Interrupts the active turn from the user's perspective immediately,
+    /// then performs server-side abort and process recovery. Stop and Escape
+    /// both enter through this method so their lifecycle cannot diverge.
+    @discardableResult
+    func interruptActiveTurn() -> Bool {
+        guard isRunning || pendingPrompt != nil else { return false }
         pendingPrompt = nil
         isRunning = false
         activeLocalTurnID = nil
@@ -348,22 +349,24 @@ final class PiConversationModel: ObservableObject {
         onAgentRunAbandoned?()
         assistantBufferID = nil
         closeCurrentActivityGroup()
-        items.append(.notice("Stopped."))
+        items.append(.notice(TranscriptItem.interruptionNoticeText))
+        composerFocusRequest = UUID()
 
         let clientToAbort = client
         client = nil
         isSessionReady = false
         processGeneration += 1
         lastStartKey = nil
-        let stoppedGeneration = processGeneration
+        let interruptedGeneration = processGeneration
         let workingDirectory = currentWorkingDirectory
         let sessionPath = currentSessionPath
         let cachedItems = items
         let planningMode = isPlanningMode
         Task {
             _ = try? await clientToAbort?.abort(timeoutSeconds: 1.25)
+            await clientToAbort?.stop()
             await MainActor.run {
-                guard self.processGeneration == stoppedGeneration, self.client == nil else { return }
+                guard self.processGeneration == interruptedGeneration, self.client == nil else { return }
                 self.start(
                     workingDirectory: workingDirectory,
                     sessionPath: sessionPath,
@@ -372,6 +375,7 @@ final class PiConversationModel: ObservableObject {
                 )
             }
         }
+        return true
     }
 
     /// Copies the given assistant message text to the clipboard. Wired for
@@ -755,12 +759,48 @@ final class PiConversationModel: ObservableObject {
 
     private func hydrateTranscript(from envelope: RPCEnvelope) {
         guard let messages = envelope.data?.objectValue?["messages"]?.arrayValue else {
-            items = [.notice("No messages in this session yet.")]
+            if !items.contains(where: Self.isInterruptionItem) {
+                items = [.notice("No messages in this session yet.")]
+            }
             return
         }
 
         let hydrated = Self.buildTranscript(from: messages)
-        items = hydrated.isEmpty ? [.notice("No messages in this session yet.")] : hydrated
+        let baseItems = hydrated.isEmpty ? [.notice("No messages in this session yet.")] : hydrated
+        items = transcriptPreservingLatestInterruption(from: baseItems)
+    }
+
+    /// Pi's message history cannot contain app-local interruption markers and
+    /// may include output persisted after an abort raced the interrupted turn.
+    /// Keep the cached transcript through the latest interruption authoritative,
+    /// then accept hydrated content only from the next user turn onward.
+    private func transcriptPreservingLatestInterruption(from hydrated: [TranscriptItem]) -> [TranscriptItem] {
+        guard let interruptionIndex = items.lastIndex(where: Self.isInterruptionItem) else {
+            return hydrated
+        }
+        let cachedItems = items
+        let cachedPrefix = Array(cachedItems[...interruptionIndex])
+        let interruptedUserTurnCount = cachedPrefix.reduce(into: 0) { count, item in
+            if case .user = item { count += 1 }
+        }
+
+        var hydratedUserTurnCount = 0
+        let laterTurnIndex = hydrated.firstIndex { item in
+            guard case .user = item else { return false }
+            hydratedUserTurnCount += 1
+            return hydratedUserTurnCount > interruptedUserTurnCount
+        }
+        guard let laterTurnIndex else {
+            // Hydration has not caught up to any locally cached later turn.
+            // Retaining the cache avoids both losing that work and admitting
+            // uncertain output from the interrupted turn.
+            return cachedItems
+        }
+        return cachedPrefix + Array(hydrated[laterTurnIndex...])
+    }
+
+    private static func isInterruptionItem(_ item: TranscriptItem) -> Bool {
+        item.isInterruptionNotice
     }
 
     /// Stateful reducer over the full message history — not a per-message
@@ -878,6 +918,10 @@ final class PiConversationModel: ObservableObject {
 #if DEBUG
     func handleEventForTesting(_ event: RPCEnvelope) {
         handle(event)
+    }
+
+    func hydrateTranscriptForTesting(_ envelope: RPCEnvelope) {
+        hydrateTranscript(from: envelope)
     }
 #endif
 
@@ -1180,6 +1224,8 @@ struct UserMessagePayload: Hashable, Codable {
 }
 
 enum TranscriptItem: Identifiable, Hashable, Codable {
+    static let interruptionNoticeText = "Stopped."
+
     case user(id: UUID = UUID(), UserMessagePayload)
     case assistantText(id: UUID = UUID(), text: String)
     case activity(ActivityGroup)
@@ -1191,6 +1237,11 @@ enum TranscriptItem: Identifiable, Hashable, Codable {
 
     private enum AssociatedKeys: String, CodingKey {
         case id, text, _0, _1
+    }
+
+    var isInterruptionNotice: Bool {
+        guard case .notice(_, let text) = self else { return false }
+        return text == Self.interruptionNoticeText
     }
 
     var id: UUID {
