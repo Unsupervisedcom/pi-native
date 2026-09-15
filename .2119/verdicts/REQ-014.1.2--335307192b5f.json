@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-014.1.2--335307192b5f",
+  "requirementId": "REQ-014.1.2",
+  "hash": "335307192b5f",
+  "verdict": "pass",
+  "summary": "Test exercises real ChatMarkdownParser fallback (plainTextDocument) across representative malformed/incomplete streaming inputs (unterminated header, bold, link, list, code fence) and asserts non-empty visible text; verified the fallback returns raw source verbatim, so the assertion genuinely verifies the requirement without mocking or keyword matching.",
+  "timestamp": "2026-09-15T18:32:10.343Z"
+}

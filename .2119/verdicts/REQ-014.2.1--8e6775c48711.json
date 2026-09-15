@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-014.2.1--8e6775c48711",
+  "requirementId": "REQ-014.2.1",
+  "hash": "8e6775c48711",
+  "verdict": "pass",
+  "summary": "Unit test checks activitySummarySpacing(10)>activityWrappedLineSpacing(0) constants used by the VStack/lineSpacing modifiers, and UI test verifies real rendered frames of two consecutive activity summaries have a positive vertical gap via distinct accessibility identifiers, rejecting both a merged-paragraph violation (identifiers wouldn't exist) and an equal-spacing violation (strict > check); genuine, non-tautological coverage.",
+  "timestamp": "2026-09-15T18:34:07.296Z"
+}

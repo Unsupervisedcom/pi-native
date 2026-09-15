@@ -94,8 +94,15 @@ while IFS= read -r file; do
     PiNative/ChatPaneView.swift)
       add_test "PiNativeUITests/ChatReadinessUITests"
       ;;
-    PiNative/PiConversationModel.swift|PiNative/PiConversationView.swift)
+    PiNative/PiConversationModel.swift)
       add_test "PiNativeUITests/ConversationNavigationUITests"
+      ;;
+    PiNative/PiConversationView.swift)
+      add_test "PiNativeUITests/ConversationNavigationUITests"
+      add_test "PiNativeUITests/ChatMessageFormattingUITests"
+      ;;
+    PiNative/ChatMarkdownParser.swift|PiNativeUITests/ChatMessageFormattingUITests.swift)
+      add_test "PiNativeUITests/ChatMessageFormattingUITests"
       ;;
     PiNative/ModelSettingsModel.swift|PiNative/ModelSettingsView.swift)
       add_test "PiNativeUITests/ModelSettingsUITests"

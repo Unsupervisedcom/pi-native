@@ -1507,6 +1507,37 @@ final class AppModel: ObservableObject {
         if environment["PI_NATIVE_TEST_EMPTY_SEEDED_TRANSCRIPT"] == "1" {
             return []
         }
+        if environment["PI_NATIVE_TEST_CHAT_FORMATTING_FIXTURE"] == "1" {
+            let markdown = """
+            # Markdown that reads naturally
+
+            Assistant prose supports *emphasis*, **strong emphasis**, [helpful links](https://example.com), and `inline code`.
+
+            - Clear unordered item
+            - A second item with enough text to demonstrate comfortable wrapping in the readable transcript column
+
+            1. First ordered step
+            2. Second ordered step
+
+            > Quoted guidance stays visually distinct from the surrounding answer.
+
+            ```swift
+            let greeting = "Hello from PiNative"
+            print(greeting)
+            ```
+            """
+            let tools = [
+                ToolTranscriptItem(id: UUID(), callID: "format-read", name: "read", args: #"{"path":"PiNative/PiConversationView.swift"}"#, output: "", status: .succeeded),
+                ToolTranscriptItem(id: UUID(), callID: "format-edit", name: "edit", args: #"{"path":"PiNative/ChatMarkdownParser.swift"}"#, output: "", status: .succeeded),
+                ToolTranscriptItem(id: UUID(), callID: "format-test", name: "bash", args: #"{"command":"swift test"}"#, output: "", status: .succeeded)
+            ]
+            return [
+                .user(UserMessagePayload(text: title)),
+                .assistantText(text: markdown),
+                .assistantText(text: "**Streaming emphasis remains readable"),
+                .activity(ActivityGroup(id: UUID(), tools: tools, isRunning: false, startedAt: Date(), finishedAt: Date()))
+            ]
+        }
         guard environment["PI_NATIVE_TEST_LONG_TRANSCRIPT"] == "1" else {
             return [.user(UserMessagePayload(text: title))]
         }
