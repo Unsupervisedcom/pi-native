@@ -67,7 +67,10 @@ final class PiConversationModel: ObservableObject {
         return milliseconds * 1_000_000
     }
     private var shouldStallRPCForTesting: Bool {
-        shouldStallRPCOverrideForTesting ?? (ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_STALL"] == "1")
+#if DEBUG
+        if let shouldStallRPCOverrideForTesting { return shouldStallRPCOverrideForTesting }
+#endif
+        return ProcessInfo.processInfo.environment["PI_NATIVE_TEST_RPC_STALL"] == "1"
     }
     private var shouldFailRPCForTesting: Bool {
 #if DEBUG
