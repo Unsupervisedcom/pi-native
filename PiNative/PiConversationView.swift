@@ -11,9 +11,13 @@ private enum ChatTypography {
     static let subheadlineSize: CGFloat = 15
     static let title3Size: CGFloat = 20
 
-    static func serifBody(weight: Font.Weight = .regular, italic: Bool = false) -> Font {
-        let base = Font.custom("Georgia", size: bodySize)
+    static func serif(size: CGFloat, weight: Font.Weight = .regular, italic: Bool = false) -> Font {
+        let base = Font.custom("Georgia", size: size)
         return italic ? base.weight(weight).italic() : base.weight(weight)
+    }
+
+    static func serifBody(weight: Font.Weight = .regular, italic: Bool = false) -> Font {
+        serif(size: bodySize, weight: weight, italic: italic)
     }
 
     static func serifNSFont(size: CGFloat = bodySize) -> NSFont {
@@ -86,6 +90,11 @@ private enum ChatPalette {
         light: NSColor(calibratedWhite: 0.14, alpha: 1),
         dark: NSColor(calibratedWhite: 1.0, alpha: 0.82)
     )
+    static let quoteRule = AppTheme.dynamicColor(
+        light: NSColor.separatorColor,
+        dark: NSColor.separatorColor
+    )
+    static let linkText = Color.accentColor
     static let nsPrimaryText = AppTheme.dynamicNSColor(
         light: NSColor(calibratedWhite: 0.12, alpha: 1),
         dark: NSColor(calibratedWhite: 0.84, alpha: 1)
@@ -955,7 +964,7 @@ private struct AssistantTextBlock: View {
     let onCopy: () -> Void
 
     var body: some View {
-        MarkdownishAssistantText(text: text)
+        MarkdownAssistantText(text: text)
             .accessibilityIdentifier("transcript.assistantMessage")
             .frame(maxWidth: 760, alignment: .leading)
     }
@@ -971,16 +980,18 @@ private struct ActivityGroupRow: View {
     let onToggle: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            ForEach(summaryLines, id: \.self) { line in
+        VStack(alignment: .leading, spacing: ChatMessageLayout.activitySummarySpacing) {
+            ForEach(Array(summaryLines.enumerated()), id: \.offset) { offset, line in
                 Text(line)
                     .font(MapleFont.swiftUIFont(size: 13, weight: .semibold, italic: true))
                     .foregroundStyle(.secondary)
+                    .lineSpacing(ChatMessageLayout.activityWrappedLineSpacing)
                     .lineLimit(2)
+                    .accessibilityIdentifier("transcript.activitySummary.\(offset)")
             }
         }
         .frame(maxWidth: 760, alignment: .leading)
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .contain)
     }
 
     private var summaryLines: [String] {
@@ -1143,105 +1154,107 @@ private struct SpinningGearIcon: View {
     }
 }
 
-private struct MarkdownishAssistantText: View {
+private struct MarkdownAssistantText: View {
     let text: String
 
+    private var document: ChatMarkdownDocument {
+        ChatMarkdownParser.parse(text)
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            ForEach(Array(Self.blocks(from: text).enumerated()), id: \.offset) { _, block in
-                switch block {
-                case .text(let value):
-                    InlineCodeText(text: value)
-                        .textSelection(.enabled)
-                case .code(let language, let value):
-                    CodeBlockView(language: language, text: value)
-                }
+        VStack(alignment: .leading, spacing: 10) {
+            ForEach(Array(document.blocks.enumerated()), id: \.offset) { _, block in
+                blockView(block)
             }
         }
     }
 
-    private enum Block {
-        case text(String)
-        case code(language: String?, text: String)
-    }
-
-    private static func blocks(from text: String) -> [Block] {
-        var blocks: [Block] = []
-        var prose: [String] = []
-        var code: [String] = []
-        var language: String?
-        var inFence = false
-        var lastFenceBecameInline = false
-
-        for line in text.components(separatedBy: .newlines) {
-            if line.trimmingCharacters(in: .whitespaces).hasPrefix("```") {
-                if inFence {
-                    lastFenceBecameInline = appendCodeBlock(lines: code, language: language, to: &blocks)
-                    code.removeAll()
-                    language = nil
-                    inFence = false
-                } else {
-                    if !prose.isEmpty {
-                        appendProse(prose, mergingWithPrevious: lastFenceBecameInline, to: &blocks)
-                        prose.removeAll()
-                        lastFenceBecameInline = false
-                    }
-                    let marker = line.trimmingCharacters(in: .whitespaces)
-                    let rawLanguage = String(marker.dropFirst(3)).trimmingCharacters(in: .whitespaces)
-                    language = rawLanguage.isEmpty ? nil : rawLanguage
-                    inFence = true
-                }
-            } else if inFence {
-                code.append(line)
-            } else {
-                prose.append(line)
+    @ViewBuilder
+    private func blockView(_ block: ChatMarkdownBlock) -> some View {
+        if let list = block.list {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                Text(list.style == .ordered ? "\(list.ordinal)." : "•")
+                    .font(ChatTypography.serifBody(weight: .semibold))
+                    .frame(width: 24, alignment: .trailing)
+                quotedContent(block)
             }
-        }
-
-        if inFence {
-            _ = appendCodeBlock(lines: code, language: language, to: &blocks)
-        } else if !prose.isEmpty {
-            appendProse(prose, mergingWithPrevious: lastFenceBecameInline, to: &blocks)
-        }
-
-        return blocks
-    }
-
-    private static func appendProse(_ lines: [String], mergingWithPrevious: Bool, to blocks: inout [Block]) {
-        let text = lines.joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !text.isEmpty else { return }
-
-        if mergingWithPrevious, case .text(let previous) = blocks.last {
-            blocks.removeLast()
-            blocks.append(.text(previous.trimmingCharacters(in: .whitespacesAndNewlines) + " " + text))
+            .padding(.leading, CGFloat(list.depth) * 18)
         } else {
-            blocks.append(.text(text))
+            quotedContent(block)
         }
     }
 
-    @discardableResult
-    private static func appendCodeBlock(lines: [String], language: String?, to blocks: inout [Block]) -> Bool {
-        let text = lines.joined(separator: "\n")
-        let nonEmptyLines = lines.filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
-        let languageIsPlainText = language == nil || language?.lowercased() == "text"
-
-        // Pi often emits single path / command snippets as ```text fenced blocks.
-        // Those are references, not real terminal/code blocks, so keep them in
-        // the inline-code visual language instead of promoting them to a large
-        // green container.
-        if languageIsPlainText, nonEmptyLines.count == 1, let line = nonEmptyLines.first {
-            let inline = "`\(line)`"
-            if case .text(let previous) = blocks.last {
-                blocks.removeLast()
-                blocks.append(.text(previous.trimmingCharacters(in: .whitespacesAndNewlines) + " " + inline))
-            } else {
-                blocks.append(.text(inline))
+    @ViewBuilder
+    private func quotedContent(_ block: ChatMarkdownBlock) -> some View {
+        if block.quoteDepth > 0 {
+            HStack(alignment: .top, spacing: 10) {
+                RoundedRectangle(cornerRadius: 1)
+                    .fill(ChatPalette.quoteRule)
+                    .frame(width: 3)
+                roleContent(block)
             }
-            return true
-        } else if !text.isEmpty {
-            blocks.append(.code(language: language, text: text))
+            .padding(.leading, CGFloat(max(block.quoteDepth - 1, 0)) * 14)
+        } else {
+            roleContent(block)
         }
-        return false
+    }
+
+    @ViewBuilder
+    private func roleContent(_ block: ChatMarkdownBlock) -> some View {
+        switch block.role {
+        case .paragraph:
+            markdownText(block.content, font: ChatTypography.serifBody())
+        case .heading(let level):
+            markdownText(block.content, font: headingFont(level: level))
+                .padding(.top, level <= 2 ? 4 : 0)
+        case .code(let language):
+            CodeBlockView(
+                language: language,
+                text: String(block.content.characters).trimmingCharacters(in: .newlines)
+            )
+        case .thematicBreak:
+            Divider()
+                .padding(.vertical, 4)
+        }
+    }
+
+    private func markdownText(_ content: AttributedString, font: Font) -> some View {
+        Text(Self.styledInlineContent(content, proseFont: font))
+            .lineSpacing(2)
+            .foregroundStyle(ChatPalette.primaryText)
+            .textSelection(.enabled)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private func headingFont(level: Int) -> Font {
+        switch level {
+        case 1: ChatTypography.serif(size: 26, weight: .bold).leading(.tight)
+        case 2: ChatTypography.serif(size: 22, weight: .semibold)
+        case 3: ChatTypography.serif(size: 19, weight: .semibold)
+        default: ChatTypography.serifBody(weight: .semibold)
+        }
+    }
+
+    private static func styledInlineContent(_ content: AttributedString, proseFont: Font) -> AttributedString {
+        var styled = content
+        for run in styled.runs {
+            let intent = run.inlinePresentationIntent ?? []
+            if run.link != nil {
+                styled[run.range].foregroundColor = ChatPalette.linkText
+            }
+            if intent.contains(.code) {
+                styled[run.range].font = MapleFont.swiftUIFont(size: ChatTypography.bodySize - 1)
+            } else {
+                styled[run.range].font = proseFont
+                if intent.contains(.stronglyEmphasized) {
+                    styled[run.range].font = proseFont.bold()
+                }
+                if intent.contains(.emphasized) {
+                    styled[run.range].font = (styled[run.range].font ?? proseFont).italic()
+                }
+            }
+        }
+        return styled
     }
 }
 

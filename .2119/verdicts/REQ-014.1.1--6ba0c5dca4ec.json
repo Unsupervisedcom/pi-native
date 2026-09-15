@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-014.1.1--6ba0c5dca4ec",
+  "requirementId": "REQ-014.1.1",
+  "hash": "6ba0c5dca4ec",
+  "verdict": "pass",
+  "summary": "Test parses real ChatMarkdownParser output, asserts structural roles/inline attributes for each listed construct and rejects raw delimiters in visible text; genuine behavioral verification, not mocked or tautological.",
+  "timestamp": "2026-09-15T18:31:46.555Z"
+}

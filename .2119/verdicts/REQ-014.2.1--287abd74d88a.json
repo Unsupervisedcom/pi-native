@@ -1,0 +1,8 @@
+{
+  "reviewId": "REQ-014.2.1--287abd74d88a",
+  "requirementId": "REQ-014.2.1",
+  "hash": "287abd74d88a",
+  "verdict": "fail",
+  "summary": "Test only asserts secondSummary.minY > firstSummary.maxY (non-overlap), which is true for both paragraph-spaced rows and tightly-adjacent lines of one paragraph; it never asserts a gap threshold distinguishing 'distinct paragraph spacing' from ordinary line spacing, so the violating case (summaries rendered as adjacent lines with minimal line-height gap) would still pass.",
+  "timestamp": "2026-09-15T18:31:42.636Z"
+}

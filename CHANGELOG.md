@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-15
+
+### Added
+
+- Assistant responses now render common Markdown—including headings, emphasis, links, lists, quotes, inline code, and fenced code—with readable streaming fallbacks and clearer spacing between activity summaries.
+
 ## 2026-09-09
 
 ### Fixed
