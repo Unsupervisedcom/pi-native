@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-15
+
+
+### Fixed
+
+- Restored official Release builds by keeping the RPC stall test override confined to Debug builds.
+
 ## 2026-09-09
 
 ### Fixed
