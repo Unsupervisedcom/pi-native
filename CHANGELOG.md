@@ -6,6 +6,10 @@
 
 - Assistant responses now render common Markdown—including headings, emphasis, links, lists, quotes, inline code, and fenced code—with readable streaming fallbacks and clearer spacing between activity summaries.
 
+### Fixed
+
+- Restored official Release builds by keeping the RPC stall test override confined to Debug builds.
+
 ## 2026-09-09
 
 ### Fixed
